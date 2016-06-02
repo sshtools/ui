@@ -14,11 +14,10 @@ import javax.swing.JToggleButton;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 
-
 public class ToggledPopupMenu extends JPopupMenu {
 
 	private ToolBarToggleButton toggle;
-	private ToggledPopupAction action;		
+	private ToggledPopupAction action;
 
 	public ToggledPopupMenu(ToggledPopupAction action, String iconKey) {
 		super((String) action.getValue(Action.NAME));
@@ -44,14 +43,15 @@ public class ToggledPopupMenu extends JPopupMenu {
 			}
 
 			public void popupMenuCanceled(PopupMenuEvent e) {
-                ToggledPopupMenu.this.toggle.setSelected(false);
+				ToggledPopupMenu.this.toggle.setSelected(false);
 			}
 
 		});
 	}
 
 	public JButton addButtonAction(AppAction action) {
-        ActionButton item = new ActionButton(action, AppAction.SMALL_ICON, false);
+		ActionButton item = new ActionButton(action, AppAction.SMALL_ICON,
+				false);
 		item.setOpaque(false);
 		item.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 		add(item);

@@ -11,7 +11,6 @@ import java.util.Vector;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JPopupMenu;
-import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 
 /**
@@ -61,19 +60,24 @@ public class ClosableTabbedPane extends DnDTabbedPane implements MouseListener {
 	}
 
 	public void addTab(String title, Component component, Icon extraIcon) {
-        super.addTab(title, extraIcon == null ? null : new CloseTabIcon(extraIcon), component);
+		super.addTab(title, extraIcon == null ? null : new CloseTabIcon(
+				extraIcon), component);
 	}
 
-	public void addTab(String title, Icon extraIcon, Component component, String toolTip) {
-        super.addTab(title, extraIcon == null ? null : new CloseTabIcon(extraIcon), component, toolTip);
+	public void addTab(String title, Icon extraIcon, Component component,
+			String toolTip) {
+		super.addTab(title, extraIcon == null ? null : new CloseTabIcon(
+				extraIcon), component, toolTip);
 	}
 
 	public void insertTab(String title, Component component, int idx) {
 		this.insertTab(title, component, null, idx);
 	}
 
-	public void insertTab(String title, Component component, Icon extraIcon, int idx) {
-        super.insertTab(title, extraIcon == null ? null : new CloseTabIcon(extraIcon), component, null, idx);
+	public void insertTab(String title, Component component, Icon extraIcon,
+			int idx) {
+		super.insertTab(title, extraIcon == null ? null : new CloseTabIcon(
+				extraIcon), component, null, idx);
 	}
 
 	public void mouseClicked(MouseEvent e) {
@@ -94,7 +98,8 @@ public class ClosableTabbedPane extends DnDTabbedPane implements MouseListener {
 					popup.invalidate();
 					popup.removeAll();
 					Action action;
-					for (Enumeration en = actions.elements(); en.hasMoreElements();) {
+					for (Enumeration en = actions.elements(); en
+							.hasMoreElements();) {
 						action = (Action) en.nextElement();
 						if (action != null)
 							popup.add(action);

@@ -46,9 +46,12 @@ public class OverlayIcon implements Icon {
 	/**
 	 * Constructor for the OverlayIcon object
 	 * 
-	 * @param overlayIcon Description of the Parameter
-	 * @param icon Description of the Parameter
-	 * @param position Description of the Parameter
+	 * @param overlayIcon
+	 *            Description of the Parameter
+	 * @param icon
+	 *            Description of the Parameter
+	 * @param position
+	 *            Description of the Parameter
 	 */
 	public OverlayIcon(Icon overlayIcon, Icon icon, int position) {
 		this.icon = icon;
@@ -96,39 +99,78 @@ public class OverlayIcon implements Icon {
 			switch (position) {
 			// TODO complete compass points and center
 			case SwingConstants.NORTH:
-				overlayIcon.paintIcon(c, g, x + ((icon.getIconWidth() - overlayIcon.getIconWidth()) / 2), y);
+				overlayIcon.paintIcon(
+						c,
+						g,
+						x
+								+ ((icon.getIconWidth() - overlayIcon
+										.getIconWidth()) / 2), y);
 				break;
 			case SwingConstants.CENTER:
-				overlayIcon.paintIcon(c, g, x + ((icon.getIconWidth() - overlayIcon.getIconWidth()) / 2),
-					y + ((icon.getIconHeight() - overlayIcon.getIconHeight()) / 2));
+				overlayIcon.paintIcon(
+						c,
+						g,
+						x
+								+ ((icon.getIconWidth() - overlayIcon
+										.getIconWidth()) / 2),
+						y
+								+ ((icon.getIconHeight() - overlayIcon
+										.getIconHeight()) / 2));
 				break;
 			case SwingConstants.EAST:
-				overlayIcon.paintIcon(c, g, (x + icon.getIconWidth()) - overlayIcon.getIconWidth(), y
-					+ ((icon.getIconHeight() - overlayIcon.getIconHeight()) / 2));
+				overlayIcon.paintIcon(
+						c,
+						g,
+						(x + icon.getIconWidth()) - overlayIcon.getIconWidth(),
+						y
+								+ ((icon.getIconHeight() - overlayIcon
+										.getIconHeight()) / 2));
 				break;
 			case SwingConstants.WEST:
-				overlayIcon.paintIcon(c, g, x, y + ((icon.getIconHeight() - overlayIcon.getIconHeight()) / 2));
+				overlayIcon.paintIcon(
+						c,
+						g,
+						x,
+						y
+								+ ((icon.getIconHeight() - overlayIcon
+										.getIconHeight()) / 2));
 				break;
 			case SwingConstants.NORTH_WEST:
 				overlayIcon.paintIcon(c, g, x, y);
 				break;
 			case SwingConstants.SOUTH_WEST:
-				overlayIcon.paintIcon(c, g, x, (y + icon.getIconHeight()) - overlayIcon.getIconHeight());
+				overlayIcon.paintIcon(c, g, x, (y + icon.getIconHeight())
+						- overlayIcon.getIconHeight());
 				break;
 			case SwingConstants.NORTH_EAST:
-				overlayIcon.paintIcon(c, g, (x + icon.getIconWidth()) - overlayIcon.getIconWidth(), y);
+				overlayIcon.paintIcon(c, g, (x + icon.getIconWidth())
+						- overlayIcon.getIconWidth(), y);
 				break;
 			case SwingConstants.SOUTH_EAST:
-				overlayIcon.paintIcon(c, g, (x + icon.getIconWidth()) - overlayIcon.getIconWidth(), (y + icon.getIconHeight())
-					- overlayIcon.getIconHeight());
+				overlayIcon.paintIcon(
+						c,
+						g,
+						(x + icon.getIconWidth()) - overlayIcon.getIconWidth(),
+						(y + icon.getIconHeight())
+								- overlayIcon.getIconHeight());
 				break;
 			case SwingConstants.SOUTH:
-				overlayIcon.paintIcon(c, g, x + ((icon.getIconWidth() - overlayIcon.getIconWidth()) / 2),
-					(y + icon.getIconHeight()) - overlayIcon.getIconHeight());
+				overlayIcon.paintIcon(
+						c,
+						g,
+						x
+								+ ((icon.getIconWidth() - overlayIcon
+										.getIconWidth()) / 2),
+						(y + icon.getIconHeight())
+								- overlayIcon.getIconHeight());
 				break;
 			default:
-				overlayIcon.paintIcon(c, g, (x + icon.getIconWidth()) - overlayIcon.getIconWidth(), (y + icon.getIconHeight())
-					- overlayIcon.getIconHeight());
+				overlayIcon.paintIcon(
+						c,
+						g,
+						(x + icon.getIconWidth()) - overlayIcon.getIconWidth(),
+						(y + icon.getIconHeight())
+								- overlayIcon.getIconHeight());
 			}
 		}
 	}

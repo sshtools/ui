@@ -153,8 +153,8 @@ public class JTreeTable extends JTable {
 	}
 
 	/**
-	 * Returns the actual row that is editing as <code>getEditingRow</code>
-	 * will always return -1.
+	 * Returns the actual row that is editing as <code>getEditingRow</code> will
+	 * always return -1.
 	 */
 	private int realEditingRow() {
 		return editingRow;
@@ -285,10 +285,10 @@ public class JTreeTable extends JTable {
 			}
 			super.paint(g);
 			// Draw the Table border if we have focus.
-//			if (highlightBorder != null) {
-//				highlightBorder.paintBorder(this, g, 0, visibleRow
-//						* getRowHeight(), getWidth(), getRowHeight());
-//			}
+			// if (highlightBorder != null) {
+			// highlightBorder.paintBorder(this, g, 0, visibleRow
+			// * getRowHeight(), getWidth(), getRowHeight());
+			// }
 		}
 
 		/**
@@ -383,9 +383,9 @@ public class JTreeTable extends JTable {
 
 		/**
 		 * Overridden to determine an offset that tree would place the editor
-		 * at. The offset is determined from the <code>getRowBounds</code>
-		 * JTree method, and additionally from the icon DefaultTreeCellRenderer
-		 * will use.
+		 * at. The offset is determined from the <code>getRowBounds</code> JTree
+		 * method, and additionally from the icon DefaultTreeCellRenderer will
+		 * use.
 		 * <p>
 		 * The offset is then set on the TreeTableTextField component created in
 		 * the constructor, and returned.
@@ -436,12 +436,11 @@ public class JTreeTable extends JTable {
 					for (int counter = getColumnCount() - 1; counter >= 0; counter--) {
 						if (getColumnClass(counter) == TreeTableModel.class) {
 							MouseEvent newME = new MouseEvent(
-									JTreeTable.this.tree, me.getID(), me
-											.getWhen(), me.getModifiers(), me
-											.getX()
+									JTreeTable.this.tree, me.getID(),
+									me.getWhen(), me.getModifiers(), me.getX()
 											- getCellRect(0, counter, true).x,
-									me.getY(), me.getClickCount(), me
-											.isPopupTrigger());
+									me.getY(), me.getClickCount(),
+									me.isPopupTrigger());
 							JTreeTable.this.tree.dispatchEvent(newME);
 							break;
 						}
@@ -499,8 +498,8 @@ public class JTreeTable extends JTable {
 		}
 
 		/**
-		 * This is overridden to set <code>updatingListSelectionModel</code>
-		 * and message super. This is the only place DefaultTreeSelectionModel
+		 * This is overridden to set <code>updatingListSelectionModel</code> and
+		 * message super. This is the only place DefaultTreeSelectionModel
 		 * alters the ListSelectionModel.
 		 */
 		public void resetRowSelection() {
@@ -527,8 +526,8 @@ public class JTreeTable extends JTable {
 		}
 
 		/**
-		 * If <code>updatingListSelectionModel</code> is false, this will
-		 * reset the selected paths from the selected rows in the list selection
+		 * If <code>updatingListSelectionModel</code> is false, this will reset
+		 * the selected paths from the selected rows in the list selection
 		 * model.
 		 */
 		protected void updateSelectedPathsFromSelectedRows() {

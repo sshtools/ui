@@ -8,21 +8,21 @@ import javax.swing.Icon;
 import javax.swing.JCheckBoxMenuItem;
 
 public class ActionCheckBoxMenuItem extends JCheckBoxMenuItem {
-    public ActionCheckBoxMenuItem(ToggleableAction action) {
-        super(action);
-        Icon i = (Icon) action.getValue(AppAction.SMALL_ICON);
-        if (i != null) {
-            setIcon(i);
-        }
-        action.addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("selected")) {
-                    boolean sel = ((Boolean) evt.getNewValue()).booleanValue();
-                    setSelected(sel);
-                    setIcon((Icon) getAction().getValue(AppAction.SMALL_ICON));
-                }
-            }
-        });
-        setSelected(action.isSelected());
-    }
+	public ActionCheckBoxMenuItem(ToggleableAction action) {
+		super(action);
+		Icon i = (Icon) action.getValue(AppAction.SMALL_ICON);
+		if (i != null) {
+			setIcon(i);
+		}
+		action.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getPropertyName().equals("selected")) {
+					boolean sel = ((Boolean) evt.getNewValue()).booleanValue();
+					setSelected(sel);
+					setIcon((Icon) getAction().getValue(AppAction.SMALL_ICON));
+				}
+			}
+		});
+		setSelected(action.isSelected());
+	}
 }

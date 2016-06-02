@@ -11,78 +11,82 @@ import com.sshtools.ui.awt.AWTFileSelector;
  */
 public class FileSelect {
 
-    public final static int FILES_AND_DIRECTORIES = 0;
-    public final static int DIRECTORIES_ONLY = 1;
+	public final static int FILES_AND_DIRECTORIES = 0;
+	public final static int DIRECTORIES_ONLY = 1;
 
-    private FileSelector selector;
-    
-    private FileFilter acceptAllFilter = new FileFilter() {
+	private FileSelector selector;
 
-        public String getDescription() {
-            return Messages.getString("FileSelect.allFiles"); //$NON-NLS-1$
-        }
+	private FileFilter acceptAllFilter = new FileFilter() {
 
-        public boolean accept(File f) {
-            return true;
-        }
-        
-    };
-    
-    public FileSelect(int type, File cwd) {
-        this(type, cwd, true, true);
-    }
-    
-    public FileSelect(int type, File cwd, boolean showButtons, boolean showHiddenFilesSwitch) {
-        this(type, cwd, showButtons, showHiddenFilesSwitch, true, false);
-    }
+		public String getDescription() {
+			return Messages.getString("FileSelect.allFiles"); //$NON-NLS-1$
+		}
 
-    public FileSelect(int type, File cwd, boolean showButtons, boolean showHiddenFilesSwitch, boolean showButtonImages, boolean showButtonText) {
-        try {
-            selector = (FileSelector)Class.forName("com.sshtools.ui.swing.SwingFileSelector").newInstance(); //$NON-NLS-1$
-        }
-        catch(Throwable t) {
-            selector = new AWTFileSelector();
-        }
-        selector.init(type, cwd, showButtons, showHiddenFilesSwitch, showButtonImages, showButtonText);
-    }
-    
-    public void setUseAcceptAllFilter(boolean useAcceptAllFilter) {
-        selector.setUseAcceptAllFilter(useAcceptAllFilter);
-    }
-    
-    public void addFileFilter(FileFilter filter) {
-        selector.addFileFilter(filter);
-    }
+		public boolean accept(File f) {
+			return true;
+		}
 
-    public File[] getSelectedFiles() {
-        return selector.getSelectedFiles();
-    }
+	};
 
-    public File getSelectedFile() {
-        return selector.getSelectedFile();
-    }
+	public FileSelect(int type, File cwd) {
+		this(type, cwd, true, true);
+	}
 
-    public void refresh() {
-        selector.refresh();
-    }
+	public FileSelect(int type, File cwd, boolean showButtons,
+			boolean showHiddenFilesSwitch) {
+		this(type, cwd, showButtons, showHiddenFilesSwitch, true, false);
+	}
 
-    public void setAllowMultipleSelection(boolean allowMultipleSelection) {
-        selector.setAllowMultipleSelection(allowMultipleSelection);
-    }
+	public FileSelect(int type, File cwd, boolean showButtons,
+			boolean showHiddenFilesSwitch, boolean showButtonImages,
+			boolean showButtonText) {
+		try {
+			selector = (FileSelector) Class.forName(
+					"com.sshtools.ui.swing.SwingFileSelector").newInstance(); //$NON-NLS-1$
+		} catch (Throwable t) {
+			selector = new AWTFileSelector();
+		}
+		selector.init(type, cwd, showButtons, showHiddenFilesSwitch,
+				showButtonImages, showButtonText);
+	}
 
-    public Option showDialog(Component parent, String title) {
-        return selector.showDialog(parent, title);
-    }
+	public void setUseAcceptAllFilter(boolean useAcceptAllFilter) {
+		selector.setUseAcceptAllFilter(useAcceptAllFilter);
+	}
 
-    public File getWorkingDirectory() {
-        return selector.getWorkingDirectory();
-    }
+	public void addFileFilter(FileFilter filter) {
+		selector.addFileFilter(filter);
+	}
 
-    public void setSelectedFileFilter(FileFilter filter) {
-        selector.setSelectedFileFilter(filter);
-    }
+	public File[] getSelectedFiles() {
+		return selector.getSelectedFiles();
+	}
 
-    public void setWorkingDirectory(File cwd) {
-        selector.setWorkingDirectory(cwd);   
-    }
+	public File getSelectedFile() {
+		return selector.getSelectedFile();
+	}
+
+	public void refresh() {
+		selector.refresh();
+	}
+
+	public void setAllowMultipleSelection(boolean allowMultipleSelection) {
+		selector.setAllowMultipleSelection(allowMultipleSelection);
+	}
+
+	public Option showDialog(Component parent, String title) {
+		return selector.showDialog(parent, title);
+	}
+
+	public File getWorkingDirectory() {
+		return selector.getWorkingDirectory();
+	}
+
+	public void setSelectedFileFilter(FileFilter filter) {
+		selector.setSelectedFileFilter(filter);
+	}
+
+	public void setWorkingDirectory(File cwd) {
+		selector.setWorkingDirectory(cwd);
+	}
 }

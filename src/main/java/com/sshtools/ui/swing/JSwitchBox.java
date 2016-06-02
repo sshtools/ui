@@ -51,7 +51,8 @@ public class JSwitchBox extends AbstractButton {
 				getGraphics()).getWidth();
 		max = (int) Math.max(trueLenth, falseLenght);
 		gap = Math.max(5, 5 + (int) Math.abs(trueLenth - falseLenght));
-		thumbBounds = new Dimension(max + gap * 2, (int)((float)fontMetrics.getHeight() * 1.5));
+		thumbBounds = new Dimension(max + gap * 2,
+				(int) ((float) fontMetrics.getHeight() * 1.5));
 		globalWitdh = max + thumbBounds.width + gap * 2;
 		setModel(new DefaultButtonModel());
 		setSelected(false);
@@ -132,17 +133,18 @@ public class JSwitchBox extends AbstractButton {
 		int w = thumbBounds.width;
 		int h = thumbBounds.height;
 
-		g2.setPaint(new GradientPaint(buttonX, (int) (y - 0.1 * h), shadow2, buttonX,
-				(int) (y + 1.2 * h), shadow1));
+		g2.setPaint(new GradientPaint(buttonX, (int) (y - 0.1 * h), shadow2,
+				buttonX, (int) (y + 1.2 * h), shadow1));
 		g2.fillRect(buttonX, y, w, h);
-		g2.setPaint(new GradientPaint(buttonX, (int) (y + .65 * h), shadow1, buttonX,
-				(int) (y + 1.3 * h), shadow2));
+		g2.setPaint(new GradientPaint(buttonX, (int) (y + .65 * h), shadow1,
+				buttonX, (int) (y + 1.3 * h), shadow2));
 		g2.fillRect(buttonX, (int) (y + .65 * h), w, (int) (h - .65 * h));
 
 		if (w > 14) {
 			int size = 10;
 			g2.setColor(colorBright);
-			g2.fillRect(buttonX + w / 2 - size / 2, y + h / 2 - size / 2, size, size);
+			g2.fillRect(buttonX + w / 2 - size / 2, y + h / 2 - size / 2, size,
+					size);
 			g2.setColor(colorBright.darker());
 			g2.fillRect(buttonX + w / 2 - 4, h / 2 - 4, 2, 2);
 			g2.fillRect(buttonX + w / 2 - 1, h / 2 - 4, 2, 2);

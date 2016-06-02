@@ -9,178 +9,179 @@ import java.util.Vector;
 
 public class ActionMenu {
 
-    public final static Action SEPARATOR = new AbstractAction("separator") { //$NON-NLS-1$
-        public void actionPerformed(ActionEvent e) {            
-        }        
-    };
+	public final static Action SEPARATOR = new AbstractAction("separator") { //$NON-NLS-1$
+		public void actionPerformed(ActionEvent e) {
+		}
+	};
 
-    private int weight;
-    private int mnemonic;
-    private String name;
-    private String displayName;
-    private Vector children;
-    private Vector listeners;
-    private String toolTip;
+	private int weight;
+	private int mnemonic;
+	private String name;
+	private String displayName;
+	private Vector children;
+	private Vector listeners;
+	private String toolTip;
 
-    private ActionMenu() {
-        // separator
-    }
+	private ActionMenu() {
+		// separator
+	}
 
-    public ActionMenu(String name, String displayName, int mnemonic, int weight, String toolTip) {
-        this.name = name;
-        this.displayName = displayName;
-        this.mnemonic = mnemonic;
-        this.weight = weight;
-        this.toolTip = toolTip;
-        children = new Vector();
-    }
-    
-    public String getToolTip() {
-        return toolTip;
-    }
-    
-    public void setToolTip() {
-        this.toolTip = toolTip;
-    }
+	public ActionMenu(String name, String displayName, int mnemonic,
+			int weight, String toolTip) {
+		this.name = name;
+		this.displayName = displayName;
+		this.mnemonic = mnemonic;
+		this.weight = weight;
+		this.toolTip = toolTip;
+		children = new Vector();
+	}
 
-    public int compareTo(Object o) {
-        double oweight = ((ActionMenu) o).weight;
-        return (weight < oweight ? -1 : (weight == oweight ? 0 : 1));
-    }
+	public String getToolTip() {
+		return toolTip;
+	}
 
-    /**
-     * @return Returns the displayName.
-     */
+	public void setToolTip() {
+		this.toolTip = toolTip;
+	}
 
-    public String getDisplayName() {
-        return displayName;
-    }
+	public int compareTo(Object o) {
+		double oweight = ((ActionMenu) o).weight;
+		return (weight < oweight ? -1 : (weight == oweight ? 0 : 1));
+	}
 
-    /**
-     * @param displayName
-     *            The displayName to set.
-     */
+	/**
+	 * @return Returns the displayName.
+	 */
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
+	public String getDisplayName() {
+		return displayName;
+	}
 
-    /**
-     * @return Returns the mnemonic.
-     */
+	/**
+	 * @param displayName
+	 *            The displayName to set.
+	 */
 
-    public int getMnemonic() {
-        return mnemonic;
-    }
+	public void setDisplayName(String displayName) {
+		this.displayName = displayName;
+	}
 
-    /**
-     * @param mnemonic
-     *            The mnemonic to set.
-     */
+	/**
+	 * @return Returns the mnemonic.
+	 */
 
-    public void setMnemonic(int mnemonic) {
-        this.mnemonic = mnemonic;
-    }
+	public int getMnemonic() {
+		return mnemonic;
+	}
 
-    /**
-     * @return Returns the name.
-     */
+	/**
+	 * @param mnemonic
+	 *            The mnemonic to set.
+	 */
 
-    public String getName() {
-        return name;
-    }
+	public void setMnemonic(int mnemonic) {
+		this.mnemonic = mnemonic;
+	}
 
-    /**
-     * @param name
-     *            The name to set.
-     */
+	/**
+	 * @return Returns the name.
+	 */
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    /**
-     * @return Returns the weight.
-     */
+	/**
+	 * @param name
+	 *            The name to set.
+	 */
 
-    public int getWeight() {
-        return weight;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    /**
-     * @param weight
-     *            The weight to set.
-     */
+	/**
+	 * @return Returns the weight.
+	 */
 
-    public void setWeight(int weight) {
-        this.weight = weight;
-    }
+	public int getWeight() {
+		return weight;
+	}
 
-    /**
+	/**
+	 * @param weight
+	 *            The weight to set.
+	 */
+
+	public void setWeight(int weight) {
+		this.weight = weight;
+	}
+
+	/**
      *  
      */
-    public void addSeparator() {
-        children.addElement(SEPARATOR);
-    }
+	public void addSeparator() {
+		children.addElement(SEPARATOR);
+	}
 
-    /**
-     * @param item
-     */
-    public void add(Action item) {
-        children.addElement(item);        
-    }
+	/**
+	 * @param item
+	 */
+	public void add(Action item) {
+		children.addElement(item);
+	}
 
-    /**
-     * @return
-     */
-    public Enumeration children() {
-        return children.elements();
-    }
+	/**
+	 * @return
+	 */
+	public Enumeration children() {
+		return children.elements();
+	}
 
-    /**
-     * @return
-     */
-    public int getChildCount() {
-        return children.size();
-    }
-    
-    public void addActionListener(ActionListener l) {
-        if (listeners == null) {
-            listeners = new Vector();
-        }
-        listeners.addElement(l);
-    }
+	/**
+	 * @return
+	 */
+	public int getChildCount() {
+		return children.size();
+	}
 
-    public void removeActionListener(ActionListener l) {
-        if (listeners != null) {
-            listeners.removeElement(l);
-        }
-    }
+	public void addActionListener(ActionListener l) {
+		if (listeners == null) {
+			listeners = new Vector();
+		}
+		listeners.addElement(l);
+	}
 
-    public boolean action() {
-        ActionEvent evt = null;
-        for (int i = listeners == null ? -1 : listeners.size() - 1; i >= 0; i--) {
-            if (evt == null) {
-                evt = new ActionEvent(this, 1001, getName());
-            }
-            ((ActionListener) listeners.elementAt(i)).actionPerformed(evt);
-        }
-        return false;
-    }
+	public void removeActionListener(ActionListener l) {
+		if (listeners != null) {
+			listeners.removeElement(l);
+		}
+	}
 
-    /**
-     * @param clicked
-     * @return
-     */
-    public Action getChild(int clicked) {
-        return (Action)children.elementAt(clicked);
-    }
+	public boolean action() {
+		ActionEvent evt = null;
+		for (int i = listeners == null ? -1 : listeners.size() - 1; i >= 0; i--) {
+			if (evt == null) {
+				evt = new ActionEvent(this, 1001, getName());
+			}
+			((ActionListener) listeners.elementAt(i)).actionPerformed(evt);
+		}
+		return false;
+	}
 
-    /**
+	/**
+	 * @param clicked
+	 * @return
+	 */
+	public Action getChild(int clicked) {
+		return (Action) children.elementAt(clicked);
+	}
+
+	/**
      * 
      */
-    public void removeAllChildren() {
-        children.removeAllElements();        
-    }
+	public void removeAllChildren() {
+		children.removeAllElements();
+	}
 
 }

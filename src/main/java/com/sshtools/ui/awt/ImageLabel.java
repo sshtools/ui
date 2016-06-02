@@ -14,107 +14,114 @@ import java.awt.Label;
  *
  * @author $Author: brett $
  */
-public class ImageLabel
-    extends BevelPanel {
+public class ImageLabel extends BevelPanel {
 
-  private ImageCanvas imageCanvas;
-  private Label textLabel;
+	private ImageCanvas imageCanvas;
+	private Label textLabel;
 
-  /**
-   * Construct a image label with no text or image
-   */
-  public ImageLabel() {
-    this(null, null);
-  }
+	/**
+	 * Construct a image label with no text or image
+	 */
+	public ImageLabel() {
+		this(null, null);
+	}
 
-  /**
-   * Construct a new image label with an image
-   *
-   * @param image image
-   */
-  public ImageLabel(Image image) {
-    this(null, image);
-  }
+	/**
+	 * Construct a new image label with an image
+	 *
+	 * @param image
+	 *            image
+	 */
+	public ImageLabel(Image image) {
+		this(null, image);
+	}
 
-  /**
-   * Construct a new image label with some text
-   *
-   * @param text text
-   */
-  public ImageLabel(String text) {
-    this(text, null);
-  }
+	/**
+	 * Construct a new image label with some text
+	 *
+	 * @param text
+	 *            text
+	 */
+	public ImageLabel(String text) {
+		this(text, null);
+	}
 
-  /**
-   * Construct a new image label with an image and some text
-   *
-   * @param text text
-   * @param image image
-   */
-  public ImageLabel(String text, Image image) {
-    super(NONE, new BorderLayout(2, 0));
-    imageCanvas = new ImageCanvas();
-    textLabel = new Label() {
-      public Dimension getMinimumSize() {
-        return getPreferredSize();
-      }
+	/**
+	 * Construct a new image label with an image and some text
+	 *
+	 * @param text
+	 *            text
+	 * @param image
+	 *            image
+	 */
+	public ImageLabel(String text, Image image) {
+		super(NONE, new BorderLayout(2, 0));
+		imageCanvas = new ImageCanvas();
+		textLabel = new Label() {
+			public Dimension getMinimumSize() {
+				return getPreferredSize();
+			}
 
-      public void processEvent(AWTEvent evt) {
-        ImageLabel.this.dispatchEvent(evt);
-      }
-    };
-    add(imageCanvas, BorderLayout.WEST);
-    add(textLabel, BorderLayout.CENTER);
-    setText(text);
-    setImage(image);
-  }
+			public void processEvent(AWTEvent evt) {
+				ImageLabel.this.dispatchEvent(evt);
+			}
+		};
+		add(imageCanvas, BorderLayout.WEST);
+		add(textLabel, BorderLayout.CENTER);
+		setText(text);
+		setImage(image);
+	}
 
-  /**
-   * Set the image
-   *
-   * @param image image
-   */
-  public void setImage(Image image) {
-    imageCanvas.setImage(image);
-    imageCanvas.setVisible(image != null);
-  }
+	/**
+	 * Set the image
+	 *
+	 * @param image
+	 *            image
+	 */
+	public void setImage(Image image) {
+		imageCanvas.setImage(image);
+		imageCanvas.setVisible(image != null);
+	}
 
-  /**
-   * Get the image
-   *
-   * @retirm image
-   */
-  public Image getImage() {
-    return imageCanvas.getImage();
-  }
+	/**
+	 * Get the image
+	 *
+	 * @retirm image
+	 */
+	public Image getImage() {
+		return imageCanvas.getImage();
+	}
 
-  /**
-   * Set the text
-   *
-   * @param text text
-   */
-  public void setText(String text) {
-    textLabel.setText(text);
-    textLabel.setVisible(text != null);
-  }
+	/**
+	 * Set the text
+	 *
+	 * @param text
+	 *            text
+	 */
+	public void setText(String text) {
+		textLabel.setText(text);
+		textLabel.setVisible(text != null);
+	}
 
-  /**
-   * Set the font
-   *
-   * @param font font
-   */
-  public void setFont(Font font) {
-    super.setFont(font);
-    textLabel.setFont(font);
-  }
+	/**
+	 * Set the font
+	 *
+	 * @param font
+	 *            font
+	 */
+	public void setFont(Font font) {
+		super.setFont(font);
+		textLabel.setFont(font);
+	}
 
-  /**
-   * Set foreground color of text
-   *
-   * @param color foreground color
-   */
-  public void setForeground(Color foreground) {
-    super.setForeground(foreground);
-    textLabel.setForeground(foreground);
-  }
+	/**
+	 * Set foreground color of text
+	 *
+	 * @param color
+	 *            foreground color
+	 */
+	public void setForeground(Color foreground) {
+		super.setForeground(foreground);
+		textLabel.setForeground(foreground);
+	}
 }

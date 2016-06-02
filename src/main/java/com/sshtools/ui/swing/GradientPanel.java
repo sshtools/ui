@@ -42,24 +42,22 @@ public class GradientPanel extends JPanel {
 			super.paintComponent(g);
 			return;
 		}
-		
+
 		Graphics2D g2d = (Graphics2D) g;
-		int w = getWidth( );
-		int h = getHeight( );
-		
+		int w = getWidth();
+		int h = getHeight();
+
 		Color color1 = getBackground();
 		Color color2 = getBackground2();
-		if(color2 == null) {
+		if (color2 == null) {
 			color2 = color1.brighter();
 		}
-		 
-		// Paint a gradient from top to bottom
-		GradientPaint gp = new GradientPaint(
-		    0, 0, color1,
-		    0, h, color2 );
 
-		g2d.setPaint( gp );
-		g2d.fillRect( 0, 0, w, h );
+		// Paint a gradient from top to bottom
+		GradientPaint gp = new GradientPaint(0, 0, color1, 0, h, color2);
+
+		g2d.setPaint(gp);
+		g2d.fillRect(0, 0, w, h);
 
 		setOpaque(false);
 		super.paintComponent(g);

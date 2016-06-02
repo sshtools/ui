@@ -7,8 +7,6 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.io.PrintWriter;
@@ -231,8 +229,8 @@ public class OptionDialog extends JOptionPane implements OptionChooser {
 		if (val == null) {
 			return Option.CHOICE_CANCEL;
 		}
-		if(val instanceof Option) {
-			return (Option)val;
+		if (val instanceof Option) {
+			return (Option) val;
 		}
 		if (val instanceof JButton) {
 			return (Option) ((JButton) val).getClientProperty("option");
@@ -433,7 +431,8 @@ public class OptionDialog extends JOptionPane implements OptionChooser {
 				message = new JScrollPane(
 						JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 						JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-				((JScrollPane) message).getViewport().setPreferredSize(new Dimension(300, 200));
+				((JScrollPane) message).getViewport().setPreferredSize(
+						new Dimension(300, 200));
 				((JScrollPane) message).setViewportView(text);
 
 			} else {

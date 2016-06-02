@@ -12,55 +12,57 @@ import java.awt.SystemColor;
  */
 public class ActionBar extends Panel {
 
-    private Color baseBackground, baseForeground;
+	private Color baseBackground, baseForeground;
 
-    public ActionBar() {
-        super();
-        Separator separator = new Separator(Separator.HORIZONTAL);
-        setLayout(new ToolLayout(separator));
-        setBackground(SystemColor.control);
-        setForeground(SystemColor.controlText);
-        add(separator);
-    }
-    
-    public void add(ActionButton button) {
-        if (baseBackground != null) {
-            button.setBaseBackground(baseBackground);
-        }
-        if (baseForeground != null) {
-            button.setBaseForeground(baseForeground);
-        }
-        super.add(button);
-    }
+	public ActionBar() {
+		super();
+		Separator separator = new Separator(Separator.HORIZONTAL);
+		setLayout(new ToolLayout(separator));
+		setBackground(SystemColor.control);
+		setForeground(SystemColor.controlText);
+		add(separator);
+	}
 
-    public void addAction(Action action) {
-        add(new ActionButton(action));
-    }
+	public void add(ActionButton button) {
+		if (baseBackground != null) {
+			button.setBaseBackground(baseBackground);
+		}
+		if (baseForeground != null) {
+			button.setBaseForeground(baseForeground);
+		}
+		super.add(button);
+	}
 
-    public void addSeparator() {
-        add(new Separator(Separator.VERTICAL));
-    }
+	public void addAction(Action action) {
+		add(new ActionButton(action));
+	}
 
-    public void setBaseBackground(Color baseBackground) {
-        setBackground(baseBackground == null ? SystemColor.control : baseBackground);
-        this.baseBackground = baseBackground;
-        for (int i = 0; i < getComponentCount(); i++) {
-            Component c = getComponent(i);
-            if (c instanceof ActionButton) {
-                ((ActionButton) c).setBaseBackground(baseBackground);
-            }
-        }
-    }
+	public void addSeparator() {
+		add(new Separator(Separator.VERTICAL));
+	}
 
-    public void setBaseForeground(Color baseForeground) {
-        setForeground(baseForeground == null ? SystemColor.controlText : baseForeground);
-        this.baseForeground = baseForeground;
-        for (int i = 0; i < getComponentCount(); i++) {
-            Component c = getComponent(i);
-            if (c instanceof ActionButton) {
-                ((ActionButton) c).setBaseForeground(baseForeground);
-            }
-        }
-    }
+	public void setBaseBackground(Color baseBackground) {
+		setBackground(baseBackground == null ? SystemColor.control
+				: baseBackground);
+		this.baseBackground = baseBackground;
+		for (int i = 0; i < getComponentCount(); i++) {
+			Component c = getComponent(i);
+			if (c instanceof ActionButton) {
+				((ActionButton) c).setBaseBackground(baseBackground);
+			}
+		}
+	}
+
+	public void setBaseForeground(Color baseForeground) {
+		setForeground(baseForeground == null ? SystemColor.controlText
+				: baseForeground);
+		this.baseForeground = baseForeground;
+		for (int i = 0; i < getComponentCount(); i++) {
+			Component c = getComponent(i);
+			if (c instanceof ActionButton) {
+				((ActionButton) c).setBaseForeground(baseForeground);
+			}
+		}
+	}
 
 }

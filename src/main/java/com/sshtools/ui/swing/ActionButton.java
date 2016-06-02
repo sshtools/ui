@@ -22,7 +22,6 @@ public class ActionButton extends JButton {
 	private boolean enablePlasticWorkaround;
 	private Color hoverForeground, oldForeground;
 
-
 	/**
 	 * Creates a new button component from an AppAction. Action text will always
 	 * be show.
@@ -35,10 +34,10 @@ public class ActionButton extends JButton {
 	}
 
 	/**
-	 * Creates a new button component from an AppAction. 
-	 * If <code>showSelectiveText</code> is <code>true</code> and the action
-	 * has a property with a name of {@link AppAction.TEXT_ON_TOOLBAR}and a
-	 * value of <code>Boolean.TRUE</code> then text text will be shown on the
+	 * Creates a new button component from an AppAction. If
+	 * <code>showSelectiveText</code> is <code>true</code> and the action has a
+	 * property with a name of {@link AppAction.TEXT_ON_TOOLBAR}and a value of
+	 * <code>Boolean.TRUE</code> then text text will be shown on the
 	 * 
 	 * @param action
 	 *            action
@@ -63,10 +62,10 @@ public class ActionButton extends JButton {
 	}
 
 	/**
-	 * Creates a new button component from an AppAction. 
-	 * If <code>showSelectiveText</code> is <code>true</code> and the action
-	 * has a property with a name of {@link AppAction.TEXT_ON_TOOLBAR}and a
-	 * value of <code>Boolean.TRUE</code> then text text will be shown on the
+	 * Creates a new button component from an AppAction. If
+	 * <code>showSelectiveText</code> is <code>true</code> and the action has a
+	 * property with a name of {@link AppAction.TEXT_ON_TOOLBAR}and a value of
+	 * <code>Boolean.TRUE</code> then text text will be shown on the
 	 * 
 	 * @param action
 	 *            action
@@ -80,7 +79,8 @@ public class ActionButton extends JButton {
 		init(action, iconKey, showSelectiveText, false);
 	}
 
-	private void init(AppAction a, final String iconKey, boolean showSelectiveText, boolean alwaysShowText) {
+	private void init(AppAction a, final String iconKey,
+			boolean showSelectiveText, boolean alwaysShowText) {
 		enablePlasticWorkaround = UIManager.getLookAndFeel().getClass()
 				.getName().startsWith("com.jgoodies.looks.plastic.");
 		setAction(a);
@@ -121,13 +121,13 @@ public class ActionButton extends JButton {
 		setContentAreaFilled(enablePlasticWorkaround);
 		if (a != null && a.getValue(Action.ACCELERATOR_KEY) != null) {
 			setMnemonic(0);
-			registerKeyboardAction(a, (KeyStroke) a
-					.getValue(Action.ACCELERATOR_KEY),
+			registerKeyboardAction(a,
+					(KeyStroke) a.getValue(Action.ACCELERATOR_KEY),
 					JButton.WHEN_IN_FOCUSED_WINDOW);
 		}
 		setIcon((Icon) a.getValue(iconKey));
-		if ((Boolean.TRUE.equals(a.getValue(AppAction.TEXT_ON_TOOLBAR))
-				&& showSelectiveText) || alwaysShowText) {
+		if ((Boolean.TRUE.equals(a.getValue(AppAction.TEXT_ON_TOOLBAR)) && showSelectiveText)
+				|| alwaysShowText) {
 			setHideText(false);
 		} else {
 			setHideText(true);

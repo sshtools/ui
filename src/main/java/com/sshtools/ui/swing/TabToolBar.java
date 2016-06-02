@@ -44,274 +44,286 @@ import javax.swing.UIManager;
  * properties are required
  */
 public class TabToolBar extends JPanel {
-    // Private instance variables
-    private Vector contextList;
-    private ContextPanel selectedContext;
-    private GridBagConstraints gBC;
-    private CardLayout cardLayout;
-    private JPanel cardPanel;
-    private FolderBar folderBar;
-    private int fixedWidth = -1;
-    private Color toolBarBackground;
+	// Private instance variables
+	private Vector contextList;
+	private ContextPanel selectedContext;
+	private GridBagConstraints gBC;
+	private CardLayout cardLayout;
+	private JPanel cardPanel;
+	private FolderBar folderBar;
+	private int fixedWidth = -1;
+	private Color toolBarBackground;
 
-    /**
-     * Construct a new TabToolBar
-     */
-    public TabToolBar() {
-        super(new GridBagLayout());
+	/**
+	 * Construct a new TabToolBar
+	 */
+	public TabToolBar() {
+		super(new GridBagLayout());
 
-        toolBarBackground = UIManager.getColor("Panel.background").darker();
+		toolBarBackground = UIManager.getColor("Panel.background").darker();
 
-        // Intialise
-        contextList = new Vector();
-        cardLayout = new CardLayout();
-        cardPanel = new JPanel(cardLayout);
+		// Intialise
+		contextList = new Vector();
+		cardLayout = new CardLayout();
+		cardPanel = new JPanel(cardLayout);
 
-        // Create the constraints for use later
-        gBC = new GridBagConstraints();
-        gBC.anchor = GridBagConstraints.NORTH;
-        gBC.fill = GridBagConstraints.BOTH;
+		// Create the constraints for use later
+		gBC = new GridBagConstraints();
+		gBC.anchor = GridBagConstraints.NORTH;
+		gBC.fill = GridBagConstraints.BOTH;
 
-        setBackground(toolBarBackground);
-        setOpaque(true);
-    }
+		setBackground(toolBarBackground);
+		setOpaque(true);
+	}
 
-    public void setFixedWidth(int fixedWidth) {
-        this.fixedWidth = fixedWidth;
-        doLayout();
-    }
+	public void setFixedWidth(int fixedWidth) {
+		this.fixedWidth = fixedWidth;
+		doLayout();
+	}
 
-    public int getFixedWidth() {
-        return fixedWidth;
-    }
+	public int getFixedWidth() {
+		return fixedWidth;
+	}
 
-    /**
-     * Set the selected context
+	/**
+	 * Set the selected context
+	 * 
+	 * @param context
+	 *            context
+	 */
+	public void setSelectedContext(String context) {
+		ContextPanel p = null;
+
+		for (Iterator i = contextList.iterator(); i.hasNext();) {
+			ContextPanel z = (ContextPanel) i.next();
+
+			if (context.equals(z.name)) {
+				p = z;
+			}
+		}
+
+		if (p != null) {
+			selectedContext = p;
+			cardLayout.show(cardPanel, context);
+			makeToolBar();
+		}
+	}
+
+	/**
+	 * Sets a FolderBar associated with this tool bar. When actions are invoked,
+	 * the FolderBar will change to show the action details for the selected
+	 * action.
+	 * 
+	 * @param folder
+	 *            bar
+	 */
+	public void setFolderBar(FolderBar folderBar) {
+		this.folderBar = folderBar;
+	}
+
+	/**
+	 * Returns the FolderBar that is being changed upon actions..
+	 * 
+	 * @return folder bar
+	 */
+	public FolderBar getFolderBar() {
+		return folderBar;
+	}
+
+	/**
+	 * Add a new action to the toolbar, this must have a non null
+	 * DefaultAction.CONTEXT property or an IllegalArgumentException will be
+	 * thrown. The DefaultAction.LARGE_ICON property will be used for the icon,
+	 * and the Action.NAME property will be used for the text.
+	 * Action.LONG_DESCRIPTION will be used to any tool tip text.
+	 * 
+	 * @param action
+	 *            to build icon from
+	 * @throws IllegalArgumentExcption
+	 *             if context not set
+	 * @todo Make changes to the action reflect on the button correctly
+	 */
+	public void addAction(AppAction action) {
+		// If there is a folder bar in use, and it has no action, then set it
+		// to be this one
+		if ((getFolderBar() != null) && (getFolderBar().getAction() == null)) {
+			getFolderBar().setAction(action);
+		}
+
+		// Get the context and its panel (or create the panel if its new)
+		String context = (String) action.getValue(AppAction.CATEGORY);
+
+		if (context == null) {
+			throw new IllegalArgumentException(
+					"AppAction.CONTEXT parameter of action must not be null");
+		}
+
+		ContextPanel contextPanel = null;
+
+		for (int i = 0; (i < contextList.size()) && (contextPanel == null); i++) {
+			ContextPanel p = (ContextPanel) contextList.elementAt(i);
+
+			if (p.name.equals(context)) {
+				contextPanel = p;
+			}
+		}
+
+		if (contextPanel == null) {
+			contextPanel = new ContextPanel(context);
+			cardPanel.add(contextPanel.name, contextPanel);
+			contextList.addElement(contextPanel);
+		}
+
+		if (selectedContext == null) {
+			selectedContext = contextPanel;
+		}
+
+		// Add the action to the appropriate context panel and layout the bar
+		TabActionButton button = contextPanel.addIcon(action);
+
+		if (getParent() instanceof JViewport
+				&& ((JViewport) getParent()).getView() instanceof ScrollingPanel) {
+			((ScrollingPanel) ((JViewport) getParent()).getView())
+					.setIncrement(button.getPreferredSize().height);
+		}
+
+		makeToolBar();
+	}
+
+	/**
      * 
-     * @param context context
      */
-    public void setSelectedContext(String context) {
-        ContextPanel p = null;
+	public void removeAllActions() {
+		contextList.clear();
+		cardPanel.removeAll();
+		selectedContext = null;
+		makeToolBar();
+	}
 
-        for (Iterator i = contextList.iterator(); i.hasNext();) {
-            ContextPanel z = (ContextPanel) i.next();
+	private void makeToolBar() {
+		// Rebuild the panels
+		invalidate();
+		removeAll();
+		for (int i = 0; i < contextList.size(); i++) {
+			ContextPanel p = (ContextPanel) contextList.elementAt(i);
 
-            if (context.equals(z.name)) {
-                p = z;
-            }
-        }
+			// First add the context button
+			UIUtil.jGridBagAdd(this, new TabButton(p.getContextAction()), gBC,
+					GridBagConstraints.REMAINDER);
 
-        if (p != null) {
-            selectedContext = p;
-            cardLayout.show(cardPanel, context);
-            makeToolBar();
-        }
-    }
+			// If this is the selected action, the now add the panel
+			if (p == selectedContext) {
+				cardLayout.show(cardPanel, p.name);
 
-    /**
-     * Sets a FolderBar associated with this tool bar. When actions are invoked,
-     * the FolderBar will change to show the action details for the selected
-     * action.
-     * 
-     * @param folder bar
-     */
-    public void setFolderBar(FolderBar folderBar) {
-        this.folderBar = folderBar;
-    }
+				gBC.weighty = 1.0;
+				UIUtil.jGridBagAdd(this, cardPanel, gBC,
+						GridBagConstraints.REMAINDER);
+				gBC.weighty = 0.0;
+			}
+			p.scroller.setAvailableActions();
+		}
 
-    /**
-     * Returns the FolderBar that is being changed upon actions..
-     * 
-     * @return folder bar
-     */
-    public FolderBar getFolderBar() {
-        return folderBar;
-    }
+		validate();
+		repaint();
 
-    /**
-     * Add a new action to the toolbar, this must have a non null
-     * DefaultAction.CONTEXT property or an IllegalArgumentException will be
-     * thrown. The DefaultAction.LARGE_ICON property will be used for the icon,
-     * and the Action.NAME property will be used for the text.
-     * Action.LONG_DESCRIPTION will be used to any tool tip text.
-     * 
-     * @param action to build icon from
-     * @throws IllegalArgumentExcption if context not set
-     * @todo Make changes to the action reflect on the button correctly
-     */
-    public void addAction(AppAction action) {
-        // If there is a folder bar in use, and it has no action, then set it
-        // to be this one
-        if ((getFolderBar() != null) && (getFolderBar().getAction() == null)) {
-            getFolderBar().setAction(action);
-        }
+		//
 
-        // Get the context and its panel (or create the panel if its new)
-        String context = (String) action.getValue(AppAction.CATEGORY);
+	}
 
-        if (context == null) {
-            throw new IllegalArgumentException("AppAction.CONTEXT parameter of action must not be null");
-        }
+	// Supporting classes
+	public class ContextPanel extends JPanel {
+		String name;
+		AppAction action;
+		GridBagConstraints gBC;
+		ListPanel listPanel;
+		ScrollingPanel scroller;
 
-        ContextPanel contextPanel = null;
+		public ContextPanel(String name) {
+			super(new BorderLayout());
 
-        for (int i = 0; (i < contextList.size()) && (contextPanel == null); i++) {
-            ContextPanel p = (ContextPanel) contextList.elementAt(i);
+			listPanel = new ListPanel();
+			listPanel.setOpaque(true);
+			listPanel.setBackground(toolBarBackground);
+			scroller = new ScrollingPanel(listPanel);
+			scroller.setOpaque(false);
+			add(scroller, BorderLayout.CENTER);
 
-            if (p.name.equals(context)) {
-                contextPanel = p;
-            }
-        }
+			this.name = name;
+			setOpaque(false);
+			setBackground(toolBarBackground);
+			action = new ContextAction(name, this);
+		}
 
-        if (contextPanel == null) {
-            contextPanel = new ContextPanel(context);
-            cardPanel.add(contextPanel.name, contextPanel);
-            contextList.addElement(contextPanel);
-        }
+		public AppAction getContextAction() {
+			return action;
+		}
 
-        if (selectedContext == null) {
-            selectedContext = contextPanel;
-        }
+		public TabActionButton addIcon(AppAction action) {
+			TabActionButton b = new TabActionButton(action);
+			listPanel.add(b);
+			scroller.setAvailableActions();
+			return b;
+		}
+	}
 
-        // Add the action to the appropriate context panel and layout the bar
-        TabActionButton button = contextPanel.addIcon(action);
+	public class ListPanel extends JPanel {
+		public ListPanel() {
+			super(new ListLayout());
+			setOpaque(false);
+			setBackground(toolBarBackground);
+		}
+	}
 
-        if (getParent() instanceof JViewport && ((JViewport) getParent()).getView() instanceof ScrollingPanel) {
-            ((ScrollingPanel) ((JViewport) getParent()).getView()).setIncrement(button.getPreferredSize().height);
-        }
+	public class ContextAction extends AppAction {
+		ContextPanel context;
 
-        makeToolBar();
-    }
+		ContextAction(String name, ContextPanel context) {
+			super();
+			putValue(AppAction.NAME, name);
+			this.context = context;
+		}
 
-    /**
-     * 
-     */
-    public void removeAllActions() {
-        contextList.clear();
-        cardPanel.removeAll();
-        selectedContext = null;
-        makeToolBar();
-    }
+		public void actionPerformed(ActionEvent evt) {
+			selectedContext = context;
+			makeToolBar();
+		}
 
-    private void makeToolBar() {
-        // Rebuild the panels
-        invalidate();
-        removeAll();
-        for (int i = 0; i < contextList.size(); i++) {
-            ContextPanel p = (ContextPanel) contextList.elementAt(i);
+		public boolean checkAvailable() {
+			return true;
+		}
+	}
 
-            // First add the context button
-            UIUtil.jGridBagAdd(this, new TabButton(p.getContextAction()), gBC, GridBagConstraints.REMAINDER);
+	public class TabButton extends JButton {
+		public TabButton(AppAction a) {
+			super(a);
+			setFocusPainted(false);
+			setDefaultCapable(false);
+			setMargin(new Insets(1, 1, 1, 1));
+		}
+	}
 
-            // If this is the selected action, the now add the panel
-            if (p == selectedContext) {
-                cardLayout.show(cardPanel, p.name);
+	public class TabActionButton extends ActionButton {
 
-                gBC.weighty = 1.0;
-                UIUtil.jGridBagAdd(this, cardPanel, gBC, GridBagConstraints.REMAINDER);
-                gBC.weighty = 0.0;
-            }
-            p.scroller.setAvailableActions();
-        }
+		public TabActionButton(final AppAction a) {
+			super(a, AppAction.LARGE_ICON);
+			setHideText(false);
+			setHorizontalTextPosition(SwingConstants.CENTER);
+			setVerticalTextPosition(SwingConstants.BOTTOM);
+		}
 
-        validate();
-        repaint();
-        
-        //
-        
-    } 
+		public Dimension getMaximimumSize() {
+			return fixedWidth == -1 ? super.getMaximumSize() : new Dimension(
+					fixedWidth, super.getMaximumSize().height);
+		}
 
-    // Supporting classes
-    public class ContextPanel extends JPanel {
-        String name;
-        AppAction action;
-        GridBagConstraints gBC;
-        ListPanel listPanel;
-        ScrollingPanel scroller;
+		public Dimension getMinimumSize() {
+			return fixedWidth == -1 ? super.getMinimumSize() : new Dimension(
+					fixedWidth, super.getMinimumSize().height);
+		}
 
-        public ContextPanel(String name) {
-            super(new BorderLayout());
-            
-            listPanel = new ListPanel();
-            listPanel.setOpaque(true);
-            listPanel.setBackground(toolBarBackground);
-            scroller = new ScrollingPanel(listPanel);
-            scroller.setOpaque(false);
-            add(scroller, BorderLayout.CENTER);
-            
-            this.name = name;
-            setOpaque(false);
-            setBackground(toolBarBackground);
-            action = new ContextAction(name, this);
-        }
-
-        public AppAction getContextAction() {
-            return action;
-        }
-
-        public TabActionButton addIcon(AppAction action) {            
-            TabActionButton b = new TabActionButton(action);
-            listPanel.add(b);
-            scroller.setAvailableActions();
-            return b;
-        }
-    }
-    
-    public class ListPanel extends JPanel {
-        public ListPanel() {
-            super(new ListLayout());
-            setOpaque(false);
-            setBackground(toolBarBackground);
-        }
-    }
-
-    public class ContextAction extends AppAction {
-        ContextPanel context;
-
-        ContextAction(String name, ContextPanel context) {
-            super();
-            putValue(AppAction.NAME, name);
-            this.context = context;
-        }
-
-        public void actionPerformed(ActionEvent evt) {
-            selectedContext = context;
-            makeToolBar();
-        }
-
-        public boolean checkAvailable() {
-            return true;
-        }
-    }
-
-    public class TabButton extends JButton {
-        public TabButton(AppAction a) {
-            super(a);
-            setFocusPainted(false);
-            setDefaultCapable(false);
-            setMargin(new Insets(1, 1, 1, 1));
-        }
-    }
-
-    public class TabActionButton extends ActionButton {
-
-        public TabActionButton(final AppAction a) {
-            super(a, AppAction.LARGE_ICON);
-            setHideText(false);
-            setHorizontalTextPosition(SwingConstants.CENTER);
-            setVerticalTextPosition(SwingConstants.BOTTOM);
-        }
-
-        public Dimension getMaximimumSize() {
-            return fixedWidth == -1 ? super.getMaximumSize() : new Dimension(fixedWidth, super.getMaximumSize().height);
-        }
-
-        public Dimension getMinimumSize() {
-            return fixedWidth == -1 ? super.getMinimumSize() : new Dimension(fixedWidth, super.getMinimumSize().height);
-        }
-
-        public Dimension getPreferredSize() {
-            return fixedWidth == -1 ? super.getPreferredSize() : new Dimension(fixedWidth, super.getPreferredSize().height);
-        }
-    }
+		public Dimension getPreferredSize() {
+			return fixedWidth == -1 ? super.getPreferredSize() : new Dimension(
+					fixedWidth, super.getPreferredSize().height);
+		}
+	}
 }

@@ -3,14 +3,23 @@ package com.sshtools.ui.swing;
 //-*- mode:java; encoding:utf8n; coding:utf-8 -*-
 // vim:set fileencoding=utf-8:
 //http://terai.xrea.jp/Swing/DnDTabbedPane.html
-import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.dnd.*;
-import java.awt.event.*;
-import java.awt.geom.*;
-import java.awt.image.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTree;
+import javax.swing.WindowConstants;
+import javax.swing.table.DefaultTableModel;
 
 public class MainPanel extends JPanel {
 	private final ClosableTabbedPane tab = new ClosableTabbedPane();
@@ -25,23 +34,25 @@ public class MainPanel extends JPanel {
 		// sub.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		sub.addTab("Title aa", new JLabel("aaa"));
 		sub.addTab("Title bb", new JScrollPane(new JTree()));
-		sub.addTab("Title cc", new JScrollPane(new JTextArea("123412341234\n46746745\n245342\n")));
+		sub.addTab("Title cc", new JScrollPane(new JTextArea(
+				"123412341234\n46746745\n245342\n")));
 
 		tab.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 		tab.addTab("JTree 00", new JScrollPane(new JTree()));
 		tab.addTab("JLabel 01", new JLabel("Test"));
 		tab.addTab("JTable 02", new JScrollPane(makeJTable()));
-		tab.addTab("JTextArea 03", new JScrollPane(new JTextArea("asfasdfasfasdfas\nafasfasdfaf\n")));
-		tab.addTab("JLabel 04", new JLabel("<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
+		tab.addTab("JTextArea 03", new JScrollPane(new JTextArea(
+				"asfasdfasfasdfas\nafasfasdfaf\n")));
+		tab.addTab("JLabel 04", new JLabel(
+				"<html>asfasfdasdfasdfsa<br>asfdd13412341234123446745fgh"));
 		tab.addTab("null 05", null);
 		tab.addTab("JTabbedPane 06", sub);
 		tab.addTab("Title 000000000000000006", new JScrollPane(new JTree()));
 		tab.setTabComponentAt(2, new JLabel("XXXXXXX"));
-		
+
 		JPanel xp = new JPanel(new BorderLayout());
 		xp.add(new JLabel("YYYYY"), BorderLayout.CENTER);
 		tab.setTabComponentAt(3, xp);
-		
 
 		add(makeCheckBoxes(), BorderLayout.NORTH);
 		add(tab);
@@ -56,12 +67,14 @@ public class MainPanel extends JPanel {
 		});
 		tcheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tab.setTabPlacement(tcheck.isSelected() ? JTabbedPane.TOP : JTabbedPane.RIGHT);
+				tab.setTabPlacement(tcheck.isSelected() ? JTabbedPane.TOP
+						: JTabbedPane.RIGHT);
 			}
 		});
 		scheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tab.setTabLayoutPolicy(scheck.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT : JTabbedPane.WRAP_TAB_LAYOUT);
+				tab.setTabLayoutPolicy(scheck.isSelected() ? JTabbedPane.SCROLL_TAB_LAYOUT
+						: JTabbedPane.WRAP_TAB_LAYOUT);
 			}
 		});
 		debugp.addActionListener(new ActionListener() {
@@ -102,11 +115,11 @@ public class MainPanel extends JPanel {
 	}
 
 	public static void createAndShowGUI() {
-//		try {
-//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+		// try {
+		// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
 		JFrame frame = new JFrame("DnDTabbedPane");
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		frame.getContentPane().add(new MainPanel());

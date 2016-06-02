@@ -34,120 +34,119 @@ import javax.swing.Icon;
  * @author $author$
  */
 public class ColorIcon implements Icon {
-    // Private instance variables
-    private Dimension size;
-    private Color color;
-    private Color borderColor;
+	// Private instance variables
+	private Dimension size;
+	private Color color;
+	private Color borderColor;
 
-    /**
-     * Creates a new ColorIcon object.
-     */
-    public ColorIcon() {
-        this(null);
-    }
+	/**
+	 * Creates a new ColorIcon object.
+	 */
+	public ColorIcon() {
+		this(null);
+	}
 
-    /**
-     * Creates a new ColorIcon object.
-     * 
-     * @param color
-     */
-    public ColorIcon(Color color) {
-        this(color, null);
-    }
+	/**
+	 * Creates a new ColorIcon object.
+	 * 
+	 * @param color
+	 */
+	public ColorIcon(Color color) {
+		this(color, null);
+	}
 
-    /**
-     * Creates a new ColorIcon object.
-     * 
-     * @param color
-     * @param borderColor
-     */
-    public ColorIcon(Color color, Color borderColor) {
-        this(color, null, borderColor);
-    }
+	/**
+	 * Creates a new ColorIcon object.
+	 * 
+	 * @param color
+	 * @param borderColor
+	 */
+	public ColorIcon(Color color, Color borderColor) {
+		this(color, null, borderColor);
+	}
 
-    /**
-     * Creates a new ColorIcon object.
-     * 
-     * @param color
-     * @param size
-     * @param borderColor
-     */
-    public ColorIcon(Color color, Dimension size, Color borderColor) {
-        setColor(color);
-        setSize(size);
-        setBorderColor(borderColor);
-    }
+	/**
+	 * Creates a new ColorIcon object.
+	 * 
+	 * @param color
+	 * @param size
+	 * @param borderColor
+	 */
+	public ColorIcon(Color color, Dimension size, Color borderColor) {
+		setColor(color);
+		setSize(size);
+		setBorderColor(borderColor);
+	}
 
-    /**
-     * 
-     * 
-     * @param c
-     * @param g
-     * @param x
-     * @param y
-     */
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-        g.setColor((color == null) ? Color.white : color);
-        g.fillRect(x, y, getIconWidth(), getIconHeight());
+	/**
+	 * 
+	 * 
+	 * @param c
+	 * @param g
+	 * @param x
+	 * @param y
+	 */
+	public void paintIcon(Component c, Graphics g, int x, int y) {
+		g.setColor((color == null) ? Color.white : color);
+		g.fillRect(x, y, getIconWidth(), getIconHeight());
 
-        if (borderColor != null) {
-            g.setColor(borderColor);
-            g.drawRect(x, y, getIconWidth(), getIconHeight());
-        }
+		if (borderColor != null) {
+			g.setColor(borderColor);
+			g.drawRect(x, y, getIconWidth(), getIconHeight());
+		}
 
-        
-        if(color == null) {
-            g.setColor(Color.black);
-            g.drawLine(x, y, x + getIconWidth(), y + getIconHeight());
-        }
-    }
+		if (color == null) {
+			g.setColor(Color.black);
+			g.drawLine(x, y, x + getIconWidth(), y + getIconHeight());
+		}
+	}
 
-    /**
-     * 
-     * 
-     * @param size
-     */
-    public void setSize(Dimension size) {
-        this.size = size;
-    }
+	/**
+	 * 
+	 * 
+	 * @param size
+	 */
+	public void setSize(Dimension size) {
+		this.size = size;
+	}
 
-    /**
-     * 
-     * 
-     * @param color
-     */
-    public void setColor(Color color) {
-        this.color = color;
-    }
+	/**
+	 * 
+	 * 
+	 * @param color
+	 */
+	public void setColor(Color color) {
+		this.color = color;
+	}
 
-    /**
-     * 
-     * 
-     * @param borderColor
-     */
-    public void setBorderColor(Color borderColor) {
-        this.borderColor = borderColor;
-    }
+	/**
+	 * 
+	 * 
+	 * @param borderColor
+	 */
+	public void setBorderColor(Color borderColor) {
+		this.borderColor = borderColor;
+	}
 
-    /**
-     * 
-     * 
-     * @return
-     */
-    public int getIconWidth() {
-        return (size == null) ? 16 : size.width;
-    }
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
+	public int getIconWidth() {
+		return (size == null) ? 16 : size.width;
+	}
 
-    /**
-     * 
-     * 
-     * @return
-     */
-    public int getIconHeight() {
-        return (size == null) ? 16 : size.height;
-    }
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
+	public int getIconHeight() {
+		return (size == null) ? 16 : size.height;
+	}
 
-    public Color getColor() {
-        return color;
-    }
+	public Color getColor() {
+		return color;
+	}
 }

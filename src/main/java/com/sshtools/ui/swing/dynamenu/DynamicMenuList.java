@@ -14,31 +14,27 @@ import org.xml.sax.SAXException;
 
 public abstract class DynamicMenuList
 
-    extends java.util.Vector {
+extends java.util.Vector {
 
+	/**
+	 * Creates a new MRUList object.
+	 */
 
-  /**
-   * Creates a new MRUList object.
-   */
+	public DynamicMenuList() {
+		super();
+		reload();
+	}
 
-  public DynamicMenuList() {
-    super();
-    reload();
-  }
+	/**
+	 *
+	 *
+	 * @param in
+	 *
+	 * @throws SAXException
+	 * @throws ParserConfigurationException
+	 * @throws IOException
+	 */
 
-
-  /**
-   *
-   *
-   * @param in
-   *
-   * @throws SAXException
-   * @throws ParserConfigurationException
-   * @throws IOException
-   */
-
-  public abstract void reload();
-
-
+	public abstract void reload();
 
 }

@@ -27,8 +27,9 @@ import java.awt.Graphics;
 import javax.swing.Icon;
 
 public class EmptyIcon implements Icon {
-	
-	public final static Icon EMPTY_SMALL_HORIZONTAL_SLIVER = new EmptyIcon(1, 16);
+
+	public final static Icon EMPTY_SMALL_HORIZONTAL_SLIVER = new EmptyIcon(1,
+			16);
 	public final static Icon EMPTY_SMALL_VERTICAL_SLIVER = new EmptyIcon(16, 1);
 
 	private int w;

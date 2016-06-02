@@ -46,16 +46,19 @@ implements Icon {
 	}
 
 	public void paintIcon(Component c, Graphics g1, int x, int y) {
-		Graphics2D g = (Graphics2D)g1;
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		Graphics2D g = (Graphics2D) g1;
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(UIManager.getColor("TabbedPane.foreground"));
 		int thickness = 1;
 
 		// Box
 		for (int i = 0; i < thickness; i++) {
 			g.drawRoundRect(x + i, y + i, w - (i * 2), h - (i * 2), 2, 2);
-			g.drawLine(x + i + thickness + 1, y + thickness + 1, x + w - thickness - thickness + i, y + h - thickness - 1);
-			g.drawLine(x + i + thickness + 1, y + h - thickness - 1, x + w - thickness - thickness + i, y + thickness + 1);
+			g.drawLine(x + i + thickness + 1, y + thickness + 1, x + w
+					- thickness - thickness + i, y + h - thickness - 1);
+			g.drawLine(x + i + thickness + 1, y + h - thickness - 1, x + w
+					- thickness - thickness + i, y + thickness + 1);
 		}
 	}
 

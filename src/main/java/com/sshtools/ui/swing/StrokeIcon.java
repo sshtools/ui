@@ -35,85 +35,85 @@ import javax.swing.Icon;
  * @author $author$
  */
 public class StrokeIcon implements Icon {
-    // Private instance variables
-    private Dimension size;
-    private Stroke stroke;
+	// Private instance variables
+	private Dimension size;
+	private Stroke stroke;
 
-    /**
-     * Creates a new ColorIcon object.
-     */
-    public StrokeIcon() {
-        this(null);
-    }
+	/**
+	 * Creates a new ColorIcon object.
+	 */
+	public StrokeIcon() {
+		this(null);
+	}
 
-    /**
-     * Creates a new ColorIcon object.
-     * 
-     * @param color
-     */
-    public StrokeIcon(Stroke stroke) {
-        this(stroke, null);
-    }
+	/**
+	 * Creates a new ColorIcon object.
+	 * 
+	 * @param color
+	 */
+	public StrokeIcon(Stroke stroke) {
+		this(stroke, null);
+	}
 
-    /**
-     * Creates a new ColorIcon object.
-     * 
-     * @param color
-     * @param size
-     * @param borderColor
-     */
-    public StrokeIcon(Stroke stroke, Dimension size) {
-        setStroke(stroke);
-        setSize(size);
-    }
+	/**
+	 * Creates a new ColorIcon object.
+	 * 
+	 * @param color
+	 * @param size
+	 * @param borderColor
+	 */
+	public StrokeIcon(Stroke stroke, Dimension size) {
+		setStroke(stroke);
+		setSize(size);
+	}
 
-    /**
-     * 
-     * 
-     * @param c
-     * @param g
-     * @param x
-     * @param y
-     */
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-        Graphics2D g2 = (Graphics2D)g;
-        g2.setStroke(stroke);
-        g2.drawLine(x, y, x + getIconWidth(), y);
-    }
+	/**
+	 * 
+	 * 
+	 * @param c
+	 * @param g
+	 * @param x
+	 * @param y
+	 */
+	public void paintIcon(Component c, Graphics g, int x, int y) {
+		Graphics2D g2 = (Graphics2D) g;
+		g2.setStroke(stroke);
+		g2.drawLine(x, y, x + getIconWidth(), y);
+	}
 
-    /**
-     * 
-     * 
-     * @param size
-     */
-    public void setSize(Dimension size) {
-        this.size = size;
-    }
+	/**
+	 * 
+	 * 
+	 * @param size
+	 */
+	public void setSize(Dimension size) {
+		this.size = size;
+	}
 
-    /**
-     * 
-     * 
-     * @param color
-     */
-    public void setStroke(Stroke stroke) {
-        this.stroke = stroke;
-    }
+	/**
+	 * 
+	 * 
+	 * @param color
+	 */
+	public void setStroke(Stroke stroke) {
+		this.stroke = stroke;
+	}
 
-    /**
-     * 
-     * 
-     * @return
-     */
-    public int getIconWidth() {
-        return (size == null) ? 48 : size.width;
-    }
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
+	public int getIconWidth() {
+		return (size == null) ? 48 : size.width;
+	}
 
-    /**
-     * 
-     * 
-     * @return
-     */
-    public int getIconHeight() {
-        return (size == null) ? 16 : size.height;
-    }
+	/**
+	 * 
+	 * 
+	 * @return
+	 */
+	public int getIconHeight() {
+		return (size == null) ? 16 : size.height;
+	}
 }

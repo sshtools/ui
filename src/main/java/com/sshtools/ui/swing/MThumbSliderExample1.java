@@ -583,7 +583,7 @@ class AssistantUIManager {
 	public static void setUIName(JComponent c) {
 		String key = c.getUIClassID();
 		String uiClassName = (String) UIManager.get(key);
-		
+
 		MetalButtonUI i;
 
 		if (uiClassName == null) {

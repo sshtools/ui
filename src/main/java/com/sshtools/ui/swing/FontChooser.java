@@ -65,7 +65,8 @@ import javax.swing.event.ListSelectionListener;
 public class FontChooser extends JPanel {
 	public final static String AUTOMATIC = "__AUTOMATIC__";
 
-	public static final Font AUTOMATIC_FONT = new Font(AUTOMATIC, Font.PLAIN, 10);
+	public static final Font AUTOMATIC_FONT = new Font(AUTOMATIC, Font.PLAIN,
+			10);
 
 	private FontNameListModel fontNameListModel;
 	private JList fontNameList;
@@ -91,14 +92,17 @@ public class FontChooser extends JPanel {
 	/**
 	 * Construct a <code>FontChooser</code>
 	 * 
-	 * @param font initiali font
+	 * @param font
+	 *            initiali font
 	 * @param allowAutomatic
 	 */
-	public FontChooser(Font font, boolean showSize, boolean monospacedOnly, boolean allowAutomatic, boolean showStyles) {
+	public FontChooser(Font font, boolean showSize, boolean monospacedOnly,
+			boolean allowAutomatic, boolean showStyles) {
 		super(new BorderLayout());
 
 		// Lazily create the font list name model
-		fontNameListModel = new FontNameListModel(monospacedOnly, allowAutomatic, font);
+		fontNameListModel = new FontNameListModel(monospacedOnly,
+				allowAutomatic, font);
 
 		fontNameList = new JList(fontNameListModel);
 		fontNameList.setCellRenderer(new FontNameListCellRenderer());
@@ -106,11 +110,14 @@ public class FontChooser extends JPanel {
 		// fontNameList.setAutoscrolls(true);
 		fontNameList.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
-				if (!fontNameList.isSelectionEmpty() && !e.getValueIsAdjusting()) {
+				if (!fontNameList.isSelectionEmpty()
+						&& !e.getValueIsAdjusting()) {
 					try {
 						adjusting = true;
-						String fn = ((Font) fontNameList.getSelectedValue()).getName();
-						fontName.setText(fn.equals(AUTOMATIC) ? "Automatic" : fn);
+						String fn = ((Font) fontNameList.getSelectedValue())
+								.getName();
+						fontName.setText(fn.equals(AUTOMATIC) ? "Automatic"
+								: fn);
 						fontName.requestFocus();
 					} catch (IllegalStateException iee) {
 					}
@@ -124,7 +131,8 @@ public class FontChooser extends JPanel {
 		JPanel stylePanel = null;
 		if (showStyles) {
 			stylePanel = new JPanel(new GridBagLayout());
-			stylePanel.setBorder(BorderFactory.createTitledBorder("Font style"));
+			stylePanel
+					.setBorder(BorderFactory.createTitledBorder("Font style"));
 
 			GridBagConstraints gBC = new GridBagConstraints();
 			gBC.fill = GridBagConstraints.BOTH;
@@ -138,10 +146,12 @@ public class FontChooser extends JPanel {
 				}
 			};
 
-			UIUtil.jGridBagAdd(stylePanel, bold = new JCheckBox("Bold"), gBC, GridBagConstraints.REMAINDER);
+			UIUtil.jGridBagAdd(stylePanel, bold = new JCheckBox("Bold"), gBC,
+					GridBagConstraints.REMAINDER);
 			bold.addActionListener(l);
 			bold.setMnemonic('b');
-			UIUtil.jGridBagAdd(stylePanel, italic = new JCheckBox("Italic"), gBC, GridBagConstraints.REMAINDER);
+			UIUtil.jGridBagAdd(stylePanel, italic = new JCheckBox("Italic"),
+					gBC, GridBagConstraints.REMAINDER);
 			italic.setMnemonic('i');
 			italic.addActionListener(l);
 		}
@@ -150,14 +160,18 @@ public class FontChooser extends JPanel {
 		// @todo make this more specific to the font. not sure how yet :-)
 		JPanel sizePanel = null;
 		if (showSize) {
-			fontSizeList = new JList(new Integer[] { new Integer(8), new Integer(9), new Integer(10), new Integer(11),
-				new Integer(12), new Integer(14), new Integer(16), new Integer(18), new Integer(20), new Integer(22),
-				new Integer(24), new Integer(26), new Integer(28), new Integer(36), new Integer(48), new Integer(72) });
+			fontSizeList = new JList(new Integer[] { new Integer(8),
+					new Integer(9), new Integer(10), new Integer(11),
+					new Integer(12), new Integer(14), new Integer(16),
+					new Integer(18), new Integer(20), new Integer(22),
+					new Integer(24), new Integer(26), new Integer(28),
+					new Integer(36), new Integer(48), new Integer(72) });
 			fontSizeList.setVisibleRowCount(4);
 			fontSizeList.setAutoscrolls(true);
 			fontSizeList.addListSelectionListener(new ListSelectionListener() {
 				public void valueChanged(ListSelectionEvent e) {
-					if (!fontNameList.isSelectionEmpty() && !e.getValueIsAdjusting()) {
+					if (!fontNameList.isSelectionEmpty()
+							&& !e.getValueIsAdjusting()) {
 						try {
 							fontSize.setValue((fontSizeList.getSelectedValue()));
 						} catch (IllegalStateException iee) {
@@ -178,8 +192,10 @@ public class FontChooser extends JPanel {
 			gBC3.weightx = 1.0;
 			gBC3.weighty = 0.0;
 			gBC3.insets = new Insets(2, 2, 2, 2);
-			UIUtil.jGridBagAdd(sizePanel, new JLabel("Size:"), gBC3, GridBagConstraints.REMAINDER);
-			UIUtil.jGridBagAdd(sizePanel, fontSize = new JFormattedTextField(new Integer(4)), gBC3, GridBagConstraints.REMAINDER);
+			UIUtil.jGridBagAdd(sizePanel, new JLabel("Size:"), gBC3,
+					GridBagConstraints.REMAINDER);
+			UIUtil.jGridBagAdd(sizePanel, fontSize = new JFormattedTextField(
+					new Integer(4)), gBC3, GridBagConstraints.REMAINDER);
 			fontSize.getDocument().addDocumentListener(new DocumentListener() {
 
 				public void insertUpdate(DocumentEvent e) {
@@ -198,7 +214,8 @@ public class FontChooser extends JPanel {
 				}
 			});
 			gBC3.weighty = 1.0;
-			UIUtil.jGridBagAdd(sizePanel, new JScrollPane(fontSizeList), gBC3, GridBagConstraints.REMAINDER);
+			UIUtil.jGridBagAdd(sizePanel, new JScrollPane(fontSizeList), gBC3,
+					GridBagConstraints.REMAINDER);
 		}
 
 		// Create the panel where selection of the font name takes place
@@ -211,8 +228,10 @@ public class FontChooser extends JPanel {
 		gBC2.weightx = 1.0;
 		gBC2.weighty = 0.0;
 		gBC2.insets = new Insets(2, 2, 2, 2);
-		UIUtil.jGridBagAdd(namePanel, new JLabel("Name:"), gBC2, GridBagConstraints.REMAINDER);
-		UIUtil.jGridBagAdd(namePanel, fontName = new JTextField(10), gBC2, GridBagConstraints.REMAINDER);
+		UIUtil.jGridBagAdd(namePanel, new JLabel("Name:"), gBC2,
+				GridBagConstraints.REMAINDER);
+		UIUtil.jGridBagAdd(namePanel, fontName = new JTextField(10), gBC2,
+				GridBagConstraints.REMAINDER);
 		fontName.addFocusListener(new FocusListener() {
 			public void focusGained(FocusEvent e) {
 				fontName.selectAll();
@@ -222,7 +241,8 @@ public class FontChooser extends JPanel {
 			}
 		});
 		gBC2.weighty = 1.0;
-		UIUtil.jGridBagAdd(namePanel, new JScrollPane(fontNameList), gBC2, GridBagConstraints.REMAINDER);
+		UIUtil.jGridBagAdd(namePanel, new JScrollPane(fontNameList), gBC2,
+				GridBagConstraints.REMAINDER);
 
 		// Create the preview label
 		preview = new JLabel("Some sample text") {
@@ -298,11 +318,12 @@ public class FontChooser extends JPanel {
 	private void findClosestFont() {
 		for (int i = 0; i < fontNameList.getModel().getSize(); i++) {
 			Font f = (Font) fontNameList.getModel().getElementAt(i);
-			if ((f.getName().equals(AUTOMATIC) ? "Automatic" : f.getName()).toLowerCase().startsWith(
-				fontName.getText().toLowerCase())) {
+			if ((f.getName().equals(AUTOMATIC) ? "Automatic" : f.getName())
+					.toLowerCase().startsWith(fontName.getText().toLowerCase())) {
 				if (fontNameList.getSelectedIndex() != i) {
 					fontNameList.setValueIsAdjusting(true);
-					fontNameList.setSelectedValue(fontNameList.getModel().getElementAt(i), true);
+					fontNameList.setSelectedValue(fontNameList.getModel()
+							.getElementAt(i), true);
 					fontNameList.setValueIsAdjusting(false);
 					changeFontBasedOnState();
 				}
@@ -316,10 +337,13 @@ public class FontChooser extends JPanel {
 		Font f = ((Font) fontNameList.getSelectedValue());
 
 		if (f != null) {
-			int size = fontSize == null ? (chosenFont == null ? 12 : chosenFont.getSize()) : ((Integer) fontSize.getValue())
-				.intValue();
-			int style = bold == null ? Font.PLAIN : (bold.isSelected() ? Font.BOLD : 0) | (italic.isSelected() ? Font.ITALIC : 0);
-			chosenFont = f.getName().equals(AUTOMATIC) ? null : new Font(f.getName(), style, size);
+			int size = fontSize == null ? (chosenFont == null ? 12 : chosenFont
+					.getSize()) : ((Integer) fontSize.getValue()).intValue();
+			int style = bold == null ? Font.PLAIN
+					: (bold.isSelected() ? Font.BOLD : 0)
+							| (italic.isSelected() ? Font.ITALIC : 0);
+			chosenFont = f.getName().equals(AUTOMATIC) ? null : new Font(
+					f.getName(), style, size);
 			if (fontSize != null) {
 				fontSize.setEnabled(chosenFont != null);
 				fontSizeList.setEnabled(chosenFont != null);
@@ -335,7 +359,8 @@ public class FontChooser extends JPanel {
 	/**
 	 * Set the currently chosen font
 	 * 
-	 * @param font font
+	 * @param font
+	 *            font
 	 */
 	public void setChosenFont(Font f) {
 		// We cant have a null font, so default to the one for JLabel
@@ -391,19 +416,24 @@ public class FontChooser extends JPanel {
 	/**
 	 * Show a chooser dialog
 	 */
-	public static Font showDialog(JComponent parent, Font initialFont, boolean showSize, boolean monospacedOnly) {
-		return showDialog(parent, initialFont, showSize, monospacedOnly, false, true);
+	public static Font showDialog(JComponent parent, Font initialFont,
+			boolean showSize, boolean monospacedOnly) {
+		return showDialog(parent, initialFont, showSize, monospacedOnly, false,
+				true);
 	}
 
 	/**
 	 * Show a chooser dialog
 	 */
-	public static Font showDialog(JComponent parent, Font initialFont, boolean showSize, boolean monospacedOnly,
-			boolean allowAutomatic, boolean showStyles) {
+	public static Font showDialog(JComponent parent, Font initialFont,
+			boolean showSize, boolean monospacedOnly, boolean allowAutomatic,
+			boolean showStyles) {
 		// Create the font chooser
-		final FontChooser fc = new FontChooser(initialFont, showSize, monospacedOnly, allowAutomatic, showStyles);
+		final FontChooser fc = new FontChooser(initialFont, showSize,
+				monospacedOnly, allowAutomatic, showStyles);
 		fc.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
-		if (JOptionPane.showConfirmDialog(parent, fc, "Choose Font", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
+		if (JOptionPane.showConfirmDialog(parent, fc, "Choose Font",
+				JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
 			return fc.getChosenFont();
 
 		}
@@ -419,7 +449,8 @@ public class FontChooser extends JPanel {
 		private boolean allowAutomatic;
 		private Font initialFont;
 
-		FontNameListModel(boolean monospacedOnly, boolean allowAutomatic, Font initialFont) {
+		FontNameListModel(boolean monospacedOnly, boolean allowAutomatic,
+				Font initialFont) {
 			fonts = new Vector();
 			this.initialFont = initialFont;
 			this.monospacedOnly = monospacedOnly;
@@ -429,7 +460,8 @@ public class FontChooser extends JPanel {
 		public void run() {
 			if (f == null) {
 				try {
-					f = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
+					f = GraphicsEnvironment.getLocalGraphicsEnvironment()
+							.getAllFonts();
 				} catch (UnsupportedOperationException uoe) {
 					String[] fn = Toolkit.getDefaultToolkit().getFontList();
 					f = new Font[fn.length];
@@ -491,8 +523,10 @@ public class FontChooser extends JPanel {
 
 	// Render just the font name in the list
 	class FontNameListCellRenderer extends DefaultListCellRenderer {
-		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-			super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+		public Component getListCellRendererComponent(JList list, Object value,
+				int index, boolean isSelected, boolean cellHasFocus) {
+			super.getListCellRendererComponent(list, value, index, isSelected,
+					cellHasFocus);
 			String fontName = ((Font) value).getName();
 			setText(fontName.equals(AUTOMATIC) ? "Automatic" : fontName);
 			return this;

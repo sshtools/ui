@@ -100,14 +100,22 @@ public class Toaster {
 				throw new Exception(Messages.getString("Toaster.disabled")); //$NON-NLS-1$
 			}
 			Class clazz = Class.forName("javax.swing.UIManager"); //$NON-NLS-1$
-			Method colorMethod = clazz.getMethod("getColor", new Class[] { Object.class }); //$NON-NLS-1$
-			Method fontMethod = clazz.getMethod("getFont", new Class[] { Object.class }); //$NON-NLS-1$
-			BACKGROUND_COLOR = (Color) colorMethod.invoke(null, new Object[] { "ToolTip.background" }); //$NON-NLS-1$
-			FOREGROUND_COLOR = (Color) colorMethod.invoke(null, new Object[] { "ToolTip.foreground" }); //$NON-NLS-1$
-			BORDER_COLOR = (Color) colorMethod.invoke(null, new Object[] { "ToolTip.foreground" }); //$NON-NLS-1$
-			TEXT_FONT = (Font) fontMethod.invoke(null, new Object[] { "ToolTip.font" }); //$NON-NLS-1$
-			TITLE_FONT = ((Font) fontMethod.invoke(null, new Object[] { "Label.font" })); //$NON-NLS-1$
-			TITLE_FONT = new Font(TITLE_FONT.getName(), Font.BOLD, TITLE_FONT.getSize());
+			Method colorMethod = clazz.getMethod(
+					"getColor", new Class[] { Object.class }); //$NON-NLS-1$
+			Method fontMethod = clazz.getMethod(
+					"getFont", new Class[] { Object.class }); //$NON-NLS-1$
+			BACKGROUND_COLOR = (Color) colorMethod.invoke(null,
+					new Object[] { "ToolTip.background" }); //$NON-NLS-1$
+			FOREGROUND_COLOR = (Color) colorMethod.invoke(null,
+					new Object[] { "ToolTip.foreground" }); //$NON-NLS-1$
+			BORDER_COLOR = (Color) colorMethod.invoke(null,
+					new Object[] { "ToolTip.foreground" }); //$NON-NLS-1$
+			TEXT_FONT = (Font) fontMethod.invoke(null,
+					new Object[] { "ToolTip.font" }); //$NON-NLS-1$
+			TITLE_FONT = ((Font) fontMethod.invoke(null,
+					new Object[] { "Label.font" })); //$NON-NLS-1$
+			TITLE_FONT = new Font(TITLE_FONT.getName(), Font.BOLD,
+					TITLE_FONT.getSize());
 		} catch (Exception e) {
 			BACKGROUND_COLOR = Color.white;
 			FOREGROUND_COLOR = Color.black;
@@ -137,7 +145,8 @@ public class Toaster {
 	 * Constructor.
 	 * 
 	 * @param position
-	 * @param popupSize popup size
+	 * @param popupSize
+	 *            popup size
 	 * @see #setPosition(int)
 	 */
 	public Toaster(int position, Dimension popupSize) {
@@ -158,7 +167,8 @@ public class Toaster {
 	 * {@link java.awt.Component#CENTER_ALIGNMENT} or
 	 * {@link java.awt.Component#RIGHT_ALIGNMENT}.
 	 * 
-	 * @param textAlign text alignment
+	 * @param textAlign
+	 *            text alignment
 	 */
 	public void setTextAlign(float textAlign) {
 		this.textAlign = textAlign;
@@ -167,7 +177,8 @@ public class Toaster {
 	/**
 	 * Set the size of the popups. This will only take affect on new messages.
 	 * 
-	 * @param popupSize popup size
+	 * @param popupSize
+	 *            popup size
 	 */
 	public void setPopupSize(Dimension popupSize) {
 		this.popupSize = popupSize;
@@ -186,7 +197,8 @@ public class Toaster {
 	 * Set the position of messages. Can be one of {@link #TOP_LEFT},
 	 * {@link #TOP_RIGHT}, {@link #BOTTOM_LEFT} or {@link #BOTTOM_RIGHT}.
 	 * 
-	 * @param position position
+	 * @param position
+	 *            position
 	 */
 	public void setPosition(int position) {
 		this.position = position;
@@ -214,7 +226,8 @@ public class Toaster {
 	/**
 	 * Set the background color. This will only take affect on new messages.
 	 * 
-	 * @param backgroundColor background color
+	 * @param backgroundColor
+	 *            background color
 	 */
 	public void setBackgroundColor(Color backgroundColor) {
 		this.backgroundColor = backgroundColor;
@@ -232,7 +245,8 @@ public class Toaster {
 	/**
 	 * Set the border color. This will only take affect on new messages.
 	 * 
-	 * @param borderColor border color
+	 * @param borderColor
+	 *            border color
 	 */
 	public void setBorderColor(Color borderColor) {
 		this.borderColor = borderColor;
@@ -268,7 +282,8 @@ public class Toaster {
 	/**
 	 * Set the text font. This will only take affect on new messages.
 	 * 
-	 * @param textFont text font
+	 * @param textFont
+	 *            text font
 	 */
 	public void setTextFont(Font textFont) {
 		this.textFont = textFont;
@@ -286,7 +301,8 @@ public class Toaster {
 	/**
 	 * Set the title font. This will only take affect on new messages.
 	 * 
-	 * @param titleFont title font
+	 * @param titleFont
+	 *            title font
 	 */
 	public void setTitleFont(Font titleFont) {
 		this.titleFont = titleFont;
@@ -295,42 +311,58 @@ public class Toaster {
 	/**
 	 * Popup a new message for 10 seconds.
 	 * 
-	 * @param callback invoked when message is clicked
-	 * @param message message to display
-	 * @param title title of message
+	 * @param callback
+	 *            invoked when message is clicked
+	 * @param message
+	 *            message to display
+	 * @param title
+	 *            title of message
 	 */
-	public synchronized void popup(ActionListener callback, String message, String title) {
+	public synchronized void popup(ActionListener callback, String message,
+			String title) {
 		popup(callback, message, title, null);
 	}
 
 	/**
 	 * Popup a new message for 10 seconds with an option image.
 	 * 
-	 * @param callback invoked when message is clicked
-	 * @param message message to display
-	 * @param title title of message
-	 * @param image image or <code>null</code>
+	 * @param callback
+	 *            invoked when message is clicked
+	 * @param message
+	 *            message to display
+	 * @param title
+	 *            title of message
+	 * @param image
+	 *            image or <code>null</code>
 	 */
-	public synchronized void popup(ActionListener callback, String message, String title, Image image) {
+	public synchronized void popup(ActionListener callback, String message,
+			String title, Image image) {
 		popup(callback, message, title, image, -1);
 	}
 
 	/**
 	 * Popup a new message.
 	 * 
-	 * @param callback invoked when message is clicked
-	 * @param message message to display
-	 * @param title title of message
-	 * @param timeout time to display message for
-	 * @param image image or <code>null</code>
+	 * @param callback
+	 *            invoked when message is clicked
+	 * @param message
+	 *            message to display
+	 * @param title
+	 *            title of message
+	 * @param timeout
+	 *            time to display message for
+	 * @param image
+	 *            image or <code>null</code>
 	 */
-	public void popup(ActionListener callback, String message, String title, Image image, int timeout) {
+	public void popup(ActionListener callback, String message, String title,
+			Image image, int timeout) {
 		if (timeout == -1) {
 			timeout = DEFAULT_TIMEOUT;
 		}
 
 		// Create the new message window and add it to our Vector
-		MessageWindow window = new MessageWindow(popupSize, callback, message, title, image, timeout);
+		MessageWindow window = new MessageWindow(popupSize, callback, message,
+				title, image, timeout);
 		window.pack();
 
 		messages.addElement(window);
@@ -351,14 +383,26 @@ public class Toaster {
 			// Get the screeb suze
 			Dimension d = null;
 			try {
-				Object genv = Class.forName("java.awt.GraphicsEnvironment") //$NON-NLS-1$
-								.getMethod("getLocalGraphicsEnvironment", new Class[] {}).invoke(null, new Object[] {}); //$NON-NLS-1$
-				Object[] devices = (Object[]) genv.getClass().getMethod("getScreenDevices", new Class[] {}).invoke(genv, //$NON-NLS-1$
-					new Object[] {});
-				Object mode = devices[0].getClass().getMethod("getDisplayMode", new Class[] {}).invoke(devices[0], new Object[] {}); //$NON-NLS-1$
-				d = new Dimension(((Integer) mode.getClass().getMethod("getWidth", new Class[] {}).invoke(mode, new Object[] {})) //$NON-NLS-1$
-				.intValue(), ((Integer) mode.getClass().getMethod("getHeight", new Class[] {}).invoke(mode, //$NON-NLS-1$
-					new Object[] {})).intValue());
+				Object genv = Class
+						.forName("java.awt.GraphicsEnvironment") //$NON-NLS-1$
+						.getMethod(
+								"getLocalGraphicsEnvironment", new Class[] {}).invoke(null, new Object[] {}); //$NON-NLS-1$
+				Object[] devices = (Object[]) genv
+						.getClass()
+						.getMethod("getScreenDevices", new Class[] {}).invoke(genv, //$NON-NLS-1$
+								new Object[] {});
+				Object mode = devices[0]
+						.getClass()
+						.getMethod("getDisplayMode", new Class[] {}).invoke(devices[0], new Object[] {}); //$NON-NLS-1$
+				d = new Dimension(
+						((Integer) mode
+								.getClass()
+								.getMethod("getWidth", new Class[] {}).invoke(mode, new Object[] {})) //$NON-NLS-1$
+								.intValue(),
+						((Integer) mode
+								.getClass()
+								.getMethod("getHeight", new Class[] {}).invoke(mode, //$NON-NLS-1$
+										new Object[] {})).intValue());
 			} catch (Exception e) {
 				d = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 			}
@@ -366,13 +410,13 @@ public class Toaster {
 			// Calculate the starting position
 			int wy = 0;
 			switch (position) {
-				case TOP_LEFT:
-				case TOP_RIGHT:
-					wy = 16;
-					break;
-				case BOTTOM_LEFT:
-				case BOTTOM_RIGHT:
-					wy = d.height - 48;
+			case TOP_LEFT:
+			case TOP_RIGHT:
+				wy = 16;
+				break;
+			case BOTTOM_LEFT:
+			case BOTTOM_RIGHT:
+				wy = d.height - 48;
 			}
 
 			// Set the target positions on all of the windows
@@ -382,33 +426,33 @@ public class Toaster {
 				// Calculate the x (and y where appropriate) position
 				int wx = 0;
 				switch (position) {
-					case TOP_LEFT:
-						wx = 16;
-						break;
-					case BOTTOM_LEFT:
-						wy = wy - w.getPreferredSize().height;
-						wx = 16;
-						break;
-					case TOP_RIGHT:
-						wx = d.width - popupSize.width - 16;
-						break;
-					case BOTTOM_RIGHT:
-						wy = wy - w.getPreferredSize().height;
-						wx = d.width - popupSize.width - 16;
-						break;
+				case TOP_LEFT:
+					wx = 16;
+					break;
+				case BOTTOM_LEFT:
+					wy = wy - w.getPreferredSize().height;
+					wx = 16;
+					break;
+				case TOP_RIGHT:
+					wx = d.width - popupSize.width - 16;
+					break;
+				case BOTTOM_RIGHT:
+					wy = wy - w.getPreferredSize().height;
+					wx = d.width - popupSize.width - 16;
+					break;
 				}
 				int owy = wy;
 
 				// Increment the y position
 				switch (position) {
-					case TOP_LEFT:
-					case TOP_RIGHT:
-						wy += 16;
-						break;
-					case BOTTOM_LEFT:
-					case BOTTOM_RIGHT:
-						wy -= 16;
-						break;
+				case TOP_LEFT:
+				case TOP_RIGHT:
+					wy += 16;
+					break;
+				case BOTTOM_LEFT:
+				case BOTTOM_RIGHT:
+					wy -= 16;
+					break;
 				}
 
 				// Show the window if it is not visible
@@ -435,7 +479,8 @@ public class Toaster {
 			repositionPopups();
 
 			// Start the magic thread if its not running
-			if (messages.size() != 0 && (magicThread == null || !magicThread.isAlive())) {
+			if (messages.size() != 0
+					&& (magicThread == null || !magicThread.isAlive())) {
 				magicThread = new MagicThread();
 			}
 		}
@@ -460,8 +505,12 @@ public class Toaster {
 	public static void main(String[] args) throws Exception {
 		try {
 			Class uiManagerClass = Class.forName("javax.swing.UIManager");
-			String systemLookAndFeelClassName =  (String)uiManagerClass.getMethod("getSystemLookAndFeelClassName", new Class[] { }).invoke(null, new Object[] { });
-			uiManagerClass.getMethod("setLookAndFeel", new Class[] { String.class } ).invoke(null, new Object[] { systemLookAndFeelClassName } );
+			String systemLookAndFeelClassName = (String) uiManagerClass
+					.getMethod("getSystemLookAndFeelClassName", new Class[] {})
+					.invoke(null, new Object[] {});
+			uiManagerClass.getMethod("setLookAndFeel",
+					new Class[] { String.class }).invoke(null,
+					new Object[] { systemLookAndFeelClassName });
 		} catch (Exception e) {
 		}
 		Toaster.BACKGROUND_COLOR = Color.white;
@@ -480,28 +529,31 @@ public class Toaster {
 			public void actionPerformed(ActionEvent evt) {
 				System.exit(0);
 			}
-		}, "This is a test message blah blah blah blah", "Brett says", UIUtil.loadImage(Toaster.class, "/images/error-48x48.png")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		},
+				"This is a test message blah blah blah blah", "Brett says", UIUtil.loadImage(Toaster.class, "/images/error-48x48.png")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		ActionListener a = new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				t.popup(null, "This is a test message blah blah blah blah", "JB says", UIUtil.loadImage(Toaster.class, //$NON-NLS-1$ //$NON-NLS-2$
-					"/home/brett/Desktop/Modules/vpn-client/client/images/idle.gif")); //$NON-NLS-1$
+				t.popup(null,
+						"This is a test message blah blah blah blah", "JB says", UIUtil.loadImage(Toaster.class, //$NON-NLS-1$ //$NON-NLS-2$
+										"/home/brett/Desktop/Modules/vpn-client/client/images/idle.gif")); //$NON-NLS-1$
 				// System.exit(0);
 			}
 		};
-		t.popup(a, "This is a test message blah blah blah blah", "JB says", UIUtil.loadImage(Toaster.class, //$NON-NLS-1$ //$NON-NLS-2$
-			"/home/brett/Desktop/Modules/vpn-client/client/images/idle.gif"), 2000); //$NON-NLS-1$
+		t.popup(a,
+				"This is a test message blah blah blah blah", "JB says", UIUtil.loadImage(Toaster.class, //$NON-NLS-1$ //$NON-NLS-2$
+								"/home/brett/Desktop/Modules/vpn-client/client/images/idle.gif"), 2000); //$NON-NLS-1$
 		t.popup(a, "This is a test message 2", "Pete says", null, 7000); //$NON-NLS-1$ //$NON-NLS-2$
 		// t.popup(null, "This is a test message 3", "Ash says");
 		Thread.sleep(1000);
 		t.popup(a, "This is a multi\nline test message 3", "Lee Says"); //$NON-NLS-1$ //$NON-NLS-2$
 		t.popup(a,
-			"This is a test message blah blah blah blah that should push the size of the text box over the fixed dimensions provided. If it does not something has gone horibbly horibbly wrong. arrrrrrrrggggggggggh!!!!!!!!!!!!!", //$NON-NLS-1$
-			"JB says", UIUtil.loadImage(Toaster.class, //$NON-NLS-1$
-				"/home/brett/Desktop/Modules/vpn-client/client/images/idle.gif"), 5000); //$NON-NLS-1$
+				"This is a test message blah blah blah blah that should push the size of the text box over the fixed dimensions provided. If it does not something has gone horibbly horibbly wrong. arrrrrrrrggggggggggh!!!!!!!!!!!!!", //$NON-NLS-1$
+				"JB says", UIUtil.loadImage(Toaster.class, //$NON-NLS-1$
+								"/home/brett/Desktop/Modules/vpn-client/client/images/idle.gif"), 5000); //$NON-NLS-1$
 		t.popup(a,
-			"This is a multiline test message blah\nblah blah blah that\nshould push the size of the text\nbox over the fixed dimensions\nprovided. If it does not something\nhas gone horibbly horibbly wrong. arrrrrrrrggggggggggh!!!!!!!!!!!!!", //$NON-NLS-1$
-			"JB says", UIUtil.loadImage(Toaster.class, //$NON-NLS-1$
-				"/home/brett/Desktop/Modules/vpn-client/client/images/idle.gif"), 8000); //$NON-NLS-1$
+				"This is a multiline test message blah\nblah blah blah that\nshould push the size of the text\nbox over the fixed dimensions\nprovided. If it does not something\nhas gone horibbly horibbly wrong. arrrrrrrrggggggggggh!!!!!!!!!!!!!", //$NON-NLS-1$
+				"JB says", UIUtil.loadImage(Toaster.class, //$NON-NLS-1$
+								"/home/brett/Desktop/Modules/vpn-client/client/images/idle.gif"), 8000); //$NON-NLS-1$
 	}
 
 	class MagicThread extends Thread {
@@ -518,7 +570,8 @@ public class Toaster {
 			moved = 1;
 			while (run && moved > 0) {
 				try {
-					Method invokeAndWaitMethod = Class.forName("java.awt.EventQueue").getMethod("invokeAndWait", new Class[] { Runnable.class }); //$NON-NLS-1$ //$NON-NLS-2$
+					Method invokeAndWaitMethod = Class
+							.forName("java.awt.EventQueue").getMethod("invokeAndWait", new Class[] { Runnable.class }); //$NON-NLS-1$ //$NON-NLS-2$
 					Runnable r = new Runnable() {
 						public void run() {
 							moved = doMove();
@@ -574,16 +627,20 @@ public class Toaster {
 		Dimension preferredSize;
 		int targetY;
 
-		MessageWindow(Dimension preferredSize, ActionListener callback, String message, String title, Image image, final int timeout) {
-			this(preferredSize, callback, message,  title, image, timeout, null);
+		MessageWindow(Dimension preferredSize, ActionListener callback,
+				String message, String title, Image image, final int timeout) {
+			this(preferredSize, callback, message, title, image, timeout, null);
 		}
 
-		MessageWindow(Dimension preferredSize, ActionListener callback, String message, String title, Image image, final int timeout, String actionText) {
+		MessageWindow(Dimension preferredSize, ActionListener callback,
+				String message, String title, Image image, final int timeout,
+				String actionText) {
 			super(Toaster.getSharedFrame());
 			this.preferredSize = preferredSize;
 			this.callback = callback;
 			try {
-				Method m = getClass().getMethod("setAlwaysOnTop", new Class[] { boolean.class }); //$NON-NLS-1$
+				Method m = getClass().getMethod(
+						"setAlwaysOnTop", new Class[] { boolean.class }); //$NON-NLS-1$
 				m.invoke(this, new Object[] { Boolean.TRUE });
 			} catch (Exception e) {
 			}
@@ -641,8 +698,8 @@ public class Toaster {
 				};
 				t.start();
 			}
-			
-			if(actionText != null) {
+
+			if (actionText != null) {
 				Label l2 = new Label(actionText);
 				l2.setAlignment(Label.CENTER);
 				l2.setFont(new Font(titleFont.getName(), Font.PLAIN, 10));
@@ -670,7 +727,8 @@ public class Toaster {
 
 		public void mouseClicked(MouseEvent e) {
 			if (callback != null) {
-				callback.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, "clicked")); //$NON-NLS-1$
+				callback.actionPerformed(new ActionEvent(this,
+						ActionEvent.ACTION_PERFORMED, "clicked")); //$NON-NLS-1$
 			}
 			hideAndRemove(this);
 		}

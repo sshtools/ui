@@ -19,110 +19,111 @@ import javax.swing.JPanel;
 
 public class MultilineLabel extends JPanel {
 
-    // Private instance variables
+	// Private instance variables
 
-    private GridBagConstraints constraints;
+	private GridBagConstraints constraints;
 
-    private String text;
+	private String text;
 
-    /**
-     * Creates a new MultilineLabel object.
-     */
+	/**
+	 * Creates a new MultilineLabel object.
+	 */
 
-    public MultilineLabel() {
+	public MultilineLabel() {
 
-        this(""); //$NON-NLS-1$
+		this(""); //$NON-NLS-1$
 
-    }
+	}
 
-    /**
-     * Creates a new MultilineLabel object.
-     * 
-     * @param text
-     */
+	/**
+	 * Creates a new MultilineLabel object.
+	 * 
+	 * @param text
+	 */
 
-    public MultilineLabel(String text) {
+	public MultilineLabel(String text) {
 
-        super(new GridBagLayout());
+		super(new GridBagLayout());
 
-        constraints = new GridBagConstraints();
+		constraints = new GridBagConstraints();
 
-        constraints.anchor = GridBagConstraints.NORTHWEST;
+		constraints.anchor = GridBagConstraints.NORTHWEST;
 
-        constraints.fill = GridBagConstraints.NONE;
+		constraints.fill = GridBagConstraints.NONE;
 
-        setText(text);
+		setText(text);
 
-    }
+	}
 
-    /**
-     * Set the font
-     * 
-     * @param f font
-     */
+	/**
+	 * Set the font
+	 * 
+	 * @param f
+	 *            font
+	 */
 
-    public void setFont(Font f) {
+	public void setFont(Font f) {
 
-        super.setFont(f);
+		super.setFont(f);
 
-        for (int i = 0; i < getComponentCount(); i++) {
+		for (int i = 0; i < getComponentCount(); i++) {
 
-            getComponent(i).setFont(f);
+			getComponent(i).setFont(f);
 
-        }
+		}
 
-    }
+	}
 
-    /**
-     * Set the font
-     * 
-     * @param text
-     */
+	/**
+	 * Set the font
+	 * 
+	 * @param text
+	 */
 
-    public void setText(String text) {
+	public void setText(String text) {
 
-        this.text = text;
+		this.text = text;
 
-        removeAll();
+		removeAll();
 
-        StringTokenizer tok = new StringTokenizer(text, "\n"); //$NON-NLS-1$
+		StringTokenizer tok = new StringTokenizer(text, "\n"); //$NON-NLS-1$
 
-        constraints.weighty = 0.0;
+		constraints.weighty = 0.0;
 
-        constraints.weightx = 1.0;
+		constraints.weightx = 1.0;
 
-        while (tok.hasMoreTokens()) {
+		while (tok.hasMoreTokens()) {
 
-            String t = tok.nextToken();
+			String t = tok.nextToken();
 
-            if (!tok.hasMoreTokens()) {
+			if (!tok.hasMoreTokens()) {
 
-                constraints.weighty = 1.0;
+				constraints.weighty = 1.0;
 
-            }
+			}
 
-            UIUtil.jGridBagAdd(this, new JLabel(t), constraints,
+			UIUtil.jGridBagAdd(this, new JLabel(t), constraints,
 
-            GridBagConstraints.REMAINDER);
+			GridBagConstraints.REMAINDER);
 
-        }
+		}
 
-        revalidate();
+		revalidate();
 
-        repaint();
+		repaint();
 
-    }
+	}
 
-    /**
-     * Get the text
-     * 
-     * @return text
-     */
+	/**
+	 * Get the text
+	 * 
+	 * @return text
+	 */
 
-    public String getText() {
+	public String getText() {
 
-        return text;
+		return text;
 
-    }
+	}
 
 }

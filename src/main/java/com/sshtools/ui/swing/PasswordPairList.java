@@ -27,7 +27,8 @@ public class PasswordPairList extends ArrayList {
 	protected final static String FORMAT_KEY = "Format: ";
 	protected final static String ENCRYPTED_FORMAT = "encrypted";
 	protected final static String PLAIN_FORMAT = "plain";
-	protected final static PasswordKey PWMGR = new PasswordKey("pwmgr", "pwmgr", "pwmgr", "pwmgr", 0);
+	protected final static PasswordKey PWMGR = new PasswordKey("pwmgr",
+			"pwmgr", "pwmgr", "pwmgr", 0);
 
 	// Private instance variables
 	private File passwordFile;
@@ -37,7 +38,8 @@ public class PasswordPairList extends ArrayList {
 	/**
 	 * Creates a new PasswordPairList object.
 	 * 
-	 * @param passwordFile file to store passwords in
+	 * @param passwordFile
+	 *            file to store passwords in
 	 * @throws IOException
 	 */
 	public PasswordPairList(File passwordFile) throws IOException {
@@ -47,7 +49,8 @@ public class PasswordPairList extends ArrayList {
 		File dir = passwordFile.getParentFile();
 		if (!dir.exists()) {
 			if (!dir.mkdirs()) {
-				throw new IOException("Failed to create directory for password file.");
+				throw new IOException(
+						"Failed to create directory for password file.");
 			}
 		}
 
@@ -55,7 +58,8 @@ public class PasswordPairList extends ArrayList {
 			loadPasswordFile();
 		}
 		if (System.getProperty("converse.masterPassword") != null) {
-			masterPassword = System.getProperty("converse.masterPassword").toCharArray();
+			masterPassword = System.getProperty("converse.masterPassword")
+					.toCharArray();
 		}
 		try {
 			String pwd = System.getenv("PASSWORD_SAFE_PASSWORD");
@@ -76,13 +80,16 @@ public class PasswordPairList extends ArrayList {
 	/**
 	 * Test if the password file can be decrypted given the master password.
 	 * 
-	 * @param p master password
+	 * @param p
+	 *            master password
 	 * @return valid password
-	 * @throws IOException if password file cannot be read
+	 * @throws IOException
+	 *             if password file cannot be read
 	 */
 	public boolean checkMasterPassword(char[] p) {
 		try {
-			return StringEncrypter.decryptString(pwmgr.getUserPassword(), p).equals(ENC);
+			return StringEncrypter.decryptString(pwmgr.getUserPassword(), p)
+					.equals(ENC);
 		} catch (Exception e) {
 			return false;
 		}
@@ -91,10 +98,13 @@ public class PasswordPairList extends ArrayList {
 	/**
 	 * Change the master password and rewrite the password list.
 	 * 
-	 * @param newMasterPassword new master password
-	 * @throws IOException if the password file cannot be written
+	 * @param newMasterPassword
+	 *            new master password
+	 * @throws IOException
+	 *             if the password file cannot be written
 	 */
-	public void changeMasterPassword(char[] newMasterPassword, char[] oldMasterPassword) throws Exception {
+	public void changeMasterPassword(char[] newMasterPassword,
+			char[] oldMasterPassword) throws Exception {
 		for (Iterator i = this.iterator(); i.hasNext();) {
 			PasswordPair pair = (PasswordPair) i.next();
 			decryptPair(pair, oldMasterPassword);
@@ -109,7 +119,8 @@ public class PasswordPairList extends ArrayList {
 	 * exists it will be overwritten, if not it will be created. The list will
 	 * <strong>not</strong> be saved.
 	 * 
-	 * @param pair password pair
+	 * @param pair
+	 *            password pair
 	 */
 	public void setPair(PasswordPair pair) {
 		removeKey(pair.getKey());
@@ -121,10 +132,13 @@ public class PasswordPairList extends ArrayList {
 	 * the pairs key already exists it will be overwritten, if not it will be
 	 * created. The list will <strong>not</strong> be saved.
 	 * 
-	 * @param key key
-	 * @param userPassword new password
+	 * @param key
+	 *            key
+	 * @param userPassword
+	 *            new password
 	 */
-	public void setKey(PasswordKey key, String userPassword, boolean persistant, boolean encrypted) {
+	public void setKey(PasswordKey key, String userPassword,
+			boolean persistant, boolean encrypted) {
 		removeKey(key);
 		addKey(key, userPassword, persistant, encrypted);
 	}
@@ -133,12 +147,17 @@ public class PasswordPairList extends ArrayList {
 	 * Add a new password key with a new password. A <code>PasswordPair</code>
 	 * will be created and added to the list.
 	 * 
-	 * @param key key
-	 * @param userPassword key
-	 * @param persistant persistant
-	 * @param encrypted encrypted
+	 * @param key
+	 *            key
+	 * @param userPassword
+	 *            key
+	 * @param persistant
+	 *            persistant
+	 * @param encrypted
+	 *            encrypted
 	 */
-	public void addKey(PasswordKey key, String userPassword, boolean persistant, boolean encrypted) {
+	public void addKey(PasswordKey key, String userPassword,
+			boolean persistant, boolean encrypted) {
 		addPair(new PasswordPair(key, userPassword, persistant, encrypted));
 	}
 
@@ -146,7 +165,8 @@ public class PasswordPairList extends ArrayList {
 	 * Add a new password pair to the list. The list will <strong>not</strong>
 	 * be saved.
 	 * 
-	 * @param pair pair
+	 * @param pair
+	 *            pair
 	 */
 	public void addPair(PasswordPair pair) {
 		add(pair);
@@ -155,7 +175,8 @@ public class PasswordPairList extends ArrayList {
 	/**
 	 * Get a <code>PasswordPair</code> at a given index in the list
 	 * 
-	 * @param r index in list
+	 * @param r
+	 *            index in list
 	 * @return password pair
 	 */
 	public PasswordPair getPasswordPairAt(int r) {
@@ -166,7 +187,8 @@ public class PasswordPairList extends ArrayList {
 	 * Remove a password pair from the list given its key. The list will
 	 * <strong>not</strong> be saved.
 	 * 
-	 * @param key key to remove
+	 * @param key
+	 *            key to remove
 	 */
 	public void removeKey(PasswordKey key) {
 		for (int i = size() - 1; i >= 0; i--) {
@@ -180,7 +202,8 @@ public class PasswordPairList extends ArrayList {
 	 * Get a password pair given its key. <code>null</code> will be returned if
 	 * no password with the supplied key can be found
 	 * 
-	 * @param key key
+	 * @param key
+	 *            key
 	 * @return password pair
 	 */
 	public PasswordPair getPair(PasswordKey key) {
@@ -205,7 +228,8 @@ public class PasswordPairList extends ArrayList {
 	/**
 	 * Set the master password.
 	 * 
-	 * @param masterPassword master password
+	 * @param masterPassword
+	 *            master password
 	 */
 	public void setMasterPassword(char[] masterPassword) {
 		this.masterPassword = masterPassword;
@@ -214,7 +238,8 @@ public class PasswordPairList extends ArrayList {
 	/**
 	 * Save all of the passwords to disk.
 	 * 
-	 * @throws IOException if the password file cannot be written
+	 * @throws IOException
+	 *             if the password file cannot be written
 	 */
 	public void savePasswordFile() throws Exception {
 		if (getMasterPassword() == null) {
@@ -223,17 +248,19 @@ public class PasswordPairList extends ArrayList {
 		OutputStream out = new FileOutputStream(passwordFile);
 		try {
 			Properties p = new Properties();
-			p.put(
-				pwmgr.getKey().toString(),
-				pwmgr.isEncrypted() ? pwmgr.getUserPassword() : StringEncrypter.encryptString(pwmgr.getUserPassword(),
-					getMasterPassword()));
+			p.put(pwmgr.getKey().toString(),
+					pwmgr.isEncrypted() ? pwmgr.getUserPassword()
+							: StringEncrypter.encryptString(
+									pwmgr.getUserPassword(),
+									getMasterPassword()));
 			for (int i = 0; i < size(); i++) {
 				PasswordPair pair = (PasswordPair) get(i);
 				if (pair.isPersistant()) {
-					p.put(
-						pair.getKey().toString(),
-						pair.isEncrypted() ? pair.getUserPassword() : StringEncrypter.encryptString(pair.getUserPassword(),
-							getMasterPassword()));
+					p.put(pair.getKey().toString(),
+							pair.isEncrypted() ? pair.getUserPassword()
+									: StringEncrypter.encryptString(
+											pair.getUserPassword(),
+											getMasterPassword()));
 				}
 			}
 			p.store(out, null);
@@ -255,13 +282,15 @@ public class PasswordPairList extends ArrayList {
 	 * New password list.
 	 * 
 	 * @param password
-	 * @throws Exception if password file cannot be read
+	 * @throws Exception
+	 *             if password file cannot be read
 	 */
 	public void newPasswordFile(char[] password) throws Exception {
 		if (isLoaded()) {
 			throw new IOException("Alread loaded.");
 		}
-		pwmgr = new PasswordPair(PWMGR, StringEncrypter.encryptString(ENC, password), true, true);
+		pwmgr = new PasswordPair(PWMGR, StringEncrypter.encryptString(ENC,
+				password), true, true);
 		setMasterPassword(password);
 		savePasswordFile();
 	}
@@ -269,7 +298,8 @@ public class PasswordPairList extends ArrayList {
 	/**
 	 * Load the password list from disk.
 	 * 
-	 * @throws IOException if password file cannot be read
+	 * @throws IOException
+	 *             if password file cannot be read
 	 */
 	public void loadPasswordFile() throws IOException {
 		clear();
@@ -292,7 +322,8 @@ public class PasswordPairList extends ArrayList {
 				String host = URLDecoder.decode(sa[2], "UTF-8");
 				String username = URLDecoder.decode(sa[3], "UTF-8");
 				int port = Integer.parseInt(sa[4]);
-				PasswordKey k = new PasswordKey(protocol, scheme, host, username, port);
+				PasswordKey k = new PasswordKey(protocol, scheme, host,
+						username, port);
 				String val = p.getProperty(key);
 				PasswordPair pair = new PasswordPair(k, val, true, true);
 				pair.setPersistant(true);
@@ -303,7 +334,8 @@ public class PasswordPairList extends ArrayList {
 				}
 			}
 		} catch (Exception e) {
-			throw new IOException("Could not parse password file. " + e.getMessage());
+			throw new IOException("Could not parse password file. "
+					+ e.getMessage());
 		}
 
 		//
@@ -322,7 +354,8 @@ public class PasswordPairList extends ArrayList {
 	void decryptPair(PasswordPair pair, char[] oldPassword) throws Exception {
 		if (pair.isEncrypted()) {
 			pair.setEncrypted(false);
-			pair.setUserPassword(StringEncrypter.decryptString(pair.getUserPassword(), oldPassword));
+			pair.setUserPassword(StringEncrypter.decryptString(
+					pair.getUserPassword(), oldPassword));
 		}
 	}
 

@@ -36,8 +36,9 @@ public class SideBarTabber extends JPanel implements Tabber {
 			}
 		};
 		folderBar = new FolderBar(" ", new EmptyIcon(32, 32));
-		folderBar.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLoweredBevelBorder(),
-			BorderFactory.createEmptyBorder(0, 0, 4, 0)));
+		folderBar.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLoweredBevelBorder(),
+				BorderFactory.createEmptyBorder(0, 0, 4, 0)));
 		toolBar.setFolderBar(folderBar);
 
 		JPanel centerPane = new JPanel(new BorderLayout());
@@ -139,9 +140,12 @@ public class SideBarTabber extends JPanel implements Tabber {
 	 * @param sel
 	 */
 	public void addTab(Tab tab, boolean sel) {
-		String c = (tab.getTabCategory() == null) ? "Unknown" : tab.getTabCategory();
-		TabAction action = new TabAction(tab.getTabIcon(), tab.getTabLargeIcon(), tab.getTabTitle(), tab.getTabToolTipText(),
-			tab.getTabMnemonic(), layout, viewPane, c);
+		String c = (tab.getTabCategory() == null) ? "Unknown" : tab
+				.getTabCategory();
+		TabAction action = new TabAction(tab.getTabIcon(),
+				tab.getTabLargeIcon(), tab.getTabTitle(),
+				tab.getTabToolTipText(), tab.getTabMnemonic(), layout,
+				viewPane, c);
 		tabs.addElement(tab);
 		actions.addElement(action);
 		String componentName = c + "/" + tab.getTabTitle();
@@ -163,7 +167,8 @@ public class SideBarTabber extends JPanel implements Tabber {
 		CardLayout layout;
 		JPanel viewPane;
 
-		TabAction(Icon icon, Icon largeIcon, String name, String description, int mnemonic, CardLayout layout, JPanel viewPane,
+		TabAction(Icon icon, Icon largeIcon, String name, String description,
+				int mnemonic, CardLayout layout, JPanel viewPane,
 				String category) {
 			super(name);
 			putValue(AppAction.LARGE_ICON, largeIcon);
@@ -180,7 +185,8 @@ public class SideBarTabber extends JPanel implements Tabber {
 
 		public void actionPerformed(ActionEvent evt) {
 			folderBar.setAction(this);
-			layout.show(viewPane, (String) getValue(AppAction.CATEGORY) + "/" + (String) getValue(AppAction.NAME));
+			layout.show(viewPane, (String) getValue(AppAction.CATEGORY) + "/"
+					+ (String) getValue(AppAction.NAME));
 		}
 	}
 
@@ -196,10 +202,12 @@ public class SideBarTabber extends JPanel implements Tabber {
 			for (Iterator i = tabs.iterator(); i.hasNext();) {
 				Tab tab = (Tab) i.next();
 				if (tab.getClass().equals(selectedTabClass)) {
-					String c = (tab.getTabCategory() == null) ? "Unknown" : tab.getTabCategory();
+					String c = (tab.getTabCategory() == null) ? "Unknown" : tab
+							.getTabCategory();
 					layout.show(viewPane, c + "/" + tab.getTabTitle());
 					;
-					folderBar.setAction((Action) actions.get(tabs.indexOf(tab)));
+					folderBar
+							.setAction((Action) actions.get(tabs.indexOf(tab)));
 					toolBar.setSelectedContext(c);
 					return;
 

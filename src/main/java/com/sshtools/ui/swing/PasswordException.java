@@ -24,7 +24,8 @@ public class PasswordException extends Exception {
 	/**
 	 * Construct a new exception
 	 * 
-	 * @param message message
+	 * @param message
+	 *            message
 	 */
 	public PasswordException(String message) {
 		super(message);
@@ -33,8 +34,10 @@ public class PasswordException extends Exception {
 	/**
 	 * Construct a new exception
 	 * 
-	 * @param message message
-	 * @param cause cause
+	 * @param message
+	 *            message
+	 * @param cause
+	 *            cause
 	 */
 	public PasswordException(String message, Throwable cause) {
 		super(message, cause);
@@ -43,7 +46,8 @@ public class PasswordException extends Exception {
 	/**
 	 * Construct a new exception
 	 * 
-	 * @param cause cause
+	 * @param cause
+	 *            cause
 	 */
 	public PasswordException(Throwable cause) {
 		super(cause);

@@ -1,11 +1,9 @@
 package com.sshtools.ui.swing.list;
 
-import java.applet.Applet;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -158,27 +156,28 @@ public class JListMutable extends JList implements CellEditorListener {
 		}
 
 		public void propertyChange(PropertyChangeEvent ev) {
-//			if (!isEditing()
-//					|| getClientProperty("terminateEditOnFocusLost") != Boolean.TRUE) { // NOI18N
-//				return;
-//			}
-//
-//			Component c = focusManager.getPermanentFocusOwner();
-//			while (c != null) {
-//				if (c == JListMutable.this) {
-//					// focus remains inside the table
-//					return;
-//				} else if ((c instanceof Window)
-//						|| (c instanceof Applet && c.getParent() == null)) {
-//					if (c == SwingUtilities.getRoot(JListMutable.this)) {
-//						if (isEditing() && !getListCellEditor().stopCellEditing()) {
-//							getListCellEditor().cancelCellEditing();
-//						}
-//					}
-//					break;
-//				}
-//				c = c.getParent();
-//			}
+			// if (!isEditing()
+			// || getClientProperty("terminateEditOnFocusLost") != Boolean.TRUE)
+			// { // NOI18N
+			// return;
+			// }
+			//
+			// Component c = focusManager.getPermanentFocusOwner();
+			// while (c != null) {
+			// if (c == JListMutable.this) {
+			// // focus remains inside the table
+			// return;
+			// } else if ((c instanceof Window)
+			// || (c instanceof Applet && c.getParent() == null)) {
+			// if (c == SwingUtilities.getRoot(JListMutable.this)) {
+			// if (isEditing() && !getListCellEditor().stopCellEditing()) {
+			// getListCellEditor().cancelCellEditing();
+			// }
+			// }
+			// break;
+			// }
+			// c = c.getParent();
+			// }
 		}
 	}
 
@@ -244,7 +243,8 @@ public class JListMutable extends JList implements CellEditorListener {
 
 	protected boolean shouldIgnore(MouseEvent e) {
 		return e.isConsumed()
-				|| (!(SwingUtilities.isLeftMouseButton(e) && isEnabled())) || e.getClickCount() != 2;
+				|| (!(SwingUtilities.isLeftMouseButton(e) && isEnabled()))
+				|| e.getClickCount() != 2;
 	}
 
 	private class MouseListener extends MouseAdapter {

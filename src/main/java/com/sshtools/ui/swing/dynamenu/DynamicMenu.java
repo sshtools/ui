@@ -37,7 +37,8 @@ implements ListDataListener, ActionListener {
 	 * @param model
 	 */
 
-	protected DynamicMenu(Action action, DynamicMenuListModel model, String actionCommand, boolean considerStateOnUpdate) {
+	protected DynamicMenu(Action action, DynamicMenuListModel model,
+			String actionCommand, boolean considerStateOnUpdate) {
 		super(action);
 		init(model);
 		this.actionCommand = actionCommand;
@@ -146,7 +147,8 @@ implements ListDataListener, ActionListener {
 			m.addActionListener(this);
 			add(m);
 		}
-		setEnabled(!considerStateOnUpdate ? model.getSize() > 0 : model.getSize() > 0 && state);
+		setEnabled(!considerStateOnUpdate ? model.getSize() > 0 : model
+				.getSize() > 0 && state);
 		validate();
 
 	}

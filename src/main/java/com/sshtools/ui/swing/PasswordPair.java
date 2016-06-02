@@ -7,49 +7,52 @@ public class PasswordPair implements Comparable {
 	private PasswordKey key;
 	private String userPassword;
 	private boolean persistant;
-    private boolean encrypted;
+	private boolean encrypted;
 
 	/**
 	 * Creates a new PasswordPair object.
 	 * 
-	 * @param key key
-	 * @param userPassword password
-	 * @param persistant save the password permanently
+	 * @param key
+	 *            key
+	 * @param userPassword
+	 *            password
+	 * @param persistant
+	 *            save the password permanently
 	 */
-	public PasswordPair(PasswordKey key, String userPassword, boolean persistant, boolean encrypted) {
+	public PasswordPair(PasswordKey key, String userPassword,
+			boolean persistant, boolean encrypted) {
 		setKey(key);
 		setUserPassword(userPassword);
 		setPersistant(persistant);
-        setEncrypted(encrypted);
+		setEncrypted(encrypted);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	public int compareTo(Object o) {
 		PasswordPair p = (PasswordPair) o;
 
-		if ((isPersistant() && p.isPersistant()) || (!isPersistant() && !p.isPersistant())) {
+		if ((isPersistant() && p.isPersistant())
+				|| (!isPersistant() && !p.isPersistant())) {
 			return key.compareTo(((PasswordPair) o).getKey());
-		}
-		else
-			if (isPersistant()) {
-				return 1;
-			}
-			else
-				if (p.isPersistant()) {
-					return -1;
-				}
-				else {
+		} else if (isPersistant()) {
+			return 1;
+		} else if (p.isPersistant()) {
+			return -1;
+		} else {
 
-					return 0;
-				}
+			return 0;
+		}
 	}
 
 	/**
 	 * Set the key for this password pair
 	 * 
-	 * @param key key
+	 * @param key
+	 *            key
 	 */
 	public void setKey(PasswordKey key) {
 		this.key = key;
@@ -67,7 +70,8 @@ public class PasswordPair implements Comparable {
 	/**
 	 * Set the password for the password pair
 	 * 
-	 * @param userPassword password
+	 * @param userPassword
+	 *            password
 	 */
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
@@ -83,16 +87,17 @@ public class PasswordPair implements Comparable {
 	}
 
 	/**
-	 * Set whether the password pair should be saved permanently. 
+	 * Set whether the password pair should be saved permanently.
 	 * 
-	 * @param persistant save password permanently
+	 * @param persistant
+	 *            save password permanently
 	 */
 	public void setPersistant(boolean persistant) {
 		this.persistant = persistant;
 	}
 
 	/**
-	 * Get whether the password pair should be saved permanently. 
+	 * Get whether the password pair should be saved permanently.
 	 * 
 	 * @return save password permanently
 	 */
@@ -100,21 +105,22 @@ public class PasswordPair implements Comparable {
 		return persistant;
 	}
 
-    /**
-     * Set whether the password pair is encrypted
-     * 
-     * @param encrypted encrypted
-     */
-    public void setEncrypted(boolean encrypted) {
-        this.encrypted = encrypted;
-    }
+	/**
+	 * Set whether the password pair is encrypted
+	 * 
+	 * @param encrypted
+	 *            encrypted
+	 */
+	public void setEncrypted(boolean encrypted) {
+		this.encrypted = encrypted;
+	}
 
-    /**
-     * Get whether the password pair is encrypted
-     * 
-     * @return encrypted
-     */
-    public boolean isEncrypted() {
-        return encrypted;
-    }
+	/**
+	 * Get whether the password pair is encrypted
+	 * 
+	 * @return encrypted
+	 */
+	public boolean isEncrypted() {
+		return encrypted;
+	}
 }

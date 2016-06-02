@@ -57,7 +57,8 @@ public class ImageCanvas extends Canvas {
 	 * Construct a new image canvas
 	 * </p>
 	 * 
-	 * @param iamge image
+	 * @param iamge
+	 *            image
 	 * 
 	 */
 	public ImageCanvas(Image image) {
@@ -73,8 +74,10 @@ public class ImageCanvas extends Canvas {
 	 * image will be centered in the container.
 	 * </p>
 	 * 
-	 * @param cls name of image
-	 * @param scale scale
+	 * @param cls
+	 *            name of image
+	 * @param scale
+	 *            scale
 	 * 
 	 */
 	public ImageCanvas(Class cls, String image) {
@@ -85,7 +88,8 @@ public class ImageCanvas extends Canvas {
 	/**
 	 * Set the vertical alignment
 	 * 
-	 * @param f vertical alignment
+	 * @param f
+	 *            vertical alignment
 	 */
 	public void setValign(float valign) {
 		this.valign = valign;
@@ -94,7 +98,8 @@ public class ImageCanvas extends Canvas {
 	/**
 	 * Set the horizontal alignment
 	 * 
-	 * @param f horizontal alignment
+	 * @param f
+	 *            horizontal alignment
 	 */
 	public void setHalign(float halign) {
 		this.halign = halign;
@@ -103,7 +108,8 @@ public class ImageCanvas extends Canvas {
 	/**
 	 * Set the border width around the image
 	 * 
-	 * @param border border
+	 * @param border
+	 *            border
 	 */
 	public void setBorder(int border) {
 		this.border = border;
@@ -130,7 +136,8 @@ public class ImageCanvas extends Canvas {
 	/**
 	 * Set the border color
 	 * 
-	 * @param borderColor border color
+	 * @param borderColor
+	 *            border color
 	 */
 	public void setBorderColor(Color borderColor) {
 		this.borderColor = borderColor;
@@ -146,7 +153,8 @@ public class ImageCanvas extends Canvas {
 	 * <li><code>ImageCanvas.CENTERED</code></li>
 	 * </ul>
 	 * 
-	 * @param scale scale
+	 * @param scale
+	 *            scale
 	 */
 	public void setScale(int scale) {
 		this.scale = scale;
@@ -176,8 +184,11 @@ public class ImageCanvas extends Canvas {
 	 */
 	public void setImage(Image image) {
 		// Prompt a layout if the image size changes
-		if ((image == null && this.image != null) || (image != null && this.image == null)
-			|| (image != null && this.image != null && (image.getWidth(this) != this.image.getWidth(this) || image.getHeight(this) != this.image.getHeight(this)))) {
+		if ((image == null && this.image != null)
+				|| (image != null && this.image == null)
+				|| (image != null && this.image != null && (image
+						.getWidth(this) != this.image.getWidth(this) || image
+						.getHeight(this) != this.image.getHeight(this)))) {
 			this.image = image;
 			doLayout();
 		} else {
@@ -219,7 +230,9 @@ public class ImageCanvas extends Canvas {
 		} else {
 			// checks the buffersize with the current panelsize
 			// or initialises the image with the first paint
-			if (bufferWidth != getSize().width || bufferHeight != getSize().height || bufferImage == null || bufferGraphics == null)
+			if (bufferWidth != getSize().width
+					|| bufferHeight != getSize().height || bufferImage == null
+					|| bufferGraphics == null)
 				resetBuffer();
 
 			if (bufferGraphics != null) {
@@ -243,7 +256,8 @@ public class ImageCanvas extends Canvas {
 			g.setColor(getBackground());
 			g.fillRect(0, 0, d.width, d.height);
 		}
-		Dimension f = new Dimension(d.width - (border * 2), d.height - (border * 2));
+		Dimension f = new Dimension(d.width - (border * 2), d.height
+				- (border * 2));
 		if (image != null) {
 			if (scale == STRETCH) {
 				g.drawImage(image, border, border, f.width, f.height, this);
@@ -291,7 +305,8 @@ public class ImageCanvas extends Canvas {
 		if (image == null) {
 			return new Dimension(border * 2, border * 2);
 		}
-		return new Dimension(image.getWidth(this) + (border * 2), image.getHeight(this) + (border * 2));
+		return new Dimension(image.getWidth(this) + (border * 2),
+				image.getHeight(this) + (border * 2));
 	}
 
 	public Dimension getMinimumSize() {

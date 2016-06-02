@@ -5,7 +5,6 @@ import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 
 public class TestJSwitch extends JFrame {
 
@@ -29,7 +28,7 @@ public class TestJSwitch extends JFrame {
 	}
 
 	public static void main(String[] args) throws Exception {
-//		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		// UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

@@ -139,8 +139,8 @@ extends ClosableTabbedPane implements Tabber {
 	 */
 
 	public void addTab(Tab tab) {
-		addTab(tab.getTabTitle(), tab.getTabIcon(), new TabPanel(tab), tab
-			.getTabToolTipText());
+		addTab(tab.getTabTitle(), tab.getTabIcon(), new TabPanel(tab),
+				tab.getTabToolTipText());
 
 	}
 
