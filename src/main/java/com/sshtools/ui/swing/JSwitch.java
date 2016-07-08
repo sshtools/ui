@@ -16,6 +16,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.AbstractButton;
 import javax.swing.DefaultButtonModel;
+import javax.swing.JLabel;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
 
@@ -31,7 +32,7 @@ public class JSwitch extends AbstractButton {
 	private Border buttonBorder = UIManager.getBorder("Button.border");
 	private Border trackBorder = UIManager.getBorder("Button.border");
 
-	private Font font = UIManager.getFont("Button.font");
+	private Font font = FontUtil.getUIManagerButtonFontOrDefault("Button.font");
 	private int gap = 5;
 	private int globalWitdh = 0;
 	private Dimension thumbBounds;
@@ -99,14 +100,14 @@ public class JSwitch extends AbstractButton {
 	public Font getFont() {
 		return font;
 	}
+	
 
 	@Override
 	protected void paintComponent(Graphics g) {
-		// private Color trackBackground = UIManager.getColor("textHighlight");
-		// private Color trackBackgroundText =
-		// UIManager.getColor("textHighlightText");
-		// private Border buttonBorder = UIManager.getBorder("Button.border");
-		// private Border trackBorder = UIManager.getBorder("Button.border");
+//		private Color trackBackground = UIManager.getColor("textHighlight");
+//		private Color trackBackgroundText = UIManager.getColor("textHighlightText");
+//		private Border buttonBorder = UIManager.getBorder("Button.border");
+//		private Border trackBorder = UIManager.getBorder("Button.border");
 
 		g.setColor(Color.green);
 		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
@@ -116,27 +117,24 @@ public class JSwitch extends AbstractButton {
 		g2.setColor(trackBackground);
 		g2.fillRect(0, 3, getWidth(), getHeight() - 6);
 		trackBorder.paintBorder(this, g2, 0, 3, getWidth(), getHeight() - 6);
-
+		
 		// Paint the thumb
 		int buttonX = 0;
-		int y = borderInsets.top * -1;
+		int y = borderInsets.top * - 1;
 		int h = thumbBounds.height + borderInsets.top + borderInsets.bottom;
 		int w = thumbBounds.width;
-		// g2.setPaint(new GradientPaint(buttonX, (int) (y - 0.1 * h), shadow2,
-		// buttonX,
-		// (int) (y + 1.2 * h), shadow1));
+//		g2.setPaint(new GradientPaint(buttonX, (int) (y - 0.1 * h), shadow2, buttonX,
+//				(int) (y + 1.2 * h), shadow1));
 		g2.setColor(Color.red);
 		g2.fillRect(buttonX, y, w, h);
-		// g2.setPaint(new GradientPaint(buttonX, (int) (y + .65 * h), shadow1,
-		// buttonX,
-		// (int) (y + 1.3 * h), shadow2));
-		// g2.fillRect(buttonX, (int) (y + .65 * h), w, (int) (h - .65 * h));
+//		g2.setPaint(new GradientPaint(buttonX, (int) (y + .65 * h), shadow1, buttonX,
+//				(int) (y + 1.3 * h), shadow2));
+//		g2.fillRect(buttonX, (int) (y + .65 * h), w, (int) (h - .65 * h));
 
 		if (w > 14) {
 			int size = 10;
 			g2.setColor(colorBright);
-			g2.fillRect(buttonX + w / 2 - size / 2, y + h / 2 - size / 2, size,
-					size);
+			g2.fillRect(buttonX + w / 2 - size / 2, y + h / 2 - size / 2, size, size);
 			g2.setColor(colorBright.darker());
 			g2.fillRect(buttonX + w / 2 - 4, h / 2 - 4, 2, 2);
 			g2.fillRect(buttonX + w / 2 - 1, h / 2 - 4, 2, 2);
@@ -150,9 +148,9 @@ public class JSwitch extends AbstractButton {
 			g2.fillRect(buttonX + w / 2 - 1, h / 2 + 2, 2, 2);
 			g2.fillRect(buttonX + w / 2 + 2, h / 2 + 2, 2, 2);
 		}
-		buttonBorder.paintBorder(this, g2, buttonX, 0, thumbBounds.width,
-				thumbBounds.height);
-
+		buttonBorder.paintBorder(this, g2, buttonX, 0, thumbBounds.width, thumbBounds.height);
+		
+		
 	}
 
 	protected void XXXpaintComponent(Graphics g) {
@@ -181,18 +179,17 @@ public class JSwitch extends AbstractButton {
 		int w = thumbBounds.width;
 		int h = thumbBounds.height;
 
-		g2.setPaint(new GradientPaint(buttonX, (int) (y - 0.1 * h), shadow2,
-				buttonX, (int) (y + 1.2 * h), shadow1));
+		g2.setPaint(new GradientPaint(buttonX, (int) (y - 0.1 * h), shadow2, buttonX,
+				(int) (y + 1.2 * h), shadow1));
 		g2.fillRect(buttonX, y, w, h);
-		g2.setPaint(new GradientPaint(buttonX, (int) (y + .65 * h), shadow1,
-				buttonX, (int) (y + 1.3 * h), shadow2));
+		g2.setPaint(new GradientPaint(buttonX, (int) (y + .65 * h), shadow1, buttonX,
+				(int) (y + 1.3 * h), shadow2));
 		g2.fillRect(buttonX, (int) (y + .65 * h), w, (int) (h - .65 * h));
 
 		if (w > 14) {
 			int size = 10;
 			g2.setColor(colorBright);
-			g2.fillRect(buttonX + w / 2 - size / 2, y + h / 2 - size / 2, size,
-					size);
+			g2.fillRect(buttonX + w / 2 - size / 2, y + h / 2 - size / 2, size, size);
 			g2.setColor(colorBright.darker());
 			g2.fillRect(buttonX + w / 2 - 4, h / 2 - 4, 2, 2);
 			g2.fillRect(buttonX + w / 2 - 1, h / 2 - 4, 2, 2);
@@ -219,7 +216,7 @@ public class JSwitch extends AbstractButton {
 		g2.setFont(getFont());
 		g2.drawString(getText(), textX + gap, y + h / 2 + h / 4);
 	}
-
+	
 	private void recalcBounds() {
 		FontMetrics fontMetrics = getFontMetrics(getFont());
 		double trueLenth = fontMetrics
@@ -228,8 +225,7 @@ public class JSwitch extends AbstractButton {
 				getGraphics()).getWidth();
 		max = (int) Math.max(trueLenth, falseLenght);
 		gap = Math.max(5, 5 + (int) Math.abs(trueLenth - falseLenght));
-		thumbBounds = new Dimension(max + gap * 2,
-				(int) ((float) fontMetrics.getHeight() * 1.5));
+		thumbBounds = new Dimension(max + gap * 2, (int)((float)fontMetrics.getHeight() * 1.5));
 		globalWitdh = max + thumbBounds.width + gap * 2;
 		borderInsets = buttonBorder.getBorderInsets(this);
 	}

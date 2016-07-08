@@ -114,7 +114,7 @@ public class ListSearch implements KeyListener {
 
 			// searchWindow.setLocationRelativeTo(w);
 			searchText = new JTextField();
-			searchText.setFont(UIManager.getFont("Label.font").deriveFont(12f));
+			searchText.setFont(FontUtil.getUIManagerLabelFontOrDefault("Label.font").deriveFont(12f));
 			searchText.setOpaque(false);
 			searchText.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 			searchText.getDocument().addDocumentListener(
@@ -163,9 +163,9 @@ public class ListSearch implements KeyListener {
 			searchPanel.add(searchText);
 			searchPanel.setForeground(UIManager.getColor("ToolTip.foreground"));
 			searchPanel.setBackground(UIManager.getColor("ToolTip.background"));
-			searchPanel.setBorder(BorderFactory.createCompoundBorder(
-					UIManager.getBorder("ToolTip.border"),
-					BorderFactory.createEmptyBorder(4, 4, 4, 4)));
+			searchPanel.setBorder(BorderFactory.createCompoundBorder(UIManager
+					.getBorder("ToolTip.border"), BorderFactory
+					.createEmptyBorder(4, 4, 4, 4)));
 			searchWindow.getContentPane().setLayout(new GridLayout(1, 1));
 			searchWindow.getContentPane().add(searchPanel);
 		}
@@ -221,9 +221,7 @@ public class ListSearch implements KeyListener {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see
-		 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent
-		 * )
+		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 		 */
 		public void actionPerformed(ActionEvent e) {
 			listener.searchCancelled();
