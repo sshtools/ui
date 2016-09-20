@@ -12,7 +12,7 @@
 	<description>Utility classes used in a number of SSHTools AWT/Swing UI projects.</description>
 
 	<groupId>com.sshtools</groupId>
-	<version>2.1.1-SNAPSHOT</version>
+	<version>2.1.1</version>
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
@@ -175,7 +175,7 @@
 		</developer>
 	</developers>
 
-	<distributionManagement>
+	<!-- <distributionManagement>
 		<snapshotRepository>
 			<id>ossrh-sshtools</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
@@ -184,8 +184,24 @@
 			<id>ossrh-sshtools</id>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
-	</distributionManagement>
+	</distributionManagement> -->
 
+	<distributionManagement>
+		<snapshotRepository>
+			<uniqueVersion>true</uniqueVersion>
+			<id>opensource-snapshots</id>
+			<name>SSHTOOLS Opensource Snapshots</name>
+			<url>http://artifactory.javassh.com/opensource-snapshots</url>
+			<layout>default</layout>
+		</snapshotRepository>
+		<repository>
+			<uniqueVersion>true</uniqueVersion>
+			<id>opensource-releases</id>
+			<name>SSHTOOLS Opensource Releases</name>
+			<url>http://artifactory.javassh.com/opensource-releases</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
 
 	<dependencies>
 		<dependency>
