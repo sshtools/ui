@@ -7,12 +7,41 @@
 	</properties>
 
 	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>com.sshtools</groupId>
 	<artifactId>ui</artifactId>
+	
 	<name>SSHTools UI</name>
 	<description>Utility classes used in a number of SSHTools AWT/Swing UI projects.</description>
-
-	<groupId>com.sshtools</groupId>
+	
 	<version>2.1.1</version>
+	
+	<licenses>
+		<license>
+			<name>Apache License Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<url>https://github.com/sshtools/ui</url>
+		<connection>scm://github.com/sshtools/ui.git</connection>
+	</scm>
+	<developers>
+		<developer>
+			<id>lee</id>
+			<name>Lee David Painter</name>
+			<email>lee@sshtools.com</email>
+		</developer>
+		<developer>
+			<id>brett</id>
+			<name>Brett Smith</name>
+			<email>brett@hypersocket.com</email>
+		</developer>
+	</developers>
+	
+	
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<testSourceDirectory>src/test/java</testSourceDirectory>
@@ -54,18 +83,18 @@
 					<executions>
 						<execution>
 							<id>javadoc-jar</id>
-							<phase>package</phase>
+							<phase>deploy</phase>
 							<goals>
 								<goal>jar</goal>
 							</goals>
 							<configuration>
+								<additionalparam>-Xdoclint:none</additionalparam>
 								<!-- switch on dependency-driven aggregation -->
 								<includeDependencySources>false</includeDependencySources>
 								<dependencySourceIncludes>
 									<!-- include ONLY dependencies I control -->
 									<dependencySourceInclude>com.sshtools:*</dependencySourceInclude>
 								</dependencySourceIncludes>
-								<additionalparam>-Xdoclint:none</additionalparam>
 							</configuration>
 						</execution>
 					</executions>
@@ -156,25 +185,6 @@
 		</profile>
 	</profiles>
 
-	<licenses>
-		<license>
-			<name>Apache License Version 2.0</name>
-			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<scm>
-		<url>https://github.com/sshtools/ui</url>
-		<connection>https://github.com/sshtools/ui.git</connection>
-	</scm>
-	<developers>
-		<developer>
-			<id>brett</id>
-			<name>Brett Smith</name>
-			<email>brett@nervepoint.com</email>
-		</developer>
-	</developers>
-
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh-sshtools</id>
@@ -185,6 +195,7 @@
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
+
 
 	<dependencies>
 		<dependency>
