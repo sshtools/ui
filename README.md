@@ -1,3 +1,3 @@
 # ui
 
-Utility classes used in a number of SSHTools AWT/Swing UI projects.
+Utility classes used in a number of SSHTOOLS AWT/Swing UI projects.
