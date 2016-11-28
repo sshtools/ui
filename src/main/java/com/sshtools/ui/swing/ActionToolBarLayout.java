@@ -85,11 +85,12 @@ public class ActionToolBarLayout implements LayoutManager {
 			// Work out how many growing components there are
 			int grower = 0;
 			int taken = 0;
-			int h = 0;
+			int availableH = target.isPreferredSizeSet() ? target.getPreferredSize().height : 0;
+			int maxH = 0;
 			for (int i = 0; i < count; i++) {
 				c = target.getComponent(i);
 				z = c.getPreferredSize();
-				h = Math.max(z.height, h);
+				maxH = Math.max(z.height, maxH);
 				String con = constraints.get(c);
 				if ("grow".equals(con)) {
 					grower++;
@@ -100,9 +101,11 @@ public class ActionToolBarLayout implements LayoutManager {
 					taken += gap;
 				}
 			}
+			if(maxH > availableH)
+				availableH = maxH;
 			int available = s.width - taken - insets.left - insets.right - 1;
 			int eachGrower = grower == 0 ? 0 : available / grower;
-
+			
 			for (int i = 0; i < count && overunIndex == -1; i++) {
 				c = target.getComponent(i);
 				if (c != expandComponent) {
@@ -112,18 +115,17 @@ public class ActionToolBarLayout implements LayoutManager {
 						z.width = eachGrower;
 					}
 					z.width = Math.max(c.getMinimumSize().width, z.width);
-					// int off = (h - z.height) / 2;
-					int off = 0;
+					int off = (availableH - maxH) / 2;
 					if (z.width + x >= ((s.width - insets.left) - expanderWidth)) {
 						if (wrap) {
-							y += h;
+							y += availableH;
 							x = insets.left;
-							c.setBounds(x, y + off, z.width, h);
+							c.setBounds(x, y + off, z.width, maxH);
 						} else {
 							overunIndex = i;
 						}
 					} else {
-						c.setBounds(x, y + off, z.width, h);
+						c.setBounds(x, y + off, z.width, maxH);
 					}
 					x += z.width + gap;
 				}
@@ -139,7 +141,7 @@ public class ActionToolBarLayout implements LayoutManager {
 			if (e != null) {
 				if (overunIndex != -1) {
 					Rectangle r = new Rectangle(s.width - insets.right
-							- e.width, insets.top, e.width, h);
+							- e.width, insets.top, e.width, maxH);
 					expandComponent.setBounds(r);
 				} else {
 					expandComponent.setBounds(0, 0, 0, 0);
