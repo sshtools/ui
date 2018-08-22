@@ -26,12 +26,14 @@ import java.beans.PropertyChangeListener;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 
 public class ActionButton extends JButton {
 	// Private statics
-	private final static Insets INSETS = new Insets(0, 0, 0, 0);
+	private final static Insets INSETS = new Insets(4, 4, 4, 4);
 	// Private instance variables
 	private boolean hideText;
 	private boolean enablePlasticWorkaround;
@@ -41,11 +43,10 @@ public class ActionButton extends JButton {
 	 * Creates a new button component from an AppAction. Action text will always
 	 * be show.
 	 * 
-	 * @param action
-	 *            action
+	 * @param action action
 	 */
 	public ActionButton(AppAction action) {
-		this(action, AppAction.SMALL_ICON);
+		this(action, Action.SMALL_ICON);
 	}
 
 	/**
@@ -54,23 +55,19 @@ public class ActionButton extends JButton {
 	 * property with a name of {@link AppAction.TEXT_ON_TOOLBAR}and a value of
 	 * <code>Boolean.TRUE</code> then text text will be shown on the
 	 * 
-	 * @param action
-	 *            action
-	 * @param showSelectiveText
-	 *            show 'selective' text.
+	 * @param action action
+	 * @param showSelectiveText show 'selective' text.
 	 */
 	public ActionButton(AppAction action, boolean showSelectiveText) {
-		this(action, AppAction.SMALL_ICON, showSelectiveText);
+		this(action, Action.SMALL_ICON, showSelectiveText);
 	}
 
 	/**
 	 * Creates a new button component from an AppAction. Action text will always
 	 * be shown.
 	 * 
-	 * @param action
-	 *            action
-	 * @param iconKey
-	 *            key for icon
+	 * @param action action
+	 * @param iconKey key for icon
 	 */
 	public ActionButton(AppAction action, String iconKey) {
 		init(action, iconKey, false, true);
@@ -82,24 +79,19 @@ public class ActionButton extends JButton {
 	 * property with a name of {@link AppAction.TEXT_ON_TOOLBAR}and a value of
 	 * <code>Boolean.TRUE</code> then text text will be shown on the
 	 * 
-	 * @param action
-	 *            action
-	 * @param iconKey
-	 *            key for icon
-	 * @param showSelectiveText
-	 *            show 'selective' text.
+	 * @param action action
+	 * @param iconKey key for icon
+	 * @param showSelectiveText show 'selective' text.
 	 */
-	public ActionButton(AppAction action, String iconKey,
-			boolean showSelectiveText) {
+	public ActionButton(AppAction action, String iconKey, boolean showSelectiveText) {
 		init(action, iconKey, showSelectiveText, false);
 	}
 
-	private void init(AppAction a, final String iconKey,
-			boolean showSelectiveText, boolean alwaysShowText) {
-		enablePlasticWorkaround = UIManager.getLookAndFeel().getClass()
-				.getName().startsWith("com.jgoodies.looks.plastic.");
+	private void init(AppAction a, final String iconKey, boolean showSelectiveText, boolean alwaysShowText) {
+		enablePlasticWorkaround = UIManager.getLookAndFeel().getClass().getName().startsWith("com.jgoodies.looks.plastic.");
 		setAction(a);
 		addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseEntered(MouseEvent e) {
 				if (isEnabled()) {
 					if (hoverForeground != null) {
@@ -113,6 +105,7 @@ public class ActionButton extends JButton {
 				}
 			}
 
+			@Override
 			public void mouseExited(MouseEvent e) {
 				setBorderPainted(false);
 				setContentAreaFilled(enablePlasticWorkaround);
@@ -123,6 +116,7 @@ public class ActionButton extends JButton {
 			}
 		});
 		a.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getPropertyName().equals(iconKey)) {
 					Icon icon = (Icon) evt.getNewValue();
@@ -136,27 +130,30 @@ public class ActionButton extends JButton {
 		setContentAreaFilled(enablePlasticWorkaround);
 		if (a != null && a.getValue(Action.ACCELERATOR_KEY) != null) {
 			setMnemonic(0);
-			registerKeyboardAction(a,
-					(KeyStroke) a.getValue(Action.ACCELERATOR_KEY),
-					JButton.WHEN_IN_FOCUSED_WINDOW);
+			registerKeyboardAction(a, (KeyStroke) a.getValue(Action.ACCELERATOR_KEY), JComponent.WHEN_IN_FOCUSED_WINDOW);
 		}
 		setIcon((Icon) a.getValue(iconKey));
-		if ((Boolean.TRUE.equals(a.getValue(AppAction.TEXT_ON_TOOLBAR)) && showSelectiveText)
-				|| alwaysShowText) {
+		if ((Boolean.TRUE.equals(a.getValue(AppAction.TEXT_ON_TOOLBAR)) && showSelectiveText) || alwaysShowText) {
 			setHideText(false);
 		} else {
 			setHideText(true);
 		}
 	}
 
+	@Override
 	public Insets getMargin() {
-		return INSETS;
+		Insets insets = UIManager.getInsets("Button.margin");
+//		if (insets == null)
+//			return INSETS;
+		return insets;
 	}
 
+	@Override
 	public boolean isRequestFocusEnabled() {
 		return false;
 	}
 
+	@Override
 	public boolean isFocusTraversable() {
 		return false;
 	}
@@ -164,18 +161,18 @@ public class ActionButton extends JButton {
 	/**
 	 * Set whether the button text for this component should be shown
 	 * 
-	 * @param hideText
-	 *            hide button text
+	 * @param hideText hide button text
 	 */
 	public void setHideText(boolean hideText) {
 		if (this.hideText != hideText) {
 			firePropertyChange("hideText", this.hideText, hideText);
 		}
 		this.hideText = hideText;
-		this.setHorizontalTextPosition(ActionButton.RIGHT);
+		this.setHorizontalTextPosition(SwingConstants.RIGHT);
 		repaint();
 	}
 
+	@Override
 	public String getText() {
 		return hideText ? null : super.getText();
 	}

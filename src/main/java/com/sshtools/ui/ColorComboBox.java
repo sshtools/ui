@@ -16,17 +16,15 @@
 package com.sshtools.ui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
-import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
 import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
@@ -34,84 +32,128 @@ import javax.swing.event.ChangeListener;
 
 import com.sshtools.ui.swing.ArrowIcon;
 import com.sshtools.ui.swing.ColorIcon;
+import com.sshtools.ui.swing.ComboBoxRenderer;
 
-@SuppressWarnings("serial")
 public class ColorComboBox extends JComboBox<Color> {
-	static class ColorComboModel extends AbstractListModel<Color> implements ComboBoxModel<Color> {
-		private Vector<Color> colors = new Vector<Color>();
+	private static final long serialVersionUID = 1L;
+
+	/**
+	 * Creates a new ColorComboBox object.
+	 */
+	public ColorComboBox() {
+		this(null);
+	}
+
+	public ColorComboBox(Color color) {
+		super();
+		setModel(new ColorModel());
+		setColor(color);
+		setRenderer(new ColorRenderer(this));
+		addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				if (getSelectedItem() == null) {
+					chooseCustomColor();
+				} else {
+					fireChangeEvent();
+				}
+			}
+		});
+	}
+
+	protected void fireChangeEvent() {
+		ChangeEvent evt = new ChangeEvent(this);
+		ChangeListener[] l = (ChangeListener[]) listenerList.getListeners(ChangeListener.class);
+		for (int i = (l.length - 1); i >= 0; i--) {
+			l[i].stateChanged(evt);
+		}
+	}
+
+	public void addChangeListener(ChangeListener l) {
+		listenerList.add(ChangeListener.class, l);
+	}
+
+	public void removeChangeListener(ChangeListener l) {
+		listenerList.remove(ChangeListener.class, l);
+	}
+
+	private void chooseCustomColor() {
+		Color c = JColorChooser.showDialog(this, "Custom Color", Color.black);
+		if (c != null) {
+			setColor(c);
+			fireChangeEvent();
+		}
+	}
+
+	public void setColor(Color c) {
+		for (int i = 0; i < getModel().getSize() - 1; i++) {
+			Color z = getModel().getElementAt(i);
+			if (z != null && z.equals(c)) {
+				setSelectedIndex(i);
+				return;
+			}
+		}
+		if (c != null) {
+			((ColorModel) getModel()).addElement(c);
+		}
+	}
+
+	public Color getColor() {
+		return (Color) getSelectedItem();
+	}
+
+	class ColorModel extends DefaultListModel<Color> implements ComboBoxModel<Color> {
+		private static final long serialVersionUID = 1L;
 		private Object selected;
 
-		ColorComboModel() {
-			colors = new Vector<Color>();
-			colors.addElement(Color.black);
-			colors.addElement(Color.white);
-			colors.addElement(Color.red);
-			colors.addElement(Color.orange);
-			colors.addElement(Color.yellow);
-			colors.addElement(Color.green);
-			colors.addElement(Color.blue);
-			colors.addElement(Color.cyan);
-			colors.addElement(Color.magenta);
-			colors.addElement(Color.pink);
-			colors.addElement(Color.lightGray);
-			colors.addElement(Color.gray);
-			colors.addElement(Color.darkGray);
-			selected = colors.elementAt(0);
-		}
-
-		public void addColor(Color c) {
-			int idx = colors.size();
-			colors.addElement(c);
-			selected = c;
-			fireIntervalAdded(this, idx, idx);
+		ColorModel() {
+			addElement(Color.black);
+			addElement(Color.white);
+			addElement(Color.red);
+			addElement(Color.orange);
+			addElement(Color.yellow);
+			addElement(Color.green);
+			addElement(Color.blue);
+			addElement(Color.cyan);
+			addElement(Color.magenta);
+			addElement(Color.pink);
+			addElement(Color.lightGray);
+			addElement(Color.gray);
+			addElement(Color.darkGray);
+			addElement(null);
 		}
 
 		@Override
-		public Color getElementAt(int i) {
-			if (i == colors.size()) {
-				return null;
-			} else {
-				return colors.elementAt(i);
-			}
+		public void setSelectedItem(Object selected) {
+			this.selected = selected;
+			fireContentsChanged(this, 0, getSize());
 		}
 
 		@Override
 		public Object getSelectedItem() {
 			return selected;
 		}
-
-		@Override
-		public int getSize() {
-			return colors.size() + 1;
-		}
-
-		@Override
-		public void setSelectedItem(Object sel) {
-			selected = sel;
-		}
 	}
 
-	class ColorRenderer extends DefaultListCellRenderer {
+	class ColorRenderer extends ComboBoxRenderer<Color> {
 		private ColorIcon icon;
 
-		ColorRenderer() {
+		ColorRenderer(JComboBox<Color> combo) {
+			super(combo);
 			icon = new ColorIcon(Color.black, new Dimension(10, 10), Color.black);
-			// setBorder(BorderFactory.createEmptyBorder(0, 16, 0, 0));
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+		protected void decorate(JLabel label, JList<? extends Color> list, Color value, int index, boolean isSelected,
 				boolean cellHasFocus) {
-			super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			Color c = (Color) value;
 			// If the value is null. Then this signifies custom color
 			if (c == null) {
-				setIcon(new ArrowIcon(SwingConstants.EAST));
-				setText("Choose ....");
+				label.setIcon(new ArrowIcon(ArrowIcon.EAST));
+				label.setText("Choose ....");
 			} else {
 				// Set up the icon
 				icon.setColor(c);
-				setIcon(icon);
+				label.setIcon(icon);
 				// Set the text. If the color is a well known one with a name,
 				// render
 				// the name. Otherwise use the RGB values
@@ -143,71 +185,8 @@ public class ColorComboBox extends JComboBox<Color> {
 				} else if (c.equals(Color.darkGray)) {
 					s = "Dark Gray";
 				}
-				setText(s);
+				label.setText(s);
 			}
-			//
-			return this;
-		}
-	}
-
-	public ColorComboBox() {
-		this(null);
-	}
-
-	public ColorComboBox(Color color) {
-		super(new ColorComboModel());
-		setColor(color);
-		setRenderer(new ColorRenderer());
-		addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				if (getSelectedItem() == null) {
-					chooseCustomColor();
-				} else {
-					fireChangeEvent();
-				}
-			}
-		});
-	}
-
-	public void addChangeListener(ChangeListener l) {
-		listenerList.add(ChangeListener.class, l);
-	}
-
-	private void chooseCustomColor() {
-		Color c = JColorChooser.showDialog(this, "Custom Color", Color.black);
-		if (c != null) {
-			setColor(c);
-			fireChangeEvent();
-		}
-	}
-
-	protected void fireChangeEvent() {
-		ChangeEvent evt = new ChangeEvent(this);
-		ChangeListener[] l = listenerList.getListeners(ChangeListener.class);
-		for (int i = (l.length - 1); i >= 0; i--) {
-			l[i].stateChanged(evt);
-		}
-	}
-
-	public Color getColor() {
-		return (Color) getSelectedItem();
-	}
-
-	public void removeChangeListener(ChangeListener l) {
-		listenerList.remove(ChangeListener.class, l);
-	}
-
-	public void setColor(Color c) {
-		for (int i = 0; i < (getModel().getSize() - 1); i++) {
-			Color z = getModel().getElementAt(i);
-			if (z.equals(c)) {
-				setSelectedIndex(i);
-				return;
-			}
-		}
-		if (c != null) {
-			((ColorComboModel) getModel()).addColor(c);
 		}
 	}
 }
