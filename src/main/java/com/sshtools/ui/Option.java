@@ -43,9 +43,14 @@ public class Option {
 	public static final Option CHOICE_CANCEL = new Option(
 			Messages.getString("OptionDialog.cancel")); //$NON-NLS-1$
 
+	public static final Option CHOICE_SAVE = new Option(
+			Messages.getString("OptionDialog.save")); //$NON-NLS-1$
+
 	public static final Option CHOICES_YES_NO[] = { CHOICE_YES, CHOICE_NO };
 
 	public static final Option CHOICES_OK_CANCEL[] = { CHOICE_OK, CHOICE_CANCEL };
+
+	public static final Option CHOICES_SAVE_CANCEL[] = { CHOICE_SAVE, CHOICE_CANCEL };
 
 	public static final Option CHOICES_OK[] = { CHOICE_OK };
 
