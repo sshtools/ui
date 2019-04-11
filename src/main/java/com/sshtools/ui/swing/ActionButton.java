@@ -37,7 +37,7 @@ public class ActionButton extends JButton {
 	// Private instance variables
 	private boolean hideText;
 	private boolean enablePlasticWorkaround;
-	private Color hoverForeground, oldForeground;
+	private Color hoverForeground, oldForeground, oldBackground;
 
 	/**
 	 * Creates a new button component from an AppAction. Action text will always
@@ -99,6 +99,8 @@ public class ActionButton extends JButton {
 						setForeground(hoverForeground);
 					}
 					setBorderPainted(true);
+					oldBackground = getBackground();
+					setBackground(new Color(0, true));
 					if (!enablePlasticWorkaround) {
 						setContentAreaFilled(true);
 					}
@@ -109,10 +111,20 @@ public class ActionButton extends JButton {
 			public void mouseExited(MouseEvent e) {
 				setBorderPainted(false);
 				setContentAreaFilled(enablePlasticWorkaround);
+				setBackground(Color.GREEN);
 				if (oldForeground != null) {
 					setForeground(oldForeground);
 					oldForeground = null;
 				}
+				if (oldBackground != null) {
+					setForeground(oldForeground);
+					oldForeground = null;
+				}
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				setBackground(new Color(0, true));
 			}
 		});
 		a.addPropertyChangeListener(new PropertyChangeListener() {

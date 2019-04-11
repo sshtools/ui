@@ -25,6 +25,8 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import net.miginfocom.swing.MigLayout;
+
 /**
  * Simple Swing component that just shows an icon and some boldened text on a
  * darkened background. The icon and text can also be derived from an Action.
@@ -32,14 +34,13 @@ import javax.swing.JPanel;
  * @author $Author: brett $
  */
 
+@SuppressWarnings("serial")
 public class FolderBar extends JPanel {
 
 	// Private instance variables
 
 	private JLabel textLabel;
-
 	private JLabel iconLabel;
-
 	private Action action;
 
 	/**
@@ -77,7 +78,10 @@ public class FolderBar extends JPanel {
 		setOpaque(true);
 		setBackground(getBackground().darker());
 		add(textLabel = new JLabel(), BorderLayout.CENTER);
-		add(iconLabel = new JLabel(), BorderLayout.WEST);
+		JPanel p = new JPanel(new MigLayout());
+		p.setOpaque(false);
+		p.add(iconLabel = new JLabel());
+		add(p, BorderLayout.WEST);
 		textLabel.setVerticalAlignment(JLabel.CENTER);
 		textLabel.setVerticalTextPosition(JLabel.BOTTOM);
 		textLabel.setForeground(Color.lightGray);

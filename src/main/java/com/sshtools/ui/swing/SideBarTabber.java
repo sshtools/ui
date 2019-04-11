@@ -29,6 +29,8 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 
+import com.sshtools.ui.swing.ScrollingPanel.ButtonMode;
+
 @SuppressWarnings("serial")
 public class SideBarTabber extends JPanel implements Tabber {
 	private TabToolBar toolBar;
@@ -68,6 +70,14 @@ public class SideBarTabber extends JPanel implements Tabber {
 		centerPane.add(viewPane, BorderLayout.CENTER);
 		add(toolBar, BorderLayout.WEST);
 		add(centerPane, BorderLayout.CENTER);
+	}
+	
+	public ButtonMode getButtonMode() {
+		return toolBar.getButtonMode();
+	}
+	
+	public void setButtonMode(ButtonMode buttonMode) {
+		toolBar.setButtonMode(buttonMode);
 	}
 
 	public int getFixedToolBarWidth() {

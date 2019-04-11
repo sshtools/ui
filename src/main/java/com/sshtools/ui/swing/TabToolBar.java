@@ -51,6 +51,7 @@ public class TabToolBar extends JPanel {
 	private FolderBar folderBar;
 	private int fixedWidth = -1;
 	private Color toolBarBackground;
+	private ButtonMode buttonMode = ButtonMode.ENABLEMENT;
 
 	/**
 	 * Construct a new TabToolBar
@@ -65,6 +66,17 @@ public class TabToolBar extends JPanel {
 		// Create the constraints for use later
 		setBackground(toolBarBackground);
 		setOpaque(true);
+	}
+
+	public ButtonMode getButtonMode() {
+		return buttonMode;
+	}
+
+	public void setButtonMode(ButtonMode buttonMode) {
+		this.buttonMode = buttonMode;
+		for (ContextPanel p : contextList) {
+			p.scroller.setButtonMode(buttonMode);
+		}
 	}
 
 	public void setFixedWidth(int fixedWidth) {
@@ -218,6 +230,7 @@ public class TabToolBar extends JPanel {
 						return super.getMinimumSize();
 				}
 			};
+			scroller.setButtonMode(buttonMode);
 			scroller.setOpaque(false);
 			add(scroller, BorderLayout.CENTER);
 			this.name = name;

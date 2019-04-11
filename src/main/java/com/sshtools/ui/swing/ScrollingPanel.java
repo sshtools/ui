@@ -224,7 +224,7 @@ public class ScrollingPanel extends JPanel implements ActionListener {
 		}
 
 		public void layoutContainer(Container parent) {
-			List<Component> clist = getIncluded(parent);
+			List<Component> clist = new ArrayList<>(Arrays.asList(parent.getComponents()));
 			int components = clist.size();
 			if (orientation == SwingConstants.VERTICAL) {
 				int h = 0;
@@ -232,7 +232,10 @@ public class ScrollingPanel extends JPanel implements ActionListener {
 				for (int i = 0; i < components; i++) {
 					Component c = clist.get(i);
 					if (i == 0 || i == components - 1) {
-						h += c.getPreferredSize().height;
+						if (buttonMode == ButtonMode.ENABLEMENT || buttonMode == ButtonMode.VISIBILITY
+								|| (buttonMode == ButtonMode.VISIBILITY_AND_SIZE && c.isVisible())) {
+							h += c.getPreferredSize().height;
+						}
 					}
 				}
 				// The rest of the space is for all other components
@@ -242,8 +245,11 @@ public class ScrollingPanel extends JPanel implements ActionListener {
 				for (int i = 0; i < components; i++) {
 					Component c = clist.get(i);
 					if (i == 0 || i == components - 1) {
-						c.setBounds(0, y, parent.getWidth(), c.getPreferredSize().height);
-						y += c.getPreferredSize().height;
+						if (buttonMode == ButtonMode.ENABLEMENT || buttonMode == ButtonMode.VISIBILITY
+								|| (buttonMode == ButtonMode.VISIBILITY_AND_SIZE && c.isVisible())) {
+							c.setBounds(0, y, parent.getWidth(), c.getPreferredSize().height);
+							y += c.getPreferredSize().height;
+						}
 					} else {
 						c.setBounds(0, y, parent.getWidth(), oy);
 						y += oy;
@@ -255,7 +261,10 @@ public class ScrollingPanel extends JPanel implements ActionListener {
 				for (int i = 0; i < components; i++) {
 					Component c = clist.get(i);
 					if (i == 0 || i == components - 1) {
-						w += c.getPreferredSize().width;
+						if (buttonMode == ButtonMode.ENABLEMENT || buttonMode == ButtonMode.VISIBILITY
+								|| (buttonMode == ButtonMode.VISIBILITY_AND_SIZE && c.isVisible())) {
+							w += c.getPreferredSize().width;
+						}
 					}
 				}
 				// The rest of the space is for all other components
@@ -265,8 +274,11 @@ public class ScrollingPanel extends JPanel implements ActionListener {
 				for (int i = 0; i < components; i++) {
 					Component c = clist.get(i);
 					if (i == 0 || i == components - 1) {
-						c.setBounds(x, 0, c.getPreferredSize().width, parent.getHeight());
-						x += c.getPreferredSize().width;
+						if (buttonMode == ButtonMode.ENABLEMENT || buttonMode == ButtonMode.VISIBILITY
+								|| (buttonMode == ButtonMode.VISIBILITY_AND_SIZE && c.isVisible())) {
+							c.setBounds(x, 0, c.getPreferredSize().width, parent.getHeight());
+							x += c.getPreferredSize().width;
+						}
 					} else {
 						c.setBounds(x, 0, ox, parent.getHeight());
 						x += ox;
@@ -278,14 +290,16 @@ public class ScrollingPanel extends JPanel implements ActionListener {
 		public Dimension minimumLayoutSize(Container parent) {
 			int w = 0;
 			int h = 0;
-			List<Component> clist = getIncluded(parent);
+			List<Component> clist = new ArrayList<>(Arrays.asList(parent.getComponents()));
 			int components = clist.size();
 			if (orientation == SwingConstants.VERTICAL) {
 				for (int i = 0; i < components; i++) {
 					Component c = clist.get(i);
 					w = Math.max(w, c.getPreferredSize().width);
 					if (i == 0 || i == components - 1) {
-						h += c.getPreferredSize().height;
+						if (buttonMode == ButtonMode.ENABLEMENT || buttonMode == ButtonMode.VISIBILITY
+								|| (buttonMode == ButtonMode.VISIBILITY_AND_SIZE && c.isVisible()))
+							h += c.getPreferredSize().height;
 					} else {
 						h += c.getMinimumSize().height;
 					}
@@ -295,7 +309,9 @@ public class ScrollingPanel extends JPanel implements ActionListener {
 					Component c = clist.get(i);
 					h = Math.max(h, c.getPreferredSize().height);
 					if (i == 0 || i == components - 1) {
-						w += c.getPreferredSize().width;
+						if (buttonMode == ButtonMode.ENABLEMENT || buttonMode == ButtonMode.VISIBILITY
+								|| (buttonMode == ButtonMode.VISIBILITY_AND_SIZE && c.isVisible()))
+							w += c.getPreferredSize().width;
 					} else {
 						w += c.getMinimumSize().width;
 					}
@@ -305,7 +321,7 @@ public class ScrollingPanel extends JPanel implements ActionListener {
 		}
 
 		public Dimension preferredLayoutSize(Container parent) {
-			List<Component> clist = getIncluded(parent);
+			List<Component> clist = new ArrayList<>(Arrays.asList(parent.getComponents()));
 			int components = clist.size();
 			if (orientation == SwingConstants.VERTICAL) {
 				int h = 0;
