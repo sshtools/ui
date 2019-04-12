@@ -17,6 +17,8 @@
 package com.sshtools.ui.swing;
 
 import java.awt.Color;
+import java.awt.Container;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -30,10 +32,10 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
 
+@SuppressWarnings("serial")
 public class ActionButton extends JButton {
-	// Private statics
-	private final static Insets INSETS = new Insets(4, 4, 4, 4);
 	// Private instance variables
 	private boolean hideText;
 	private boolean enablePlasticWorkaround;
@@ -87,8 +89,20 @@ public class ActionButton extends JButton {
 		init(action, iconKey, showSelectiveText, false);
 	}
 
+	private Color getParentBg() {
+		Container p = getParent();
+		while (p != null) {
+			if (!(p instanceof JComponent) || ((JComponent) p).isOpaque())
+				return p.getBackground();
+			p = p.getParent();
+		}
+		return new Color(56, 255, 255, 255);
+	}
+
 	private void init(AppAction a, final String iconKey, boolean showSelectiveText, boolean alwaysShowText) {
-		enablePlasticWorkaround = UIManager.getLookAndFeel().getClass().getName().startsWith("com.jgoodies.looks.plastic.");
+		String cn = UIManager.getLookAndFeel().getClass().getName();
+		boolean enableDarculaWorkaround = cn.startsWith("com.bulenkov.darcula.");
+		enablePlasticWorkaround = cn.startsWith("com.jgoodies.looks.plastic.");
 		setAction(a);
 		addMouseListener(new MouseAdapter() {
 			@Override
@@ -100,7 +114,7 @@ public class ActionButton extends JButton {
 					}
 					setBorderPainted(true);
 					oldBackground = getBackground();
-					setBackground(new Color(0, true));
+					setBackground(getParentBg());
 					if (!enablePlasticWorkaround) {
 						setContentAreaFilled(true);
 					}
@@ -111,20 +125,14 @@ public class ActionButton extends JButton {
 			public void mouseExited(MouseEvent e) {
 				setBorderPainted(false);
 				setContentAreaFilled(enablePlasticWorkaround);
-				setBackground(Color.GREEN);
 				if (oldForeground != null) {
 					setForeground(oldForeground);
 					oldForeground = null;
 				}
 				if (oldBackground != null) {
-					setForeground(oldForeground);
-					oldForeground = null;
+					setBackground(oldBackground);
+					oldBackground = null;
 				}
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				setBackground(new Color(0, true));
 			}
 		});
 		a.addPropertyChangeListener(new PropertyChangeListener() {
@@ -139,7 +147,7 @@ public class ActionButton extends JButton {
 			}
 		});
 		setBorderPainted(false);
-		setContentAreaFilled(enablePlasticWorkaround);
+		setContentAreaFilled(enablePlasticWorkaround && !enableDarculaWorkaround);
 		if (a != null && a.getValue(Action.ACCELERATOR_KEY) != null) {
 			setMnemonic(0);
 			registerKeyboardAction(a, (KeyStroke) a.getValue(Action.ACCELERATOR_KEY), JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -155,8 +163,8 @@ public class ActionButton extends JButton {
 	@Override
 	public Insets getMargin() {
 		Insets insets = UIManager.getInsets("Button.margin");
-//		if (insets == null)
-//			return INSETS;
+		// if (insets == null)
+		// return INSETS;
 		return insets;
 	}
 

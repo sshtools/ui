@@ -55,6 +55,10 @@ public class ScrollingPanel extends JPanel implements ActionListener {
 	}
 
 	public ScrollingPanel(JComponent component, final int orientation) {
+		this(component, orientation, true);
+	}
+
+	public ScrollingPanel(JComponent component, final int orientation, boolean actionButtons) {
 		this.orientation = orientation;
 		setLayout(new ScrollerLayout(orientation));
 		addComponentListener(new ComponentAdapter() {
@@ -62,12 +66,26 @@ public class ScrollingPanel extends JPanel implements ActionListener {
 				setAvailableActions();
 			}
 		});
-		north = new JButton(new ArrowIcon(orientation == SwingConstants.VERTICAL ? SwingConstants.NORTH : SwingConstants.WEST,
-				UIManager.getColor("controlShadow"), UIManager.getColor("Button.foreground"),
-				UIManager.getColor("controlLtHighlight")));
-		south = new JButton(new ArrowIcon(orientation == SwingConstants.VERTICAL ? SwingConstants.SOUTH : SwingConstants.EAST,
-				UIManager.getColor("controlShadow"), UIManager.getColor("Button.foreground"),
-				UIManager.getColor("controlLtHighlight")));
+		if (actionButtons) {
+			ActionButton northa = new ActionButton(new AppAction("Left", new ArrowIcon(orientation == SwingConstants.VERTICAL ? SwingConstants.NORTH : SwingConstants.WEST,
+					UIManager.getColor("controlShadow"), UIManager.getColor("Button.foreground"),
+					UIManager.getColor("controlLtHighlight"))));
+			northa.setHideText(true);
+			ActionButton southa = new ActionButton(new AppAction("Right", new ArrowIcon(orientation == SwingConstants.VERTICAL ? SwingConstants.SOUTH : SwingConstants.EAST,
+					UIManager.getColor("controlShadow"), UIManager.getColor("Button.foreground"),
+					UIManager.getColor("controlLtHighlight"))));
+			southa.setHideText(true);
+			north = northa;
+			south = southa;
+			
+		} else {
+			north = new JButton(new ArrowIcon(orientation == SwingConstants.VERTICAL ? SwingConstants.NORTH : SwingConstants.WEST,
+					UIManager.getColor("controlShadow"), UIManager.getColor("Button.foreground"),
+					UIManager.getColor("controlLtHighlight")));
+			south = new JButton(new ArrowIcon(orientation == SwingConstants.VERTICAL ? SwingConstants.SOUTH : SwingConstants.EAST,
+					UIManager.getColor("controlShadow"), UIManager.getColor("Button.foreground"),
+					UIManager.getColor("controlLtHighlight")));
+		}
 		viewport = new JViewport();
 		viewport.setView(component);
 		add(north);
