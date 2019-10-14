@@ -90,82 +90,84 @@ public class OverlayIcon implements Icon {
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		if (icon != null) {
 			icon.paintIcon(c, g, x, y);
-
-			switch (position) {
-			// TODO complete compass points and center
-			case SwingConstants.NORTH:
-				overlayIcon.paintIcon(
-						c,
-						g,
-						x
-								+ ((icon.getIconWidth() - overlayIcon
-										.getIconWidth()) / 2), y);
-				break;
-			case SwingConstants.CENTER:
-				overlayIcon.paintIcon(
-						c,
-						g,
-						x
-								+ ((icon.getIconWidth() - overlayIcon
-										.getIconWidth()) / 2),
-						y
-								+ ((icon.getIconHeight() - overlayIcon
-										.getIconHeight()) / 2));
-				break;
-			case SwingConstants.EAST:
-				overlayIcon.paintIcon(
-						c,
-						g,
-						(x + icon.getIconWidth()) - overlayIcon.getIconWidth(),
-						y
-								+ ((icon.getIconHeight() - overlayIcon
-										.getIconHeight()) / 2));
-				break;
-			case SwingConstants.WEST:
-				overlayIcon.paintIcon(
-						c,
-						g,
-						x,
-						y
-								+ ((icon.getIconHeight() - overlayIcon
-										.getIconHeight()) / 2));
-				break;
-			case SwingConstants.NORTH_WEST:
-				overlayIcon.paintIcon(c, g, x, y);
-				break;
-			case SwingConstants.SOUTH_WEST:
-				overlayIcon.paintIcon(c, g, x, (y + icon.getIconHeight())
-						- overlayIcon.getIconHeight());
-				break;
-			case SwingConstants.NORTH_EAST:
-				overlayIcon.paintIcon(c, g, (x + icon.getIconWidth())
-						- overlayIcon.getIconWidth(), y);
-				break;
-			case SwingConstants.SOUTH_EAST:
-				overlayIcon.paintIcon(
-						c,
-						g,
-						(x + icon.getIconWidth()) - overlayIcon.getIconWidth(),
-						(y + icon.getIconHeight())
-								- overlayIcon.getIconHeight());
-				break;
-			case SwingConstants.SOUTH:
-				overlayIcon.paintIcon(
-						c,
-						g,
-						x
-								+ ((icon.getIconWidth() - overlayIcon
-										.getIconWidth()) / 2),
-						(y + icon.getIconHeight())
-								- overlayIcon.getIconHeight());
-				break;
-			default:
-				overlayIcon.paintIcon(
-						c,
-						g,
-						(x + icon.getIconWidth()) - overlayIcon.getIconWidth(),
-						(y + icon.getIconHeight())
-								- overlayIcon.getIconHeight());
+			if(overlayIcon != null) {
+	
+				switch (position) {
+				// TODO complete compass points and center
+				case SwingConstants.NORTH:
+					overlayIcon.paintIcon(
+							c,
+							g,
+							x
+									+ ((icon.getIconWidth() - overlayIcon
+											.getIconWidth()) / 2), y);
+					break;
+				case SwingConstants.CENTER:
+					overlayIcon.paintIcon(
+							c,
+							g,
+							x
+									+ ((icon.getIconWidth() - overlayIcon
+											.getIconWidth()) / 2),
+							y
+									+ ((icon.getIconHeight() - overlayIcon
+											.getIconHeight()) / 2));
+					break;
+				case SwingConstants.EAST:
+					overlayIcon.paintIcon(
+							c,
+							g,
+							(x + icon.getIconWidth()) - overlayIcon.getIconWidth(),
+							y
+									+ ((icon.getIconHeight() - overlayIcon
+											.getIconHeight()) / 2));
+					break;
+				case SwingConstants.WEST:
+					overlayIcon.paintIcon(
+							c,
+							g,
+							x,
+							y
+									+ ((icon.getIconHeight() - overlayIcon
+											.getIconHeight()) / 2));
+					break;
+				case SwingConstants.NORTH_WEST:
+					overlayIcon.paintIcon(c, g, x, y);
+					break;
+				case SwingConstants.SOUTH_WEST:
+					overlayIcon.paintIcon(c, g, x, (y + icon.getIconHeight())
+							- overlayIcon.getIconHeight());
+					break;
+				case SwingConstants.NORTH_EAST:
+					overlayIcon.paintIcon(c, g, (x + icon.getIconWidth())
+							- overlayIcon.getIconWidth(), y);
+					break;
+				case SwingConstants.SOUTH_EAST:
+					overlayIcon.paintIcon(
+							c,
+							g,
+							(x + icon.getIconWidth()) - overlayIcon.getIconWidth(),
+							(y + icon.getIconHeight())
+									- overlayIcon.getIconHeight());
+					break;
+				case SwingConstants.SOUTH:
+					overlayIcon.paintIcon(
+							c,
+							g,
+							x
+									+ ((icon.getIconWidth() - overlayIcon
+											.getIconWidth()) / 2),
+							(y + icon.getIconHeight())
+									- overlayIcon.getIconHeight());
+					break;
+				default:
+					overlayIcon.paintIcon(
+							c,
+							g,
+							(x + icon.getIconWidth()) - overlayIcon.getIconWidth(),
+							(y + icon.getIconHeight())
+									- overlayIcon.getIconHeight());
+				}
 			}
 		}
 	}
