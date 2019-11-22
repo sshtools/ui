@@ -93,10 +93,11 @@ public class ListSearch implements KeyListener {
 	public void keyTyped(KeyEvent e) {
 		char ch = e.getKeyChar();
 
-		if (!e.isControlDown() && !e.isAltDown() && Character.isDefined(ch)
+		if (ch != KeyEvent.CHAR_UNDEFINED && !e.isControlDown() && !e.isAltDown() && Character.isDefined(ch)
 				&& e.getKeyChar() != KeyEvent.VK_ENTER
 				&& e.getKeyChar() != KeyEvent.VK_BACK_SPACE
 				&& e.getKeyChar() != KeyEvent.VK_ESCAPE
+				&& e.getKeyChar() != KeyEvent.VK_DELETE
 				&& (searchWindow == null || !searchWindow.isVisible())) {
 			showSearchWindow(ch, e);
 			e.consume();
