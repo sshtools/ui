@@ -26,7 +26,6 @@ import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -94,6 +93,7 @@ public class ColorComboBox extends JComboBox<Color> {
 		}
 		if (c != null) {
 			((ColorModel) getModel()).addElement(c);
+			setSelectedIndex(((ColorModel) getModel()).size() -1);
 		}
 	}
 
