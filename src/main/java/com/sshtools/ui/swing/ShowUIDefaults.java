@@ -42,6 +42,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.Border;
 import javax.swing.table.TableCellRenderer;
 
@@ -60,24 +61,17 @@ public class ShowUIDefaults extends JFrame implements ActionListener {
 		tabbedPane = getTabbedPane();
 		getContentPane().add(tabbedPane);
 
-		JPanel buttons = new JPanel();
-		buttons.setLayout(new GridLayout(1, 3));
+
+		LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();JPanel buttons = new JPanel();
+		buttons.setLayout(new GridLayout(1, lafs.length));
 		getContentPane().add(buttons, BorderLayout.SOUTH);
-
-		JButton metal = new JButton("Metal");
-		metal.setActionCommand("javax.swing.plaf.metal.MetalLookAndFeel");
-		metal.addActionListener(this);
-		buttons.add(metal);
-
-		JButton windows = new JButton("Windows");
-		windows.setActionCommand("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-		windows.addActionListener(this);
-		buttons.add(windows);
-
-		JButton motif = new JButton("Motif");
-		motif.setActionCommand("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-		motif.addActionListener(this);
-		buttons.add(motif);
+		
+		for(LookAndFeelInfo info : lafs) {
+			JButton metal = new JButton(info.getName());
+			metal.setActionCommand(info.getClassName());
+			metal.addActionListener(this);
+			buttons.add(metal);
+		}
 
 	}
 

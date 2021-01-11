@@ -60,14 +60,17 @@ public class ActionToolBarLayout implements LayoutManager {
 		return expandComponent;
 	}
 
+	@Override
 	public void addLayoutComponent(String name, Component comp) {
 		constraints.put(comp, name);
 	}
 
+	@Override
 	public void removeLayoutComponent(Component c) {
 		constraints.remove(c);
 	}
 
+	@Override
 	public void layoutContainer(Container target) {
 		synchronized (target.getTreeLock()) {
 			Insets insets = target.getInsets();
@@ -150,6 +153,7 @@ public class ActionToolBarLayout implements LayoutManager {
 		}
 	}
 
+	@Override
 	public Dimension minimumLayoutSize(Container target) {
 		synchronized (target.getTreeLock()) {
 			Insets insets = target.getInsets();
@@ -168,6 +172,7 @@ public class ActionToolBarLayout implements LayoutManager {
 		}
 	}
 
+	@Override
 	public Dimension preferredLayoutSize(Container target) {
 		synchronized (target.getTreeLock()) {
 			Insets insets = target.getInsets();

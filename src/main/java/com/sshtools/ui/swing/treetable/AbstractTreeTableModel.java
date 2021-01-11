@@ -208,7 +208,12 @@ public abstract class AbstractTreeTableModel implements TreeTableModel {
 	//
 
 	public Class getColumnClass(int column) {
-		return Object.class;
+		switch(column) {
+		case 0:
+			return TreeTableModel.class;
+		default:
+			return Object.class;
+		}
 	}
 
 	/**

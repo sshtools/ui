@@ -400,7 +400,6 @@ public class DnDTabbedPane extends JTabbedPane {
 
 	class CDropTargetListener implements DropTargetListener {
 		public void dragEnter(DropTargetDragEvent e) {
-			System.out.println("In  window");
 			outOfWindow = false;
 			if (isDragAcceptable(e))
 				e.acceptDrag(e.getDropAction());
@@ -413,7 +412,6 @@ public class DnDTabbedPane extends JTabbedPane {
 			if (context != null) {
 				context.setCursor(DragSource.DefaultMoveDrop);
 			}
-			System.out.println("Out ofg window");
 		}
 
 		public void dropActionChanged(DropTargetDragEvent e) {
@@ -438,7 +436,6 @@ public class DnDTabbedPane extends JTabbedPane {
 		}
 
 		public void drop(DropTargetDropEvent e) {
-			System.out.println(e.getLocation() + " out of window: " + outOfWindow);
 			if (!outOfWindow) {
 				if (isDropAcceptable(e)) {
 					convertTab(dragTabIndex, getTargetTabIndex(e.getLocation()));
