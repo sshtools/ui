@@ -28,15 +28,10 @@ import javax.swing.event.ChangeListener;
  * @author $author$
  * @version $Revision: 1.1.2.3 $
  */
-
-public class TabbedTabber
-
-extends ClosableTabbedPane implements Tabber {
-
+public class TabbedTabber extends ClosableTabbedPane implements Tabber {
 	/**
 	 * Creates a new TabbedTabber object.
 	 */
-
 	public TabbedTabber() {
 		this(TOP);
 	}
@@ -46,7 +41,6 @@ extends ClosableTabbedPane implements Tabber {
 	 * 
 	 * @param tabPlacement
 	 */
-
 	public TabbedTabber(int tabPlacement) {
 		super(tabPlacement);
 		addChangeListener(new ChangeListener() {
@@ -55,9 +49,7 @@ extends ClosableTabbedPane implements Tabber {
 					getTabAt(getSelectedIndex()).tabSelected();
 				}
 			}
-
 		});
-
 	}
 
 	/**
@@ -67,10 +59,8 @@ extends ClosableTabbedPane implements Tabber {
 	 * 
 	 * @return
 	 */
-
 	public Tab getTabAt(int i) {
 		return ((TabPanel) getComponentAt(i)).getTab();
-
 	}
 
 	/**
@@ -78,29 +68,30 @@ extends ClosableTabbedPane implements Tabber {
 	 * 
 	 * @return
 	 */
-
 	public boolean validateTabs() {
 		for (int i = 0; i < getTabCount(); i++) {
 			Tab tab = ((TabPanel) getComponentAt(i)).getTab();
-			if (!tab.validateTab()) {
+			try {
+				if (!tab.validateTab()) {
+					setSelectedIndex(i);
+					return false;
+				}
+			} catch (TabValidationException tve) {
 				setSelectedIndex(i);
-				return false;
+				throw tve;
 			}
 		}
 		return true;
-
 	}
 
 	/**
-     * 
-     */
-
+	 * 
+	 */
 	public void applyTabs() {
 		for (int i = 0; i < getTabCount(); i++) {
 			Tab tab = ((TabPanel) getComponentAt(i)).getTab();
 			tab.applyTab();
 		}
-
 	}
 
 	public synchronized Tab getSelectedTab() {
@@ -131,15 +122,11 @@ extends ClosableTabbedPane implements Tabber {
 	 * 
 	 * @param tab
 	 */
-
 	public void addTab(Tab tab) {
-		addTab(tab.getTabTitle(), tab.getTabIcon(), new TabPanel(tab),
-				tab.getTabToolTipText());
-
+		addTab(tab.getTabTitle(), tab.getTabIcon(), new TabPanel(tab), tab.getTabToolTipText());
 	}
 
 	class TabPanel extends JPanel {
-
 		private Tab tab;
 
 		TabPanel(Tab tab) {
@@ -147,14 +134,10 @@ extends ClosableTabbedPane implements Tabber {
 			this.tab = tab;
 			setOpaque(false);
 			add(tab.getTabComponent(), BorderLayout.CENTER);
-
 		}
 
 		public Tab getTab() {
 			return tab;
-
 		}
-
 	}
-
 }

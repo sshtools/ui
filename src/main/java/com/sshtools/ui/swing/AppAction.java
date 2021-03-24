@@ -102,6 +102,9 @@ public class AppAction extends AbstractAction {
 	/**  */
 	public final static String CATEGORY = "Category";
 
+	/**  */
+	public final static String SHARED = "Shared";
+
 	public static int EMPTY_ICON_WIDTH = 24;
 	public static int EMPTY_ICON_HEIGHT = 24;
 	public static int EMPTY_SMALL_ICON_WIDTH = 16;

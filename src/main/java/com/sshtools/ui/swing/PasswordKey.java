@@ -22,29 +22,14 @@ import java.net.URLEncoder;
  * uniqueness is derived from the protocol, scheme and host parts of password
  * request. The user may choose to store the password against this key.
  */
-public class PasswordKey implements Comparable {
+public class PasswordKey implements Comparable<PasswordKey> {
 	private String protocol;
 	private String scheme;
 	private String host;
 	private String username;
 	private int port;
 
-	/**
-	 * Creates a new PasswordKey object.
-	 * 
-	 * @param protocol
-	 *            protocol
-	 * @param scheme
-	 *            scheme
-	 * @param host
-	 *            hosts
-	 * @param username
-	 *            username if applicable (null if not)
-	 * @param port
-	 *            port if application (0 if not)
-	 */
-	public PasswordKey(String protocol, String scheme, String host,
-			String username, int port) {
+	public PasswordKey(String protocol, String scheme, String host, String username, int port) {
 		if (protocol == null)
 			throw new IllegalArgumentException("Protocol may not be null");
 		if (scheme == null)
@@ -58,12 +43,7 @@ public class PasswordKey implements Comparable {
 		this.port = port;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Comparable#compareTo(java.lang.Object)
-	 */
-	public int compareTo(Object o) {
+	public int compareTo(PasswordKey o) {
 		PasswordKey key = (PasswordKey) o;
 		int i = protocol.compareTo(key.getProtocol());
 		if (i == 0) {
@@ -73,8 +53,7 @@ public class PasswordKey implements Comparable {
 				if (i == 0) {
 					i = username.compareTo(key.getUsername());
 					if (i == 0) {
-						return new Integer(port).compareTo(new Integer(key
-								.getPort()));
+						return new Integer(port).compareTo(new Integer(key.getPort()));
 					}
 				}
 			}
@@ -82,33 +61,64 @@ public class PasswordKey implements Comparable {
 		return i;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	public boolean equals(Object o) {
-		return compareTo(o) == 0;
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((host == null) ? 0 : host.hashCode());
+		result = prime * result + port;
+		result = prime * result + ((protocol == null) ? 0 : protocol.hashCode());
+		result = prime * result + ((scheme == null) ? 0 : scheme.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PasswordKey other = (PasswordKey) obj;
+		if (host == null) {
+			if (other.host != null)
+				return false;
+		} else if (!host.equals(other.host))
+			return false;
+		if (port != other.port)
+			return false;
+		if (protocol == null) {
+			if (other.protocol != null)
+				return false;
+		} else if (!protocol.equals(other.protocol))
+			return false;
+		if (scheme == null) {
+			if (other.scheme != null)
+				return false;
+		} else if (!scheme.equals(other.scheme))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
 
 		try {
-			buf.append(URLEncoder.encode(protocol == null ? "" : protocol,
-					"UTF-8"));
+			buf.append(URLEncoder.encode(protocol == null ? "" : protocol, "UTF-8"));
 			buf.append("@");
 			buf.append(URLEncoder.encode(scheme == null ? "" : scheme, "UTF-8"));
 			buf.append("@");
 			buf.append(URLEncoder.encode(host == null ? "" : host, "UTF-8"));
 			buf.append("@");
-			buf.append(URLEncoder.encode(username == null ? "" : username,
-					"UTF-8"));
+			buf.append(URLEncoder.encode(username == null ? "" : username, "UTF-8"));
 			buf.append("@");
 			buf.append(port);
 		} catch (Exception e) {
@@ -117,47 +127,22 @@ public class PasswordKey implements Comparable {
 		return buf.toString();
 	}
 
-	/**
-	 * Get the protocol part of the key
-	 * 
-	 * @return protocol
-	 */
 	public String getProtocol() {
 		return protocol;
 	}
 
-	/**
-	 * Get the host part of the key
-	 * 
-	 * @return host
-	 */
 	public String getHost() {
 		return host;
 	}
 
-	/**
-	 * Get the scheme part of the key
-	 * 
-	 * @return scheme
-	 */
 	public String getScheme() {
 		return scheme;
 	}
 
-	/**
-	 * Get the port part of the key
-	 * 
-	 * @return port
-	 */
 	public int getPort() {
 		return port;
 	}
 
-	/**
-	 * Get the username part of the key if applicable (null if not)
-	 * 
-	 * @return username
-	 */
 	public String getUsername() {
 		return username;
 	}

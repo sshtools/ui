@@ -15,6 +15,9 @@
  */
 package com.sshtools.ui.swing;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -48,6 +51,7 @@ public class XTextField extends JTextField implements ClipboardOwner {
 	private Action pasteAction;
 	private Action deleteAction;
 	private Action selectAllAction;
+	private String placeholder;
 
 	/**
 	 * Creates a new XTextField object.
@@ -93,7 +97,6 @@ public class XTextField extends JTextField implements ClipboardOwner {
 	 */
 	public XTextField(Document doc, String text, int columns) {
 		this(doc, text, columns, true);
-
 	}
 
 	/**
@@ -103,12 +106,9 @@ public class XTextField extends JTextField implements ClipboardOwner {
 	 * @param text
 	 * @param columns
 	 */
-
-	public XTextField(Document doc, String text, int columns,
-			boolean selectOnFocus) {
+	public XTextField(Document doc, String text, int columns, boolean selectOnFocus) {
 		super(doc, text, columns);
 		initXtensions(selectOnFocus);
-
 	}
 
 	/**
@@ -118,10 +118,29 @@ public class XTextField extends JTextField implements ClipboardOwner {
 	public void lostOwnership(Clipboard clipboard, Transferable contents) {
 	}
 
+	public String getPlaceholder() {
+		return placeholder;
+	}
+
+	@Override
+	protected void paintComponent(final Graphics pG) {
+		super.paintComponent(pG);
+		if (placeholder == null || placeholder.length() == 0 || getText().length() > 0) {
+			return;
+		}
+		final Graphics2D g = (Graphics2D) pG;
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setColor(getDisabledTextColor());
+		g.drawString(placeholder, getInsets().left, pG.getFontMetrics().getMaxAscent() + getInsets().top);
+	}
+
+	public void setPlaceholder(final String s) {
+		placeholder = s;
+	}
+
 	private void showPopup(int x, int y) {
 		// Grab the focus, this should deselect any other selected fields.
 		requestFocus();
-
 		// If the popup has never been show before - then build it
 		if (popup == null) {
 			popup = new JPopupMenu("Clipboard");
@@ -132,17 +151,13 @@ public class XTextField extends JTextField implements ClipboardOwner {
 			popup.addSeparator();
 			popup.add(selectAllAction = new SelectAllAction());
 		}
-
 		// Enabled the actions based on the field contents
 		cutAction.setEnabled(isEnabled() && (getSelectedText() != null));
 		copyAction.setEnabled(isEnabled() && (getSelectedText() != null));
 		deleteAction.setEnabled(isEnabled() && (getSelectedText() != null));
-		pasteAction.setEnabled(isEnabled()
-				&& Toolkit.getDefaultToolkit().getSystemClipboard()
-						.getContents(this)
-						.isDataFlavorSupported(DataFlavor.stringFlavor));
+		pasteAction.setEnabled(isEnabled() && Toolkit.getDefaultToolkit().getSystemClipboard().getContents(this)
+				.isDataFlavorSupported(DataFlavor.stringFlavor));
 		selectAllAction.setEnabled(isEnabled());
-
 		// Make the popup visible
 		popup.show(this, x, y);
 	}
@@ -167,37 +182,27 @@ public class XTextField extends JTextField implements ClipboardOwner {
 				}
 			});
 		}
-
 	}
 
 	// Supporting actions
 	class CopyAction extends AbstractCopyAction {
 		public void actionPerformed(ActionEvent evt) {
-			Toolkit.getDefaultToolkit()
-					.getSystemClipboard()
-					.setContents(new StringSelection(getText()),
-							XTextField.this);
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(getText()), XTextField.this);
 		}
 	}
 
 	class CutAction extends AbstractAction {
 		public CutAction() {
 			putValue(Action.NAME, "Cut");
-			putValue(Action.SMALL_ICON, new ResourceIcon(XTextField.class,
-					"/images/actions/cut-16x16.png"));
+			putValue(Action.SMALL_ICON, new ResourceIcon(XTextField.class, "/images/actions/cut-16x16.png"));
 			putValue(Action.SHORT_DESCRIPTION, "Cut selection");
-			putValue(Action.LONG_DESCRIPTION,
-					"Cut the selection from the text and place it in the clipboard");
+			putValue(Action.LONG_DESCRIPTION, "Cut the selection from the text and place it in the clipboard");
 			putValue(Action.MNEMONIC_KEY, new Integer('u'));
-			putValue(Action.ACCELERATOR_KEY,
-					KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
+			putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
 		}
 
 		public void actionPerformed(ActionEvent evt) {
-			Toolkit.getDefaultToolkit()
-					.getSystemClipboard()
-					.setContents(new StringSelection(getText()),
-							XTextField.this);
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(getText()), XTextField.this);
 			setText("");
 		}
 	}
@@ -205,25 +210,18 @@ public class XTextField extends JTextField implements ClipboardOwner {
 	class PasteAction extends AbstractAction {
 		public PasteAction() {
 			putValue(Action.NAME, "Paste");
-			putValue(Action.SMALL_ICON, new ResourceIcon(XTextField.class,
-					"/images/actions/paste-16x16.png"));
+			putValue(Action.SMALL_ICON, new ResourceIcon(XTextField.class, "/images/actions/paste-16x16.png"));
 			putValue(Action.SHORT_DESCRIPTION, "Paste clipboard content");
-			putValue(
-					Action.LONG_DESCRIPTION,
-					"Paste the clipboard contents to the current care position or replace the selection");
+			putValue(Action.LONG_DESCRIPTION, "Paste the clipboard contents to the current care position or replace the selection");
 			putValue(Action.MNEMONIC_KEY, new Integer('p'));
-			putValue(Action.ACCELERATOR_KEY,
-					KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
+			putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
 		}
 
 		public void actionPerformed(ActionEvent evt) {
-			Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard()
-					.getContents(this);
-
+			Transferable t = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(this);
 			if (t.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 				try {
-					setText(t.getTransferData(DataFlavor.stringFlavor)
-							.toString());
+					setText(t.getTransferData(DataFlavor.stringFlavor).toString());
 				} catch (Exception e) {
 					// Dont care
 				}
@@ -234,14 +232,11 @@ public class XTextField extends JTextField implements ClipboardOwner {
 	class DeleteAction extends AbstractAction {
 		public DeleteAction() {
 			putValue(Action.NAME, "Delete");
-			putValue(Action.SMALL_ICON, new ResourceIcon(XTextField.class,
-					"/images/actions/delete-16x16.png"));
+			putValue(Action.SMALL_ICON, new ResourceIcon(XTextField.class, "/images/actions/delete-16x16.png"));
 			putValue(Action.SHORT_DESCRIPTION, "Delete selection");
-			putValue(Action.LONG_DESCRIPTION,
-					"Delete the selection from the text");
+			putValue(Action.LONG_DESCRIPTION, "Delete the selection from the text");
 			putValue(Action.MNEMONIC_KEY, new Integer('d'));
-			putValue(Action.ACCELERATOR_KEY,
-					KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
+			putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK));
 		}
 
 		public void actionPerformed(ActionEvent evt) {

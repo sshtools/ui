@@ -21,48 +21,63 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JPanel;
 
-public class SideBarTabber extends JPanel implements Tabber {
+import com.sshtools.ui.swing.ScrollingPanel.ButtonMode;
 
+@SuppressWarnings("serial")
+public class SideBarTabber extends JPanel implements Tabber {
 	private TabToolBar toolBar;
-	private Vector tabs;
-	private Vector actions;
+	private List<Tab> tabs;
+	private List<TabAction> actions;
 	private FolderBar folderBar;
 	private JPanel viewPane;
 	private CardLayout layout;
 
-	/**
-     * 
-     */
 	public SideBarTabber() {
+		this(true);
+	}
+
+	/**
+	 * 
+	 */
+	public SideBarTabber(boolean showFolderBar) {
 		super(new BorderLayout());
-		tabs = new Vector();
-		actions = new Vector();
+		tabs = new ArrayList<>();
+		actions = new ArrayList<>();
 		toolBar = new TabToolBar() {
 			public int getFixedWidth() {
 				return getFixedToolBarWidth();
 			}
 		};
-		folderBar = new FolderBar(" ", new EmptyIcon(32, 32));
-		folderBar.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLoweredBevelBorder(),
-				BorderFactory.createEmptyBorder(0, 0, 4, 0)));
-		toolBar.setFolderBar(folderBar);
-
+		if (showFolderBar) {
+			folderBar = new FolderBar(" ", new EmptyIcon(32, 32));
+			folderBar.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLoweredBevelBorder(),
+					BorderFactory.createEmptyBorder(0, 0, 4, 0)));
+			toolBar.setFolderBar(folderBar);
+		}
 		JPanel centerPane = new JPanel(new BorderLayout());
 		centerPane.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
 		viewPane = new JPanel(layout = new CardLayout());
-		centerPane.add(folderBar, BorderLayout.NORTH);
+		if (folderBar != null)
+			centerPane.add(folderBar, BorderLayout.NORTH);
 		centerPane.add(viewPane, BorderLayout.CENTER);
 		add(toolBar, BorderLayout.WEST);
 		add(centerPane, BorderLayout.CENTER);
+	}
+	
+	public ButtonMode getButtonMode() {
+		return toolBar.getButtonMode();
+	}
+	
+	public void setButtonMode(ButtonMode buttonMode) {
+		toolBar.setButtonMode(buttonMode);
 	}
 
 	public int getFixedToolBarWidth() {
@@ -73,117 +88,78 @@ public class SideBarTabber extends JPanel implements Tabber {
 		toolBar.setFixedWidth(fixedWidth);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.sshtools.appframework.ui.Tabber#getTabAt(int)
-	 */
 	public Tab getTabAt(int i) {
-		return (Tab) tabs.elementAt(i);
+		return tabs.get(i);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.sshtools.appframework.ui.Tabber#getComponent()
-	 */
 	public Component getComponent() {
 		return this;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.sshtools.appframework.ui.Tabber#removeAllTabs()
-	 */
 	public void removeAllTabs() {
 		tabs.clear();
 		actions.clear();
 		viewPane.invalidate();
 		viewPane.removeAll();
-		folderBar.setAction(null);
+		if (folderBar != null)
+			folderBar.setAction(null);
 		toolBar.removeAllActions();
 		viewPane.validate();
-
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.sshtools.appframework.ui.Tabber#applyTabs()
-	 */
 	public void applyTabs() {
-		for (int i = 0; i < tabs.size(); i++) {
+		for (Tab t : tabs) {
 			try {
-				((Tab) tabs.elementAt(i)).applyTab();
+				t.applyTab();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.sshtools.appframework.ui.Tabber#validateTabs()
-	 */
 	public boolean validateTabs() {
-		for (int i = 0; i < tabs.size(); i++) {
-			Tab t = (Tab) tabs.elementAt(i);
-
-			if (!t.validateTab()) {
-				return false;
+		for (Tab t : tabs) {
+			try {
+				if (!t.validateTab()) {
+					setSelectedTabClass(t.getClass());
+					return false;
+				}
+			} catch (TabValidationException tve) {
+				setSelectedTabClass(tve.getTab().getClass());
+				throw tve;
 			}
 		}
-
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.sshtools.appframework.ui.Tabber#addTab(com.sshtools.appframework.
-	 * ui.Tab)
-	 */
 	public void addTab(Tab tab) {
 		addTab(tab, false);
 	}
 
-	/**
-	 * @param tab
-	 * @param sel
-	 */
 	public void addTab(Tab tab, boolean sel) {
-		String c = (tab.getTabCategory() == null) ? "Unknown" : tab
-				.getTabCategory();
-		TabAction action = new TabAction(tab.getTabIcon(),
-				tab.getTabLargeIcon(), tab.getTabTitle(),
-				tab.getTabToolTipText(), tab.getTabMnemonic(), layout,
-				viewPane, c);
-		tabs.addElement(tab);
-		actions.addElement(action);
+		String c = (tab.getTabCategory() == null) ? "Unknown" : tab.getTabCategory();
+		TabAction action = new TabAction(tab.getTabIcon(), tab.getTabLargeIcon(), tab.getTabTitle(), tab.getTabToolTipText(),
+				tab.getTabMnemonic(), layout, viewPane, c);
+		tabs.add(tab);
+		actions.add(action);
 		String componentName = c + "/" + tab.getTabTitle();
 		viewPane.add(tab.getTabComponent(), componentName);
 		toolBar.addAction(action);
-
 		if (sel || tabs.size() == 1) {
 			layout.show(viewPane, componentName);
-			folderBar.setAction(action);
+			if (folderBar != null)
+				folderBar.setAction(action);
 			toolBar.setSelectedContext(c);
 		}
-
 		// scrolling.setAvailableActions();
 	}
 
 	// Supporting classes
-
 	class TabAction extends AppAction {
 		CardLayout layout;
 		JPanel viewPane;
 
-		TabAction(Icon icon, Icon largeIcon, String name, String description,
-				int mnemonic, CardLayout layout, JPanel viewPane,
+		TabAction(Icon icon, Icon largeIcon, String name, String description, int mnemonic, CardLayout layout, JPanel viewPane,
 				String category) {
 			super(name);
 			putValue(AppAction.LARGE_ICON, largeIcon);
@@ -199,9 +175,9 @@ public class SideBarTabber extends JPanel implements Tabber {
 		}
 
 		public void actionPerformed(ActionEvent evt) {
-			folderBar.setAction(this);
-			layout.show(viewPane, (String) getValue(AppAction.CATEGORY) + "/"
-					+ (String) getValue(AppAction.NAME));
+			if (folderBar != null)
+				folderBar.setAction(this);
+			layout.show(viewPane, (String) getValue(AppAction.CATEGORY) + "/" + (String) getValue(AppAction.NAME));
 		}
 	}
 
@@ -212,20 +188,17 @@ public class SideBarTabber extends JPanel implements Tabber {
 		return tabs.size();
 	}
 
-	public void setSelectedTabClass(Class selectedTabClass) {
+	public void setSelectedTabClass(Class<?> selectedTabClass) {
 		if (selectedTabClass != null) {
-			for (Iterator i = tabs.iterator(); i.hasNext();) {
-				Tab tab = (Tab) i.next();
+			for (Tab tab : tabs) {
 				if (tab.getClass().equals(selectedTabClass)) {
-					String c = (tab.getTabCategory() == null) ? "Unknown" : tab
-							.getTabCategory();
+					String c = (tab.getTabCategory() == null) ? "Unknown" : tab.getTabCategory();
 					layout.show(viewPane, c + "/" + tab.getTabTitle());
 					;
-					folderBar
-							.setAction((Action) actions.get(tabs.indexOf(tab)));
+					if (folderBar != null)
+						folderBar.setAction((Action) actions.get(tabs.indexOf(tab)));
 					toolBar.setSelectedContext(c);
 					return;
-
 				}
 			}
 		}

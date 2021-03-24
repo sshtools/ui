@@ -20,24 +20,23 @@ import java.awt.Component;
 import javax.swing.Icon;
 
 public interface Tab {
+	String getTabCategory();
 
-	public String getTabCategory();
+	Icon getTabIcon();
 
-	public Icon getTabIcon();
+	Icon getTabLargeIcon();
 
-	public Icon getTabLargeIcon();
+	String getTabTitle();
 
-	public String getTabTitle();
+	String getTabToolTipText();
 
-	public String getTabToolTipText();
+	int getTabMnemonic();
 
-	public int getTabMnemonic();
+	Component getTabComponent();
 
-	public Component getTabComponent();
+	boolean validateTab() throws TabValidationException;
 
-	public boolean validateTab();
+	void applyTab();
 
-	public void applyTab();
-
-	public void tabSelected();
+	void tabSelected();
 }

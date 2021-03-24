@@ -27,8 +27,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<properties>
-		<maven.compiler.target>1.6</maven.compiler.target>
-		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -39,7 +39,7 @@
 	<name>SSHTOOLS UI</name>
 	<description>Utility classes used in a number of SSHTOOLS AWT/Swing UI projects.</description>
 	<url>https://github.com/sshtools/ui</url>
-	<version>3.1.0</version>
+	<version>3.1.1</version>
 
 	<licenses>
 		<license>
@@ -207,7 +207,7 @@
 			</build>
 		</profile>
 	</profiles>
-
+	
 	<distributionManagement>
 		<snapshotRepository>
 			<id>ossrh-sshtools</id>
@@ -227,5 +227,10 @@
 			<version>1.8</version>
 		</dependency>
 
+		<dependency>
+		    <groupId>com.miglayout</groupId>
+		    <artifactId>miglayout-swing</artifactId>
+		    <version>5.2</version>
+		</dependency>
 	</dependencies>
 </project>

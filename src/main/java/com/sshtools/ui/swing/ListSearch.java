@@ -38,32 +38,12 @@ import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-/**
- * Description of the Class
- * 
- * @author magicthize
- * @created 26 May 2002
- */
 public class ListSearch implements KeyListener {
-
-	//
 	private ListSearchListener listener;
-
 	private JComponent parent;
-
-	// private JWindow searchWindow;
 	private JFrame searchWindow;
-
 	private JTextField searchText;
 
-	/**
-	 * Creates a new ListSearch object.
-	 * 
-	 * @param parent
-	 *            DOCUMENT ME!
-	 * @param listener
-	 *            DOCUMENT ME!
-	 */
 	public ListSearch(JComponent parent, ListSearchListener listener) {
 		this.parent = parent;
 		this.listener = listener;
@@ -84,19 +64,12 @@ public class ListSearch implements KeyListener {
 		}
 	}
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param e
-	 *            DOCUMENT ME!
-	 */
+	@Override
 	public void keyTyped(KeyEvent e) {
 		char ch = e.getKeyChar();
-
-		if (!e.isControlDown() && !e.isAltDown() && Character.isDefined(ch)
-				&& e.getKeyChar() != KeyEvent.VK_ENTER
-				&& e.getKeyChar() != KeyEvent.VK_BACK_SPACE
-				&& e.getKeyChar() != KeyEvent.VK_ESCAPE
+		if (ch != KeyEvent.CHAR_UNDEFINED && !e.isControlDown() && !e.isAltDown() && Character.isDefined(ch)
+				&& e.getKeyChar() != KeyEvent.VK_ENTER && e.getKeyChar() != KeyEvent.VK_BACK_SPACE
+				&& e.getKeyChar() != KeyEvent.VK_ESCAPE && e.getKeyChar() != KeyEvent.VK_DELETE
 				&& (searchWindow == null || !searchWindow.isVisible())) {
 			showSearchWindow(ch, e);
 			e.consume();
@@ -105,82 +78,66 @@ public class ListSearch implements KeyListener {
 
 	private void showSearchWindow(char ch, KeyEvent evt) {
 		if (searchWindow == null) {
-			// Window w = (Window)
-			// SwingUtilities.getAncestorOfClass(Window.class,
-			// parent);
-			//
-			// if (w != null)
-			// searchWindow = new JWindow(w);
-			// else
-			// searchWindow = new JWindow();
 			searchWindow = new JFrame("Find file");
 			try {
-				Method m = searchWindow.getClass().getMethod("setUndecorated",
-						new Class[] { boolean.class });
+				Method m = searchWindow.getClass().getMethod("setUndecorated", new Class[] { boolean.class });
 				m.invoke(searchWindow, new Object[] { Boolean.TRUE });
 			} catch (Throwable t) {
 				// Probably not 1.4
 			}
-
-			searchWindow
-					.setBackground(UIManager.getColor("ToolTip.background"));
-			searchWindow
-					.setForeground(UIManager.getColor("ToolTip.foreground"));
-
+			searchWindow.setBackground(UIManager.getColor("ToolTip.background"));
+			searchWindow.setForeground(UIManager.getColor("ToolTip.foreground"));
 			// searchWindow.setLocationRelativeTo(w);
 			searchText = new JTextField();
 			searchText.setFont(FontUtil.getUIManagerLabelFontOrDefault("Label.font").deriveFont(12f));
 			searchText.setOpaque(false);
 			searchText.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-			searchText.getDocument().addDocumentListener(
-					new DocumentListener() {
+			searchText.getDocument().addDocumentListener(new DocumentListener() {
+				public void update(DocumentEvent evt) {
+					searchText.revalidate();
+					searchWindow.pack();
+					searchText.grabFocus();
+					listener.searchUpdated(searchText.getText());
+				}
 
-						public void update(DocumentEvent evt) {
-							searchText.revalidate();
-							searchWindow.pack();
-							searchText.grabFocus();
-							listener.searchUpdated(searchText.getText());
-						}
+				@Override
+				public void insertUpdate(DocumentEvent de) {
+					update(de);
+				}
 
-						public void insertUpdate(DocumentEvent de) {
-							update(de);
-						}
+				@Override
+				public void changedUpdate(DocumentEvent de) {
+					update(de);
+				}
 
-						public void changedUpdate(DocumentEvent de) {
-							update(de);
-						}
-
-						public void removeUpdate(DocumentEvent de) {
-							update(de);
-						}
-					});
+				@Override
+				public void removeUpdate(DocumentEvent de) {
+					update(de);
+				}
+			});
 			searchText.addActionListener(new ActionListener() {
-
+				@Override
 				public void actionPerformed(ActionEvent evt) {
 					listener.searchComplete(searchText.getText());
 					removeSearchWindow();
 				}
 			});
 			searchText.addFocusListener(new FocusAdapter() {
-
+				@Override
 				public void focusLost(FocusEvent evt) {
 					listener.searchCancelled();
 					removeSearchWindow();
 				}
 			});
-			searchText.getInputMap().put(
-					KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
+			searchText.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "escape");
 			searchText.getActionMap().put("escape", new EscapeAction());
-
-			JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0,
-					0));
+			JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 			searchPanel.add(new JLabel("Find: "));
 			searchPanel.add(searchText);
 			searchPanel.setForeground(UIManager.getColor("ToolTip.foreground"));
 			searchPanel.setBackground(UIManager.getColor("ToolTip.background"));
-			searchPanel.setBorder(BorderFactory.createCompoundBorder(UIManager
-					.getBorder("ToolTip.border"), BorderFactory
-					.createEmptyBorder(4, 4, 4, 4)));
+			searchPanel.setBorder(BorderFactory.createCompoundBorder(UIManager.getBorder("ToolTip.border"),
+					BorderFactory.createEmptyBorder(4, 4, 4, 4)));
 			searchWindow.getContentPane().setLayout(new GridLayout(1, 1));
 			searchWindow.getContentPane().add(searchPanel);
 		}
@@ -210,34 +167,28 @@ public class ListSearch implements KeyListener {
 		searchText.grabFocus();
 	}
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param e
-	 *            DOCUMENT ME!
-	 */
+	@Override
 	public void keyPressed(KeyEvent e) {
+		char ch = e.getKeyChar();
+		if (ch != KeyEvent.CHAR_UNDEFINED && !e.isControlDown() && !e.isAltDown() && Character.isDefined(ch)
+				&& e.getKeyChar() != KeyEvent.VK_ENTER && e.getKeyChar() != KeyEvent.VK_BACK_SPACE
+				&& e.getKeyChar() != KeyEvent.VK_ESCAPE && e.getKeyChar() != KeyEvent.VK_DELETE
+				&& (searchWindow == null || !searchWindow.isVisible())) {
+			e.consume();
+		}
 	}
 
-	/**
-	 * DOCUMENT ME!
-	 * 
-	 * @param e
-	 *            DOCUMENT ME!
-	 */
+	@Override
 	public void keyReleased(KeyEvent e) {
 	}
 
+	@SuppressWarnings("serial")
 	class EscapeAction extends AbstractAction {
 		EscapeAction() {
 			super("Escape");
 		}
 
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			listener.searchCancelled();
 			removeSearchWindow();

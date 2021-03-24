@@ -25,44 +25,26 @@ import com.sshtools.ui.awt.AWTFileSelector;
  *  
  */
 public class FileSelect {
-
 	public final static int FILES_AND_DIRECTORIES = 0;
 	public final static int DIRECTORIES_ONLY = 1;
-
 	private FileSelector selector;
-
-	private FileFilter acceptAllFilter = new FileFilter() {
-
-		public String getDescription() {
-			return Messages.getString("FileSelect.allFiles"); //$NON-NLS-1$
-		}
-
-		public boolean accept(File f) {
-			return true;
-		}
-
-	};
 
 	public FileSelect(int type, File cwd) {
 		this(type, cwd, true, true);
 	}
 
-	public FileSelect(int type, File cwd, boolean showButtons,
-			boolean showHiddenFilesSwitch) {
+	public FileSelect(int type, File cwd, boolean showButtons, boolean showHiddenFilesSwitch) {
 		this(type, cwd, showButtons, showHiddenFilesSwitch, true, false);
 	}
 
-	public FileSelect(int type, File cwd, boolean showButtons,
-			boolean showHiddenFilesSwitch, boolean showButtonImages,
+	public FileSelect(int type, File cwd, boolean showButtons, boolean showHiddenFilesSwitch, boolean showButtonImages,
 			boolean showButtonText) {
 		try {
-			selector = (FileSelector) Class.forName(
-					"com.sshtools.ui.swing.SwingFileSelector").newInstance(); //$NON-NLS-1$
+			selector = (FileSelector) Class.forName("com.sshtools.ui.swing.SwingFileSelector").newInstance(); //$NON-NLS-1$
 		} catch (Throwable t) {
 			selector = new AWTFileSelector();
 		}
-		selector.init(type, cwd, showButtons, showHiddenFilesSwitch,
-				showButtonImages, showButtonText);
+		selector.init(type, cwd, showButtons, showHiddenFilesSwitch, showButtonImages, showButtonText);
 	}
 
 	public void setUseAcceptAllFilter(boolean useAcceptAllFilter) {

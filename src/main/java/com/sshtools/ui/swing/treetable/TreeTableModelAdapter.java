@@ -115,6 +115,10 @@ public class TreeTableModelAdapter extends AbstractTableModel {
 			}
 		});
 	}
+	
+	public TreeTableModel getUnderlyingModel() {
+		return treeTableModel;
+	}
 
 	// Wrappers, implementing TableModel interface.
 
@@ -131,6 +135,7 @@ public class TreeTableModelAdapter extends AbstractTableModel {
 	}
 
 	public int getRowCount() {
+		//return Math.max(tree.getRowCount(), treeTableModel.getChildCount(treeTableModel.getRoot()));
 		return tree.getRowCount();
 	}
 
@@ -140,7 +145,13 @@ public class TreeTableModelAdapter extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int row, int column) {
+		try {
 		return treeTableModel.getValueAt(nodeForRow(row), column);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	public boolean isCellEditable(int row, int column) {

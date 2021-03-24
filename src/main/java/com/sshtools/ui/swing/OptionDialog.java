@@ -49,15 +49,25 @@ import com.sshtools.ui.OptionCallback;
 import com.sshtools.ui.OptionChooser;
 
 public class OptionDialog extends JOptionPane implements OptionChooser {
+	
+	public interface IconLoader {
+		Icon getIcon(Option option);
+	}
 
 	private static final long serialVersionUID = 8490755354933812320L;
 
 	public static boolean useDialogForPrompt = true;
+	
+	private static IconLoader iconLoader;
 
 	private boolean dismissed;
 	private OptionCallback callback;
 	private JDialog dialog;
 	private boolean selectInitialValue = true;
+	
+	public static void setIconLoader(IconLoader iconLoader) {
+		OptionDialog.iconLoader = iconLoader;
+	}
 
 	public OptionDialog(int type, Object text, Option choices[],
 			Option defaultChoice, OptionCallback callback) {
@@ -162,9 +172,6 @@ public class OptionDialog extends JOptionPane implements OptionChooser {
 
 		// Create button components
 		List<Component> choiceComponents = new ArrayList<Component>();
-		if (buttonBarAccessory != null) {
-			choiceComponents.add(buttonBarAccessory);
-		}
 		for (int i = 0; choices != null && i < choices.length; i++) {
 			final JButton b = new JButton(choices[i].getText());
 			if (choices[i] == defaultChoice) {
@@ -184,10 +191,17 @@ public class OptionDialog extends JOptionPane implements OptionChooser {
 			}
 			b.setMnemonic(choices[i].getMnemonic());
 			b.setToolTipText(choices[i].getText());
-			b.setIcon(choices[i].getIcon());
+			Icon bicon = choices[i].getIcon();
+			if(bicon == null && iconLoader != null) {
+				bicon = iconLoader.getIcon(choices[i]);
+			}
+			b.setIcon(bicon);
 			choiceComponents.add(b);
 			b.putClientProperty("option", choices[i]);
 			b.addActionListener(new BlockingActionListener(choices[i]));
+		}
+		if (buttonBarAccessory != null) {
+			choiceComponents.add(buttonBarAccessory);
 		}
 		setOptions(choiceComponents
 				.toArray(new Object[choiceComponents.size()]));

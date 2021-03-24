@@ -31,6 +31,7 @@ import javax.swing.AbstractAction;
 import javax.swing.CellEditor;
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListModel;
 import javax.swing.ListSelectionModel;
@@ -39,26 +40,29 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.event.ChangeEvent;
 
 // @author Santhosh Kumar T - santhosh@in.fiorano.com 
-public class JListMutable extends JList implements CellEditorListener {
+@SuppressWarnings("serial")
+public class JListMutable<T> extends JList<T> implements CellEditorListener {
 	protected Component editorComp = null;
 	protected int editingIndex = -1;
 	protected ListCellEditor editor = null;
 	private PropertyChangeListener editorRemover = null;
 
-	public JListMutable(ListModel dataModel) {
+	public JListMutable(ListModel<T> dataModel) {
 		super(dataModel);
 		init();
 	}
 
 	private void init() {
+		addMouseListener(new MouseListener());
+		putClientProperty("terminateEditOnFocusLost", Boolean.TRUE); // NOI18N
+		addDefaultActions();
+	}
+
+	public void addDefaultActions() {
 		getActionMap().put("startEditing", new StartEditingAction()); // NOI18N
 		getActionMap().put("cancel", new CancelEditingAction()); // NOI18N
-		addMouseListener(new MouseListener());
-		getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0),
-				"startEditing"); // NOI18N
-		getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(
-				KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel"); // NOI18N
-		putClientProperty("terminateEditOnFocusLost", Boolean.TRUE); // NOI18N
+		getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), "startEditing"); // NOI18N
+		getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "cancel"); // NOI18N
 	}
 
 	public void setListCellEditor(ListCellEditor editor) {
@@ -84,35 +88,29 @@ public class JListMutable extends JList implements CellEditorListener {
 	public Component prepareEditor(int index) {
 		Object value = getModel().getElementAt(index);
 		boolean isSelected = isSelectedIndex(index);
-		Component comp = editor.getListCellEditorComponent(this, value,
-				isSelected, index);
+		Component comp = editor.getListCellEditorComponent(this, value, isSelected, index);
 		if (comp instanceof JComponent) {
 			JComponent jComp = (JComponent) comp;
 			if (jComp.getNextFocusableComponent() == null) {
 				jComp.setNextFocusableComponent(this);
 			}
 		}
+		if(comp instanceof JTextField)
+			((JTextField)comp).selectAll();	
 		return comp;
 	}
 
 	public void removeEditor() {
-		KeyboardFocusManager.getCurrentKeyboardFocusManager()
-				.removePropertyChangeListener("permanentFocusOwner",
-						editorRemover); // NOI18N
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().removePropertyChangeListener("permanentFocusOwner", editorRemover); // NOI18N
 		editorRemover = null;
-
 		if (editor != null) {
 			editor.removeCellEditorListener(this);
-
 			if (editorComp != null) {
 				remove(editorComp);
 			}
-
 			Rectangle cellRect = getCellBounds(editingIndex, editingIndex);
-
 			editingIndex = -1;
 			editorComp = null;
-
 			repaint(cellRect);
 		}
 	}
@@ -120,20 +118,15 @@ public class JListMutable extends JList implements CellEditorListener {
 	public boolean editCellAt(int index, EventObject e) {
 		if (editor != null && !editor.stopCellEditing())
 			return false;
-
 		if (index < 0 || index >= getModel().getSize())
 			return false;
-
 		if (!isCellEditable(index))
 			return false;
-
 		if (editorRemover == null) {
-			KeyboardFocusManager fm = KeyboardFocusManager
-					.getCurrentKeyboardFocusManager();
+			KeyboardFocusManager fm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 			editorRemover = new CellEditorRemover(fm);
 			fm.addPropertyChangeListener("permanentFocusOwner", editorRemover); // NOI18N
 		}
-
 		if (editor != null && editor.isCellEditable(e)) {
 			editorComp = prepareEditor(index);
 			if (editorComp == null) {
@@ -143,19 +136,15 @@ public class JListMutable extends JList implements CellEditorListener {
 			editorComp.setBounds(getCellBounds(index, index));
 			add(editorComp);
 			editorComp.validate();
-
 			editingIndex = index;
 			editor.addCellEditorListener(this);
-
 			return true;
 		}
 		return false;
 	}
 
 	public void removeNotify() {
-		KeyboardFocusManager.getCurrentKeyboardFocusManager()
-				.removePropertyChangeListener("permanentFocusOwner",
-						editorRemover); // NOI18N
+		KeyboardFocusManager.getCurrentKeyboardFocusManager().removePropertyChangeListener("permanentFocusOwner", editorRemover); // NOI18N
 		super.removeNotify();
 	}
 
@@ -197,19 +186,17 @@ public class JListMutable extends JList implements CellEditorListener {
 	}
 
 	/*-------------------------------------------------[ Model Support ]---------------------------------------------------*/
-
 	public boolean isCellEditable(int index) {
 		if (getModel() instanceof MutableListModel)
-			return ((MutableListModel) getModel()).isCellEditable(index);
+			return ((MutableListModel<T>) getModel()).isCellEditable(index);
 		return false;
 	}
 
 	public void setValueAt(Object value, int index) {
-		((MutableListModel) getModel()).setValueAt(value, index);
+		((MutableListModel<T>) getModel()).setValueAt(value, index);
 	}
 
 	/*-------------------------------------------------[ CellEditorListener ]---------------------------------------------------*/
-
 	public void editingStopped(ChangeEvent e) {
 		if (editor != null) {
 			Object value = editor.getCellEditorValue();
@@ -223,10 +210,11 @@ public class JListMutable extends JList implements CellEditorListener {
 	}
 
 	/*-------------------------------------------------[ Editing Actions]---------------------------------------------------*/
-
 	private static class StartEditingAction extends AbstractAction {
+		private static final long serialVersionUID = -5253841658362752000L;
+
 		public void actionPerformed(ActionEvent e) {
-			JListMutable list = (JListMutable) e.getSource();
+			JListMutable<?> list = (JListMutable<?>) e.getSource();
 			if (!list.hasFocus()) {
 				CellEditor cellEditor = list.getListCellEditor();
 				if (cellEditor != null && !cellEditor.stopCellEditing()) {
@@ -246,8 +234,9 @@ public class JListMutable extends JList implements CellEditorListener {
 	}
 
 	private class CancelEditingAction extends AbstractAction {
+		@SuppressWarnings("unchecked")
 		public void actionPerformed(ActionEvent e) {
-			JListMutable list = (JListMutable) e.getSource();
+			JListMutable<T> list = (JListMutable<T>) e.getSource();
 			list.removeEditor();
 		}
 
@@ -257,9 +246,7 @@ public class JListMutable extends JList implements CellEditorListener {
 	}
 
 	protected boolean shouldIgnore(MouseEvent e) {
-		return e.isConsumed()
-				|| (!(SwingUtilities.isLeftMouseButton(e) && isEnabled()))
-				|| e.getClickCount() != 2;
+		return e.isConsumed() || (!(SwingUtilities.isLeftMouseButton(e) && isEnabled())) || e.getClickCount() != 2;
 	}
 
 	private class MouseListener extends MouseAdapter {
@@ -268,10 +255,8 @@ public class JListMutable extends JList implements CellEditorListener {
 		private void setDispatchComponent(MouseEvent e) {
 			Component editorComponent = getEditorComponent();
 			Point p = e.getPoint();
-			Point p2 = SwingUtilities.convertPoint(JListMutable.this, p,
-					editorComponent);
-			dispatchComponent = SwingUtilities.getDeepestComponentAt(
-					editorComponent, p2.x, p2.y);
+			Point p2 = SwingUtilities.convertPoint(JListMutable.this, p, editorComponent);
+			dispatchComponent = SwingUtilities.getDeepestComponentAt(editorComponent, p2.x, p2.y);
 		}
 
 		private boolean repostEvent(MouseEvent e) {
@@ -280,8 +265,7 @@ public class JListMutable extends JList implements CellEditorListener {
 			if (dispatchComponent == null || !isEditing()) {
 				return false;
 			}
-			MouseEvent e2 = SwingUtilities.convertMouseEvent(JListMutable.this,
-					e, dispatchComponent);
+			MouseEvent e2 = SwingUtilities.convertMouseEvent(JListMutable.this, e, dispatchComponent);
 			dispatchComponent.dispatchEvent(e2);
 			return true;
 		}
@@ -295,7 +279,6 @@ public class JListMutable extends JList implements CellEditorListener {
 			// range.
 			if (index == -1)
 				return;
-
 			if (editCellAt(index, e)) {
 				setDispatchComponent(e);
 				repostEvent(e);

@@ -88,6 +88,7 @@ public class ActionToolBar extends JToolBar {
 	public void updateUI() {
 		super.updateUI();
 		setLayout(isWrap());
+        invalidate();
 	}
 
 	private void setLayout(boolean wrap) {
@@ -223,8 +224,10 @@ public class ActionToolBar extends JToolBar {
 		}
 	}
 
-	public Dimension getMinimumSize() {
-		return new Dimension(1, super.getMinimumSize().height);
+	@Override
+	public void setPreferredSize(Dimension preferredSize) {
+		// TODO Auto-generated method stub
+		super.setPreferredSize(preferredSize);
 	}
 
 	/*

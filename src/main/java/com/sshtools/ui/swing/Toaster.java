@@ -534,7 +534,7 @@ public class Toaster {
 				} catch (Exception e) {
 					moved = doMove();
 				}
-				yield();
+				Thread.yield();
 				try {
 					sleep(5);
 				} catch (InterruptedException e1) {
