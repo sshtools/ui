@@ -40,7 +40,7 @@
 	<name>SSHTOOLS UI</name>
 	<description>Utility classes used in a number of SSHTOOLS AWT/Swing UI projects.</description>
 	<url>https://github.com/sshtools/ui</url>
-	<version>3.1.1-SNAPSHOT</version>
+	<version>3.1.2-SNAPSHOT</version>
 
 	<licenses>
 		<license>
