@@ -39,7 +39,7 @@
 	<name>SSHTOOLS UI</name>
 	<description>Utility classes used in a number of SSHTOOLS AWT/Swing UI projects.</description>
 	<url>https://github.com/sshtools/ui</url>
-	<version>3.1.1</version>
+	<version>3.1.2</version>
 
 	<licenses>
 		<license>
@@ -179,6 +179,31 @@
 
 
 	<profiles>
+
+		<profile>
+			<activation>
+				<jdk>[9,)</jdk>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<configuration>
+								<!-- TODO: Why is this STILL broken! -->
+								<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
+								<excludePackageNames>**.impl.*</excludePackageNames>
+								<!-- https://bugs.openjdk.java.net/browse/JDK-8212233 -->
+								<detectJavaApiLink>false</detectJavaApiLink>
+								<source>8</source>
+								<doclint>none</doclint>
+							</configuration>
+						</plugin>
+					</plugins>
+				</pluginManagement>
+			</build>
+		</profile>
 		<profile>
 			<id>release-sign-artifacts</id>
 			<activation>
