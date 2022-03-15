@@ -119,11 +119,9 @@ public class OptionDialog extends JOptionPane implements OptionChooser {
 
 	private void configureOptions(Option defaultChoice, Option[] choices,
 			Component buttonBarAccessory, OptionCallback callback) {
-		if (buttonBarAccessory != null) {
-			// If an accessory is provided we muse create our own buttons
-			putClientProperty("OptionPane.buttonOrientation", new Integer(
-					SwingConstants.RIGHT));
-		} else {
+		putClientProperty("OptionPane.buttonOrientation", Integer.valueOf(
+				SwingConstants.RIGHT));
+		if (buttonBarAccessory == null) {
 			boolean opNo = false;
 			boolean opYes = false;
 			boolean opOk = false;

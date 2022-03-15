@@ -40,6 +40,11 @@ import javax.swing.event.EventListenerList;
  * 
  */
 public class AppAction extends AbstractAction {
+	
+	public final static int SMALL_ICON_SIZE = 16;
+	public final static int MEDIUM_ICON_SIZE = 32;
+	public final static int LARGE_ICON_SIZE = 48;
+	
 
 	private static Icon emptySmallIcon = null;
 	private static Icon emptyIcon = null;

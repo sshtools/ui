@@ -20,6 +20,8 @@ import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
@@ -133,9 +135,9 @@ public class UIUtil implements SwingConstants {
 	 */
 	public static Integer parseMnemonicString(String string) {
 		try {
-			return new Integer(string);
+			return Integer.valueOf(string);
 		} catch (Throwable t) {
-			return new Integer(-1);
+			return Integer.valueOf(-1);
 		}
 	}
 
@@ -214,21 +216,14 @@ public class UIUtil implements SwingConstants {
 
 	public static void positionComponent(int p, Component c, Component o) {
 		Rectangle d = null;
-		/*
-		 * TODO This is very lame doesnt require the component to position
-		 * around, just assuming its a window.
-		 */
-		try {
-			try {
-				Object gc = c.getClass().getMethod("getGraphicsConfiguration", new Class[] {}).invoke(c, new Object[] {});
-				Object device = gc.getClass().getMethod("getDevice", new Class[] {}).invoke(gc, new Object[] {});
-				Object defaultConfig = device.getClass().getMethod("getDefaultConfiguration", new Class[] {}).invoke(device,
-						new Object[] {});
-				d = (Rectangle) defaultConfig.getClass().getMethod("getBounds", new Class[] {}).invoke(defaultConfig,
-						new Object[] {});
-			} catch (Throwable t) {
-			}
-		} catch (Throwable t) {
+		if(o == null) {
+			GraphicsConfiguration gc = c.getGraphicsConfiguration();
+			GraphicsDevice dev = gc.getDevice();
+			GraphicsConfiguration def = dev.getDefaultConfiguration();
+			d = def.getBounds();
+		}
+		else {
+			d = o.getBounds();
 		}
 		positionComponent(p, c, d);
 	}

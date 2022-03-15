@@ -109,11 +109,7 @@ public class SideBarTabber extends JPanel implements Tabber {
 
 	public void applyTabs() {
 		for (Tab t : tabs) {
-			try {
-				t.applyTab();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			t.applyTab();
 		}
 	}
 

@@ -18,7 +18,6 @@ package com.sshtools.ui.swing;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -32,7 +31,6 @@ import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
-import javax.swing.border.Border;
 
 @SuppressWarnings("serial")
 public class ActionButton extends JButton {
@@ -50,7 +48,7 @@ public class ActionButton extends JButton {
 	public ActionButton(AppAction action) {
 		this(action, Action.SMALL_ICON);
 	}
-
+	
 	/**
 	 * Creates a new button component from an AppAction. If
 	 * <code>showSelectiveText</code> is <code>true</code> and the action has a

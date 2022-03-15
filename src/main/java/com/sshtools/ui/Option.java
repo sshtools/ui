@@ -37,6 +37,9 @@ public class Option {
 	public static final Option CHOICE_OK = new Option(
 			Messages.getString("OptionDialog.ok")); //$NON-NLS-1$
 
+	public static final Option CHOICE_APPLY = new Option(
+			Messages.getString("OptionDialog.apply")); //$NON-NLS-1$
+
 	public static final Option CHOICE_YES_TO_ALL = new Option(
 			Messages.getString("OptionDialog.yesToAll")); //$NON-NLS-1$
 
@@ -45,6 +48,8 @@ public class Option {
 
 	public static final Option CHOICE_SAVE = new Option(
 			Messages.getString("OptionDialog.save")); //$NON-NLS-1$
+
+	public static final Option CHOICES_APPLY[] = { CHOICE_APPLY };
 
 	public static final Option CHOICES_YES_NO[] = { CHOICE_YES, CHOICE_NO };
 
