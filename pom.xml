@@ -124,9 +124,9 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-gpg-plugin</artifactId>
-					<version>1.5</version>
+				    <groupId>org.apache.maven.plugins</groupId>
+				    <artifactId>maven-gpg-plugin</artifactId>
+				    <version>3.0.1</version>
 					<executions>
 						<execution>
 							<id>sign-artifacts</id>
@@ -166,7 +166,7 @@
 				<plugin>
 					<groupId>org.sonatype.plugins</groupId>
 					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<version>1.6.3</version>
+					<version>1.6.12</version>
 					<extensions>true</extensions>
 					<configuration>
 						<serverId>ossrh-sshtools</serverId>
@@ -238,15 +238,15 @@
 		<snapshotRepository>
 			<uniqueVersion>true</uniqueVersion>
 			<id>opensource-snapshots</id>
-			<name>SSHTOOLS Opensource Snapshots</name>
-			<url>http://artifactory.javassh.com/opensource-snapshots</url>
+			<name>JAdaptive Opensource Snapshots</name>
+			<url>https://artifactory.jadaptive.com/opensource-snapshots</url>
 			<layout>default</layout>
 		</snapshotRepository>
 		<repository>
 			<uniqueVersion>true</uniqueVersion>
 			<id>opensource-releases</id>
-			<name>SSHTOOLS Opensource Releases</name>
-			<url>http://artifactory.javassh.com/opensource-releases</url>
+			<name>JAdaptive Opensource Releases</name>
+			<url>https://artifactory.jadaptive.com/opensource-releases</url>
 			<layout>default</layout>
 		</repository>
 	</distributionManagement>
