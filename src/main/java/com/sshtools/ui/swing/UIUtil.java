@@ -33,6 +33,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import javax.swing.Icon;
@@ -41,11 +43,13 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
+import javax.swing.table.TableColumn;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
@@ -432,5 +436,39 @@ public class UIUtil implements SwingConstants {
 				ttm.setInitialDelay(oldDelay);
 			}
 		});
+	}
+
+	public static int getTotalPreferredWith(JTable table) {
+		int w = 0;
+		int sz = table.getColumnModel().getColumnCount();
+		for (int i = 0; i < sz; i++) {
+			w += table.getColumnModel().getColumn(i).getPreferredWidth();
+		}
+		return w;
+	}
+
+	public static void distributeColumns(JTable table, TableColumn... exceptions) {
+		List<TableColumn> ex = Arrays.asList(exceptions);
+		int w = getTotalPreferredWith(table);
+		int sz = table.getColumnModel().getColumnCount();
+		int vpw = getAvailableTableSpace(table);
+		if(w != vpw) {
+			int left = vpw - w;
+			if(left > 0) {
+				int each = left / ( sz - exceptions.length );
+				for (int i = 0; i < sz; i++) {
+					TableColumn col = table.getColumnModel().getColumn(i);
+					if (!ex.contains(col)) {
+						col.setPreferredWidth(
+								col.getPreferredWidth() + (i == 0 ? each + (left - (each * (sz - exceptions.length))) : each));
+					}
+				}
+			}
+		}
+	}
+
+	public static int getAvailableTableSpace(JTable table) {
+		int vpw = table.getParent() == null ? table.getPreferredScrollableViewportSize().width : table.getParent().getWidth();
+		return vpw;
 	}
 }

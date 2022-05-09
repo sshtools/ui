@@ -36,25 +36,20 @@ public class SortableHeaderRenderer extends JLabel implements TableCellRenderer 
 	private Dimension lastSize;
 	private TableColumnModel model;
 
-	public SortableHeaderRenderer(TableColumnModel model,
-			boolean showSortIcons, SortCriteria sortCriteria) {
+	public SortableHeaderRenderer(TableColumnModel model, boolean showSortIcons, SortCriteria sortCriteria) {
 		super("");
 		this.model = model;
 		// Init
-		upSortIcon = new ArrowIcon(ArrowIcon.NORTH,
-				UIManager.getColor("controlShadow"),
-				UIManager.getColor("Button.foreground"),
+		upSortIcon = new ArrowIcon(ArrowIcon.NORTH, UIManager.getColor("controlShadow"), UIManager.getColor("Button.foreground"),
 				UIManager.getColor("controlLtHighlight"));
-		downSortIcon = new ArrowIcon(ArrowIcon.SOUTH,
-				UIManager.getColor("controlShadow"),
-				UIManager.getColor("Button.foreground"),
+		downSortIcon = new ArrowIcon(ArrowIcon.SOUTH, UIManager.getColor("controlShadow"), UIManager.getColor("Button.foreground"),
 				UIManager.getColor("controlLtHighlight"));
 		setForeground(UIManager.getColor("TableHeader.foreground"));
 		setBackground(UIManager.getColor("TableHeader.background"));
-		setFont(getFont().deriveFont(10f));
-		setBorder(BorderFactory.createCompoundBorder(
-				UIManager.getBorder("TableHeader.cellBorder"),
-				BorderFactory.createEmptyBorder(0, 2, 0, 2)));
+		// setFont(getFont().deriveFont(10f));
+//		setBorder(BorderFactory.createCompoundBorder(UIManager.getBorder("TableHeader.cellBorder"),
+//				BorderFactory.createEmptyBorder(0, 2, 0, 2)));
+		setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		//
 		setHorizontalTextPosition(JLabel.LEFT);
 		setCriteria(sortCriteria);
@@ -74,8 +69,8 @@ public class SortableHeaderRenderer extends JLabel implements TableCellRenderer 
 		return new Dimension(1, 1);
 	}
 
-	public Component getTableCellRendererComponent(JTable table, Object value,
-			boolean isSelected, boolean hasFocus, int row, int column) {
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row,
+			int column) {
 		//
 		if (sorts.length > 0) {
 			switch (sorts[column]) {
@@ -114,8 +109,7 @@ public class SortableHeaderRenderer extends JLabel implements TableCellRenderer 
 
 	public int nextSort(int col) {
 		return sorts[col] = ((sorts[col] == SortCriteria.SORT_ASCENDING) ? SortCriteria.SORT_DESCENDING
-				: ((sorts[col] == SortCriteria.SORT_DESCENDING) ? SortCriteria.NO_SORT
-						: SortCriteria.SORT_ASCENDING));
+				: ((sorts[col] == SortCriteria.SORT_DESCENDING) ? SortCriteria.NO_SORT : SortCriteria.SORT_ASCENDING));
 	}
 
 	public void setSort(int col, int sortType) {

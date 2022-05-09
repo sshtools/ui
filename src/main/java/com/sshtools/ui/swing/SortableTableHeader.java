@@ -17,11 +17,15 @@ package com.sshtools.ui.swing;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JTable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.TableColumnModelEvent;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 
 public class SortableTableHeader extends JTableHeader {
 	private int index;
@@ -66,6 +70,22 @@ public class SortableTableHeader extends JTableHeader {
 	 */
 	public SortableTableHeader(JTable table) {
 		this(table, null);
+	}
+
+	@Override
+	public void columnAdded(TableColumnModelEvent e) {
+//		getColumnModel().getColumn(e.getToIndex()).addPropertyChangeListener(new PropertyChangeListener() {
+//			@Override
+//			public void propertyChange(PropertyChangeEvent evt) {
+//				if(e.getToIndex() == 0) {
+//					if(UIUtil.getTotalPreferredWith(getTable()) < UIUtil.getAvailableTableSpace(getTable())) {
+//						TableColumn col = getColumnModel().getColumn(e.getToIndex());
+//						UIUtil.distributeColumns(getTable(), col);
+//					}
+//				}
+//			}
+//		});
+		super.columnAdded(e);
 	}
 
 	public void setCriteria(SortCriteria criteria) {
