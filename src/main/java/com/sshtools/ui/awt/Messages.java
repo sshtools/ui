@@ -54,7 +54,7 @@ public class Messages {
 		try {
 			if (resourceBundle == null) {
 				resourceBundle = ResourceBundle
-						.getBundle("com.sshtools.ui.awt.ApplicationResources"); //$NON-NLS-1$
+						.getBundle(Messages.class.getName()); //$NON-NLS-1$
 			}
 			return resourceBundle == null ? "*No resource bundle* !" + key + "!" : resourceBundle.getString(key); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (MissingResourceException e) {

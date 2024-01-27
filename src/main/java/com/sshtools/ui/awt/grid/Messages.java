@@ -29,7 +29,7 @@ public class Messages {
 
 	// Private statics
 	private static ResourceBundle resourceBundle = ResourceBundle
-			.getBundle("com.sshtools.ui.awt.grid.ApplicationResources"); //$NON-NLS-1$
+			.getBundle(Messages.class.getName()); //$NON-NLS-1$
 
 	private Messages() {
 	}
