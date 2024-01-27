@@ -20,8 +20,8 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
 	<properties>
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <build.projectProperties>${basedir}/hypersocket.build.properties</build.projectProperties>
         <build.userProperties>${user.home}/.hypersocket.build.properties</build.userProperties>
@@ -35,7 +35,7 @@
 	<name>SSHTOOLS UI</name>
 	<description>Utility classes used in a number of SSHTOOLS AWT/Swing UI projects.</description>
 	<url>https://github.com/sshtools/ui</url>
-	<version>3.1.3-SNAPSHOT</version>
+	<version>4.0.0-SNAPSHOT</version>
 
 	<licenses>
 		<license>
@@ -81,6 +81,25 @@
 			</testResource>
 		</testResources>
 		<plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>read-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <quiet>false</quiet>
+                            <files>
+                                <file>${build.projectProperties}</file>
+                                <file>${build.userProperties}</file>
+                            </files>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
@@ -104,7 +123,7 @@
 							<goal>jar</goal>
 						</goals>
 						<configuration>
-							<additionalparam>-Xdoclint:none</additionalparam>
+                            <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
 							<includeDependencySources>false</includeDependencySources>
 							<dependencySourceIncludes>
 								<!-- include ONLY dependencies I control -->
@@ -122,21 +141,6 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>properties-maven-plugin</artifactId>
                     <version>1.2.1</version>
-                    <executions>
-                        <execution>
-                            <phase>initialize</phase>
-                            <goals>
-                                <goal>read-project-properties</goal>
-                            </goals>
-                            <configuration>
-                                <quiet>false</quiet>
-                                <files>
-                                    <file>${build.projectProperties}</file>
-                                    <file>${build.userProperties}</file>
-                                </files>
-                            </configuration>
-                        </execution>
-                    </executions>
                 </plugin>
 				<plugin>
 				    <groupId>org.apache.maven.plugins</groupId>
@@ -196,30 +200,6 @@
 
 	<profiles>
 		<profile>
-			<activation>
-				<jdk>[9,)</jdk>
-			</activation>
-			<build>
-				<pluginManagement>
-					<plugins>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-javadoc-plugin</artifactId>
-							<configuration>
-								<!-- TODO: Why is this STILL broken! -->
-								<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
-								<excludePackageNames>**.impl.*</excludePackageNames>
-								<!-- https://bugs.openjdk.java.net/browse/JDK-8212233 -->
-								<detectJavaApiLink>false</detectJavaApiLink>
-								<source>8</source>
-								<doclint>none</doclint>
-							</configuration>
-						</plugin>
-					</plugins>
-				</pluginManagement>
-			</build>
-		</profile>
-		<profile>
 			<id>release-sign-artifacts</id>
 			<activation>
 				<property>
@@ -267,16 +247,16 @@
 	</distributionManagement>
 
 	<dependencies>
-		<dependency>
+		<dependency> 
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.8</version>
+			<version>1.16.0</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.miglayout</groupId>
 			<artifactId>miglayout-swing</artifactId>
-			<version>5.0</version>
+			<version>11.3</version>
 		</dependency>
 	</dependencies>
 </project>
